@@ -96,6 +96,32 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+    @apply font-semibold text-foreground;
+  }
+
+  a {
+    color: hsl(var(--link));
+    @apply no-underline hover:underline transition-colors;
+  }
+  a:hover {
+    color: hsl(var(--link-hover));
+  }
+}
+
+@layer components {
+  .section-divider {
+    @apply border-t my-6;
+    border-color: hsl(var(--section-border));
+  }
+  .callout {
+    background: hsl(var(--callout-bg));
+    border-left: 3px solid hsl(var(--callout-border));
+    @apply py-3 px-4 rounded-r-sm text-sm;
   }
 }
