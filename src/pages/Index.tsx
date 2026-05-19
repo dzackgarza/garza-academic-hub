@@ -136,12 +136,12 @@ const Index = () => {
       <CardGrid items={papers} columns={2} />
 
       <SectionHeading id="talks">Talks</SectionHeading>
-      <p className="text-sm text-muted-foreground mb-3">Scroll to browse — find more on the talks page.</p>
-      <CardScroller items={talks} />
+      <p className="text-sm text-muted-foreground mb-3">A selection of recent talks — find more on the talks page.</p>
+      <CardGrid items={talks} columns={3} />
 
       <SectionHeading id="notes">Recent Notes</SectionHeading>
-      <p className="text-sm text-muted-foreground mb-3">Scroll to browse — find many more on the writing page.</p>
-      <CardScroller items={notes} />
+      <p className="text-sm text-muted-foreground mb-3">A selection of recent notes — find many more on the writing page.</p>
+      <CardGrid items={notes.slice(0, 9)} columns={3} />
     </AcademicLayout>
   );
 };
