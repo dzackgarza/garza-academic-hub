@@ -8,7 +8,7 @@ interface CardScrollerProps {
   cardWidth?: string;
 }
 
-const CardScroller = ({ items, cardWidth = "w-72" }: CardScrollerProps) => {
+const CardScroller = ({ items, cardWidth = "w-[18rem]" }: CardScrollerProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(false);
@@ -39,13 +39,13 @@ const CardScroller = ({ items, cardWidth = "w-72" }: CardScrollerProps) => {
   };
 
   return (
-    <div className="relative group">
+    <div className="relative max-w-full min-w-0 overflow-hidden group">
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
+        className="grid grid-flow-col auto-cols-max gap-4 max-w-full overflow-x-scroll overflow-y-hidden pb-4 snap-x snap-mandatory scroll-smooth overscroll-x-contain [scrollbar-width:thin]"
       >
         {items.map((item, i) => (
-          <div key={i} className={`${cardWidth} shrink-0 snap-start`}>
+          <div key={i} className={`${cardWidth} max-w-[78vw] shrink-0 snap-start`}>
             <AcademicCard {...item} />
           </div>
         ))}
