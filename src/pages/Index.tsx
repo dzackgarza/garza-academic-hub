@@ -1,7 +1,6 @@
 import AcademicLayout from "@/components/AcademicLayout";
 import SectionHeading from "@/components/SectionHeading";
 import CardGrid from "@/components/CardGrid";
-import CardScroller from "@/components/CardScroller";
 import type { AcademicCardProps } from "@/components/AcademicCard";
 
 const papers: AcademicCardProps[] = [
