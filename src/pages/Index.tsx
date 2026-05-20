@@ -1,6 +1,7 @@
 import AcademicLayout from "@/components/AcademicLayout";
 import SectionHeading from "@/components/SectionHeading";
 import CardGrid from "@/components/CardGrid";
+import CardScroller from "@/components/CardScroller";
 import type { AcademicCardProps } from "@/components/AcademicCard";
 
 const papers: AcademicCardProps[] = [
@@ -101,10 +102,8 @@ const Index = () => {
       <CardGrid items={talks} columns={3} />
 
       <SectionHeading id="notes">Recent Notes</SectionHeading>
-      <p className="text-sm text-muted-foreground mb-3">Scroll to browse all {notes.length} notes — or visit the writing page.</p>
-      <div className="max-h-[42rem] overflow-y-auto pr-2 rounded-lg border bg-muted/20 p-3">
-        <CardGrid items={notes} columns={3} />
-      </div>
+      <p className="text-sm text-muted-foreground mb-3">Browse {notes.length} notes — or visit the writing page.</p>
+      <CardScroller items={notes} columns={3} rows={3} />
     </AcademicLayout>
   );
 };
