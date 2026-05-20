@@ -101,8 +101,10 @@ const Index = () => {
       <CardGrid items={talks} columns={3} />
 
       <SectionHeading id="notes">Recent Notes</SectionHeading>
-      <p className="text-sm text-muted-foreground mb-3">A selection of recent notes — find many more on the writing page.</p>
-      <CardGrid items={notes.slice(0, 9)} columns={3} />
+      <p className="text-sm text-muted-foreground mb-3">Scroll to browse all {notes.length} notes — or visit the writing page.</p>
+      <div className="max-h-[42rem] overflow-y-auto pr-2 rounded-lg border bg-muted/20 p-3">
+        <CardGrid items={notes} columns={3} />
+      </div>
     </AcademicLayout>
   );
 };
