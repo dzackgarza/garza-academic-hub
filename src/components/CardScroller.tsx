@@ -61,9 +61,9 @@ const CardScroller = ({ items, columns = 3, rows = 3 }: CardScrollerProps) => {
         {pages.map((pageItems, pageIndex) => (
           <div key={pageIndex} className="min-w-full shrink-0 snap-start pr-1">
             <div
-              className="grid gap-4"
-              style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
+              className={columns === 3 ? "grid gap-4 grid-cols-3" : "grid gap-4 grid-cols-2"}
             >
+
 
               {pageItems.map((item, i) => (
                 <AcademicCard key={`${pageIndex}-${i}`} {...item} />
