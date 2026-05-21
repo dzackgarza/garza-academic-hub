@@ -4,6 +4,7 @@
 
 [[items]]
 type = "paper"
+image = "https://dzackgarza.com/assets/images/covers/moduli_spaces.png"
 title = "Compact moduli of Enriques surfaces with a numerical polarization of degree 2"
 subtitle = "arxiv 2312.03638"
 description = "Joint work with Valery Alexeev, Phil Engel, and Luca Schaffler."
@@ -21,24 +22,28 @@ links = [{ label = "Slides (PDF)", href = "#" }]
 
 [[items]]
 type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_curves.png"
 title = "Faltings' proof of the Mordell conjecture"
 subtitle = "UGA Reading Group, July 2022"
 links = [{ label = "Slides (PDF)", href = "#" }]
 
 [[items]]
 type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/categorification.png"
 title = "Annihilator of the Lefschetz Motive"
 subtitle = "MIT Talbot Workshop, June 2022"
 links = [{ label = "Typeset Notes (PDF)", href = "#" }]
 
 [[items]]
 type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_geometry.png"
 title = "Why Derived Geometry?"
 subtitle = "UGA GSS, February 2022"
 links = [{ label = "Slides (PDF)", href = "#" }]
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/under_construction.png"
 title = "K3 Surfaces"
 subtitle = "Phil Engel, Spring 2023"
 tags = ["Algebraic Geometry"]
@@ -46,6 +51,7 @@ links = [{ label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/20
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/homological_algebra.png"
 title = "Hochschild Homology"
 subtitle = "Tekin Karadag, Spring 2023"
 tags = ["Algebra"]
@@ -56,6 +62,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/lie_algebras.png"
 title = "Lie Algebras"
 subtitle = "Brian Boe, Fall 2022"
 tags = ["Representation Theory"]
@@ -66,6 +73,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/stacks.png"
 title = "Moduli: GIT"
 subtitle = "Valery Alexeev, Fall 2022"
 tags = ["Algebraic Geometry"]
@@ -76,6 +84,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/cohomologyreptheory.png"
 title = "Cohomology in Representation Theory"
 subtitle = "Dan Nakano, Spring 2022"
 tags = ["Representation Theory"]
@@ -86,6 +95,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/commutative_algebra.png"
 title = "Commutative Algebra"
 subtitle = "Daniel Litt, Spring 2022"
 tags = ["Algebra"]
@@ -96,6 +106,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/sheafcohomology.png"
 title = "Sheaf Cohomology"
 subtitle = "Valery Alexeev, Spring 2022"
 tags = ["Algebraic Geometry"]
@@ -106,6 +117,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/charclasses.png"
 title = "Contact Topology"
 subtitle = "Peter Lambert Colne, Spring 2022"
 tags = ["Topology"]
@@ -116,6 +128,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/schemes.png"
 title = "Schemes"
 subtitle = "Phil Engel, Fall 2021"
 tags = ["Algebraic Geometry"]
@@ -126,6 +139,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/rational_points.png"
 title = "Rational Points"
 subtitle = "Daniel Litt, Fall 2021"
 tags = ["Arithmetic Geometry"]
@@ -136,6 +150,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/charclasses.png"
 title = "Characteristic Classes"
 subtitle = "Akram Alishahi, Fall 2021"
 tags = ["Topology"]
@@ -146,6 +161,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/flagvarieties.png"
 title = "Flag Varieties, Equivariant Cohomology, and K-Theory"
 subtitle = "Scott Larson, Fall 2021"
 tags = ["Representation Theory"]
@@ -156,6 +172,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/homological_algebra.png"
 title = "Homological Algebra"
 subtitle = "Brian Boe, Spring 2021"
 tags = ["Algebra"]
@@ -166,6 +183,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/floer_homology.png"
 title = "Floer Homology"
 subtitle = "Akram Alishahi, Spring 2021"
 tags = ["Topology"]
@@ -173,6 +191,7 @@ links = [{ label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/20
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_NT.png"
 title = "Algebraic Number Theory"
 subtitle = "Paul Pollack, Spring 2021"
 tags = ["Number Theory"]
@@ -183,6 +202,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/four_manifolds.png"
 title = "4-Manifolds and Algebraic Surfaces"
 subtitle = "Phil Engel, Spring 2021"
 tags = ["Topology"]
@@ -193,6 +213,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/under_construction.png"
 title = "Galois Cohomology and Class Field Theory"
 subtitle = "Pete Clark, Spring 2021"
 tags = ["Number Theory"]
@@ -200,6 +221,7 @@ links = [{ label = "Read More", href = "https://dzackgarza.com/writing" }]
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_groups.png"
 title = "Algebraic Groups"
 subtitle = "Dan Nakano, Fall 2020"
 tags = ["Representation Theory"]
@@ -210,6 +232,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_geometry.png"
 title = "Varieties"
 subtitle = "Philip Engel, Fall 2020"
 tags = ["Algebraic Geometry"]
@@ -220,6 +243,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_curves.png"
 title = "Algebraic Curves"
 subtitle = "Pete Clark, Fall 2020"
 tags = ["Arithmetic Geometry"]
@@ -240,6 +264,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/categorification.png"
 title = "Categorification"
 subtitle = "Arik Wilbert, Summer 2020"
 tags = ["Representation Theory"]
@@ -250,6 +275,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/category_o.png"
 title = "Category O"
 subtitle = "Brian Boe, Spring 2020"
 tags = ["Representation Theory"]
@@ -260,6 +286,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/commutative_algebra.png"
 title = "Commutative Algebra"
 subtitle = "Pete Clark, Spring 2020"
 tags = ["Algebra"]
@@ -267,6 +294,7 @@ links = [{ label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/20
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/moduli_spaces.png"
 title = "Moduli: Deformations"
 subtitle = "Ben Bakker, Spring 2020"
 tags = ["Algebraic Geometry"]
@@ -277,6 +305,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/morse_theory.png"
 title = "Morse Theory"
 subtitle = "Akram Alishahi, Spring 2020"
 tags = ["Topology"]
@@ -284,6 +313,7 @@ links = [{ label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/20
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/complex_analysis.png"
 title = "Complex Analysis"
 subtitle = "Jingzhi Tie, Spring 2020"
 tags = ["Analysis"]
@@ -294,6 +324,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/algebra.png"
 title = "Abstract Algebra"
 subtitle = "Dan Nakano, Fall 2019"
 tags = ["Algebra"]
@@ -304,6 +335,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/lie_algebras.png"
 title = "Lie Algebras"
 subtitle = "Chun-Ju Lai, Fall 2019"
 tags = ["Representation Theory"]
@@ -311,6 +343,7 @@ links = [{ label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/20
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/real_analysis.png"
 title = "Real Analysis"
 subtitle = "Neil Lyall, Fall 2019"
 tags = ["Analysis"]
@@ -318,6 +351,7 @@ links = [{ label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/20
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_topology.png"
 title = "Algebraic Topology"
 subtitle = "Justin Roberts, 2017–2018"
 tags = ["Topology"]
@@ -328,6 +362,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/lee_manifolds.png"
 title = "Smooth Manifolds"
 subtitle = "Notes on Lee's Smooth Manifolds"
 tags = ["Topology"]
