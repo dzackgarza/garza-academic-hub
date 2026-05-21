@@ -16,6 +16,7 @@ links = [
 
 [[items]]
 type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/floer_homology.png"
 title = "A∞-Categories, Toward a Definition of the Fukaya Category"
 subtitle = "UGA Symplectic Reading Seminar, September 2022"
 links = [{ label = "Slides (PDF)", href = "#" }]
@@ -254,6 +255,7 @@ links = [
 
 [[items]]
 type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/etale_cohomology.png"
 title = "Étale Cohomology"
 subtitle = "Daniel Litt, Fall 2020"
 tags = ["Arithmetic Geometry"]
