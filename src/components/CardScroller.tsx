@@ -53,18 +53,16 @@ const CardScroller = ({ items, columns = 3, rows = 3 }: CardScrollerProps) => {
   };
 
   return (
-    <div className="relative max-w-full min-w-0 overflow-hidden group rounded-lg bg-muted/20 p-3 ring-1 ring-border/70">
+    <div className="relative max-w-full min-w-0 overflow-hidden group">
       <div
         ref={scrollRef}
         className="flex max-w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {pages.map((pageItems, pageIndex) => (
-          <div key={pageIndex} className="min-w-full shrink-0 snap-start pr-1">
+          <div key={pageIndex} className="w-full flex-none snap-start">
             <div
-              className={columns === 3 ? "grid gap-4 grid-cols-3" : "grid gap-4 grid-cols-2"}
+              className={columns === 3 ? "grid w-full gap-4 grid-cols-3" : "grid w-full gap-4 grid-cols-2"}
             >
-
-
               {pageItems.map((item, i) => (
                 <AcademicCard key={`${pageIndex}-${i}`} {...item} />
               ))}
@@ -75,10 +73,10 @@ const CardScroller = ({ items, columns = 3, rows = 3 }: CardScrollerProps) => {
 
       {/* edge fades */}
       <div
-        className={`pointer-events-none absolute left-0 top-0 bottom-3 w-10 bg-gradient-to-r from-background to-transparent transition-opacity ${canLeft ? "opacity-100" : "opacity-0"}`}
+        className={`pointer-events-none absolute left-0 top-0 bottom-5 w-10 bg-gradient-to-r from-background to-transparent transition-opacity ${canLeft ? "opacity-100" : "opacity-0"}`}
       />
       <div
-        className={`pointer-events-none absolute right-0 top-0 bottom-3 w-10 bg-gradient-to-l from-background to-transparent transition-opacity ${canRight ? "opacity-100" : "opacity-0"}`}
+        className={`pointer-events-none absolute right-0 top-0 bottom-5 w-10 bg-gradient-to-l from-background to-transparent transition-opacity ${canRight ? "opacity-100" : "opacity-0"}`}
       />
 
       {/* arrow buttons */}
