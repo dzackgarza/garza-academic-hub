@@ -1,6 +1,22 @@
 # Academic items — flat list. Add new entries by appending an [[items]] block.
-# type: "paper" | "talk" | "notes"
-# Optional: subtitle, description, tags (array), links (array of {label, href})
+#
+# Define item types in [[types]] below. Each item must use one of those keys.
+# Optional fields per item: subtitle, description, tags (array), links, image, icon.
+
+[[types]]
+key = "paper"
+label = "Papers"
+icon = "paper"
+
+[[types]]
+key = "talk"
+label = "Talks"
+icon = "talk"
+
+[[types]]
+key = "notes"
+label = "Notes"
+icon = "notes"
 
 [[items]]
 type = "paper"
@@ -19,6 +35,7 @@ type = "talk"
 image = "https://dzackgarza.com/assets/images/covers/floer_homology.png"
 title = "A∞-Categories, Toward a Definition of the Fukaya Category"
 subtitle = "UGA Symplectic Reading Seminar, September 2022"
+tags = ["Topology", "Category Theory"]
 links = [{ label = "Slides (PDF)", href = "#" }]
 
 [[items]]
@@ -26,6 +43,7 @@ type = "talk"
 image = "https://dzackgarza.com/assets/images/covers/algebraic_curves.png"
 title = "Faltings' proof of the Mordell conjecture"
 subtitle = "UGA Reading Group, July 2022"
+tags = ["Arithmetic Geometry", "Number Theory"]
 links = [{ label = "Slides (PDF)", href = "#" }]
 
 [[items]]
@@ -33,6 +51,7 @@ type = "talk"
 image = "https://dzackgarza.com/assets/images/covers/categorification.png"
 title = "Annihilator of the Lefschetz Motive"
 subtitle = "MIT Talbot Workshop, June 2022"
+tags = ["Algebraic Geometry", "Category Theory"]
 links = [{ label = "Typeset Notes (PDF)", href = "#" }]
 
 [[items]]
@@ -40,6 +59,7 @@ type = "talk"
 image = "https://dzackgarza.com/assets/images/covers/algebraic_geometry.png"
 title = "Why Derived Geometry?"
 subtitle = "UGA GSS, February 2022"
+tags = ["Algebraic Geometry", "Category Theory"]
 links = [{ label = "Slides (PDF)", href = "#" }]
 
 [[items]]
