@@ -3,6 +3,9 @@ import { createRoot } from "react-dom/client";
 import CardGrid from "@/components/CardGrid";
 import FilteredGallery from "@/components/FilteredGallery";
 import AcademicCollection from "@/components/AcademicCollection";
+import BlogListing from "@/components/islands/BlogListing";
+import ImageGallerySection from "@/components/islands/ImageGallerySection";
+import LinkGroupSection from "@/components/islands/LinkGroupSection";
 import { parseToml } from "@/content/_toml";
 import { cn } from "@/lib/utils";
 
@@ -129,6 +132,11 @@ const REGISTRY: Record<string, SlotRenderer> = {
       />
     );
   },
+
+  // Self-contained islands — data-source not required, items arg ignored
+  "blog-listing": () => <BlogListing />,
+  "image-gallery": () => <ImageGallerySection />,
+  "link-groups": () => <LinkGroupSection />,
 };
 
 // ---------------------------------------------------------------------------
@@ -147,13 +155,17 @@ const PageShell = ({ html }: PageShellProps) => {
   const [data, setData] = useState<Record<string, { items: any[]; types?: any[] }>>({});
   const [loading, setLoading] = useState(true);
 
-  // 1. Identify and fetch all required TOML sources
+  // 1. Identify and fetch all required TOML sources (only for slots with explicit data-source)
   useEffect(() => {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = html;
     const slots = Array.from(tempDiv.querySelectorAll<HTMLElement>("[data-component]"));
     const sources = Array.from(
-      new Set(slots.map((el) => el.dataset.source || "databases/items.toml"))
+      new Set(
+        slots
+          .map((el) => el.dataset.source)
+          .filter((s): s is string => Boolean(s))
+      )
     );
 
     let isMounted = true;
@@ -220,8 +232,8 @@ const PageShell = ({ html }: PageShellProps) => {
 
     slots.forEach((el) => {
       const type = el.dataset.component!;
-      const source = el.dataset.source || "databases/items.toml";
-      const sourceData = data[source] || { items: [] };
+      const source = el.dataset.source;
+      const sourceData = source ? (data[source] || { items: [] }) : { items: [] };
 
       // Default to "collection" if the specified type isn't card-grid or scroll-gallery
       const renderer = REGISTRY[type] || REGISTRY["collection"];

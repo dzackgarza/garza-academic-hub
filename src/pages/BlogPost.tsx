@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import AcademicLayout from "@/components/AcademicLayout";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Clock, Calendar, Tag, BookOpen, ChevronRight } from "lucide-react";
-import { blogPosts } from "./Blog";
+import { blogPosts } from "@/content/posts";
 
 declare global {
   interface Window {

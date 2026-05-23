@@ -15,4 +15,4 @@ export interface Gallery {
 
 const parsed = parseToml<{ galleries: Gallery[] }>(tomlSource);
 
-export const galleries: Gallery[] = parsed.galleries ?? [];
+export const galleries: Gallery[] = parsed.items ?? [];

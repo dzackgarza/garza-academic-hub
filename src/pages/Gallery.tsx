@@ -1,27 +1,21 @@
+import { useState, useEffect } from "react";
 import AcademicLayout from "@/components/AcademicLayout";
-import SectionHeading from "@/components/SectionHeading";
-import ImageGallery from "@/components/ImageGallery";
-import { galleries } from "@/content/galleries";
+import PageShell from "@/components/PageShell";
 
-const Gallery = () => (
-  <AcademicLayout showSidebar={false}>
-    <div className="academic-page-content">
-      <h1 className="text-3xl font-semibold mb-2">Gallery</h1>
-      <p className="text-muted-foreground mb-6">
-        Diagrams and images drawn or generated for notes, papers, and talks. Click any image to open the full-resolution version.
-      </p>
+const Gallery = () => {
+  const [html, setHtml] = useState("");
 
-      {galleries.map((gallery) => (
-        <section key={gallery.id}>
-          <SectionHeading id={gallery.id}>{gallery.title}</SectionHeading>
-          {gallery.description && (
-            <p className="text-sm text-muted-foreground mb-4">{gallery.description}</p>
-          )}
-          <ImageGallery gallery={gallery} />
-        </section>
-      ))}
-    </div>
-  </AcademicLayout>
-);
+  useEffect(() => {
+    import("../content/compiled/pages/gallery.html?raw").then((mod) => {
+      setHtml(mod.default);
+    });
+  }, []);
+
+  return (
+    <AcademicLayout showSidebar={false}>
+      <PageShell html={html} />
+    </AcademicLayout>
+  );
+};
 
 export default Gallery;
