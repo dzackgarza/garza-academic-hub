@@ -44,9 +44,9 @@ commits ahead of `origin/main`, ~7,700 lines added).
   content to `src/styles/academic-content.css` (imported by PageShell.tsx).
   index.css reduced from 227 to 99 lines.
 
-- [ ] **Tidy scratch/ directory** — Move test/verification scripts from `scratch/` into
-  `tests/` or a `tools/` directory.
-  Exclude generated screenshots (`.png`) from version control.
+- [x] **Tidy scratch/ directory** — Fixed in `5afa7eb`. Deleted 25 files (16 screenshots
+  + 9 redundant scripts), moved `assert_toc_links.js` → `tools/`, added `*.png` to
+    `.gitignore`.
 
 - [x] **Migrate binary assets to Git LFS** — 164 binary files in `public/assets/`
   migrated to LFS across all history.
