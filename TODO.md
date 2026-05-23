@@ -48,6 +48,8 @@ commits ahead of `origin/main`, ~7,700 lines added).
   `tests/` or a `tools/` directory.
   Exclude generated screenshots (`.png`) from version control.
 
-- [ ] **Consider LFS or external hosting for binary assets** — ~180 image/video files
-  added to `public/assets/images/` (~multiple MB). The `worldofmath.svg` alone is 1,806
-  lines. This adds significant bloat to every clone.
+- [x] **Consider LFS or external hosting for binary assets** — Filed as
+  [dzackgarza/garza-academic-hub#1](https://github.com/dzackgarza/garza-academic-hub/issues/1).
+  Analysis: 165 files, ~31 MB. MP4s (5.7 MB) and large PNG posters dominate.
+  Created tracking issue with options (LFS, CDN, compression).
+  Low-priority, non-blocking for a personal site.
