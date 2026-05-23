@@ -16,11 +16,10 @@ commits ahead of `origin/main`, ~7,700 lines added).
 
 ## Structural — High Priority
 
-- [ ] **Collapse 6 identical page components into one** — `Index.tsx`, `Teaching.tsx`,
-  `Activities.tsx`, `Writing.tsx`, `Gallery.tsx`, `Blog.tsx` are each ~21 lines of
-  identical boilerplate differing only by compiled HTML file and whether `showSidebar`
-  is false. Replace with a single `CompiledPage` component driven by a route→config map.
-  Eliminates 5 files and makes adding a new page a one-line config entry.
+- [x] **Collapse 6 identical page components into one** — Fixed in `29c4c5d`. Created
+  `src/pages/CompiledPage.tsx` with a `ROUTE_CONFIG` map.
+  Deleted all 6 redundant files.
+  Net -98 lines.
 
 - [ ] **Deduplicate REGISTRY pipeline in PageShell** — The `collection`, `card-grid`,
   and `scroll-gallery` renderers in `src/components/PageShell.tsx` repeat the same
