@@ -287,16 +287,15 @@ const BlogPost = () => {
               className="group rounded-xl border bg-card hover:border-primary/40 hover:shadow-md transition-all duration-200 flex flex-col justify-between hover:no-underline overflow-hidden p-0"
             >
               <div className="flex flex-col items-stretch w-full">
-                {p.image && (
-                  <div className="relative w-full h-28 bg-muted overflow-hidden border-b border-border/20 shrink-0 flex items-center justify-center">
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
+                <div className="relative w-full h-28 bg-muted overflow-hidden border-b border-border/20 shrink-0 flex items-center justify-center">
+                  <img
+                    src={p.image || "/assets/images/bigo.png"}
+                    alt={p.title}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+
                 <div className="p-4 space-y-2">
                   <div className="flex justify-between items-center text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
                     <span>{p.date || p.year}</span>
