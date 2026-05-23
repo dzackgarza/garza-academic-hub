@@ -18,6 +18,12 @@ key = "notes"
 label = "Notes"
 icon = "notes"
 
+[[types]]
+key = "expository"
+label = "Expository"
+icon = "paper"
+
+
 [[items]]
 type = "paper"
 image = "https://dzackgarza.com/assets/images/covers/moduli_spaces.png"
@@ -392,3 +398,173 @@ links = [
   { label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/Independent/LeeManifolds/Manifolds.pdf" },
   { label = "HTML", href = "https://dzackgarza.com/rawnotes/Class_Notes/Independent/LeeManifolds/Manifolds.html" },
 ]
+
+# ─── Undergrad notes ────────────────────────────────────────────────────────────
+
+[[items]]
+type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/undergraduate_compendium.png"
+title = "Undergraduate Compendium"
+subtitle = "Self study, Spring 2017"
+description = "A study guide of undergraduate topics, written while studying for the Mathematics Subject GRE."
+tags = ["Undergrad"]
+links = [
+  { label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/2016%20and%20Earlier/UndergradCompendium/UndergraduateCompendium.pdf" },
+  { label = "HTML", href = "https://dzackgarza.com/rawnotes/Class_Notes/2016%20and%20Earlier/UndergradCompendium/UndergraduateCompendium.html" },
+]
+
+[[items]]
+type = "notes"
+image = "https://dzackgarza.com/assets/images/covers/combinatorics.png"
+title = "Combinatorics"
+subtitle = "Self study"
+description = "A study guide for undergraduate combinatorics."
+tags = ["Undergrad", "Combinatorics"]
+links = [
+  { label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/2016%20and%20Earlier/Combinatorics/Combinatorics.pdf" },
+  { label = "HTML", href = "https://dzackgarza.com/rawnotes/Class_Notes/2016%20and%20Earlier/Combinatorics/Combinatorics.html" },
+]
+
+# ─── Talks / Seminars / Mini-Courses ────────────────────────────────────────────
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_geometry.png"
+title = "PCMI 2021: Motivic Homotopy — Combined Notes"
+subtitle = "IAS/PCMI Graduate Summer School, Summer 2021"
+tags = ["Algebraic Geometry", "Homotopy Theory", "Motivic"]
+links = [
+  { label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/6_Combined/Combined_Talks.pdf" },
+  { label = "HTML", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/6_Combined/Combined_Talks.html" },
+]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_NT.png"
+title = "Krashen: Field arithmetic and the complexity of algebraic objects"
+subtitle = "PCMI 2021"
+tags = ["Arithmetic Geometry", "Motivic"]
+links = [
+  { label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/1_Krashen/Krashen_Talks.pdf" },
+  { label = "HTML", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/1_Krashen/Krashen_Talks.html" },
+]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_groups.png"
+title = "Gille: G-torsors over affine curves"
+subtitle = "PCMI 2021"
+tags = ["Algebraic Geometry", "Motivic"]
+links = [
+  { label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/2_Gille/Gille_Talks.pdf" },
+  { label = "HTML", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/2_Gille/Gille_Talks.html" },
+]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/categorification.png"
+title = "Déglise: Motivic categories"
+subtitle = "PCMI 2021"
+tags = ["Category Theory", "Motivic"]
+links = [
+  { label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/3_Deglise/Deglise_Talks.pdf" },
+  { label = "HTML", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/3_Deglise/Deglise_Talks.html" },
+]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_topology.png"
+title = "Wickelgren: An introduction to A¹ homotopy theory using enumerative examples"
+subtitle = "PCMI 2021"
+tags = ["Topology", "Motivic"]
+links = [
+  { label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/4_Wickelgren/Wickelgren_Talks.pdf" },
+  { label = "HTML", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/4_Wickelgren/Wickelgren_Talks.html" },
+]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/etale_cohomology.png"
+title = "Morrow: Aspects of motivic cohomology"
+subtitle = "PCMI 2021"
+tags = ["Arithmetic Geometry", "Motivic"]
+links = [
+  { label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/5_Morrow/Morrow_Talks.pdf" },
+  { label = "HTML", href = "https://dzackgarza.com/rawnotes/Class_Notes/2021/Summer/PCMI/5_Morrow/Morrow_Talks.html" },
+]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/floer_homology.png"
+title = "Gromov–Witten Invariants & Regularity"
+subtitle = "Salamon–McDuff Reading Seminar, June 2020"
+tags = ["Topology", "Symplectic"]
+links = [
+  { label = "Typeset Notes", href = "https://dzackgarza.com/assets/pdfs/expository/GW_Notes_June_26.pdf" },
+  { label = "Slides", href = "https://dzackgarza.com/assets/pdfs/expository/GW_Talk_June_26.pdf" },
+]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/under_construction.png"
+title = "Tilings and Translation Surfaces"
+subtitle = "VRG Notes"
+tags = ["Geometry", "Dynamics"]
+links = [{ label = "PDF", href = "https://dzackgarza.com/assets/notes/Tilings.pdf" }]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_NT.png"
+title = "Wickelgren: A¹ Enumerative Geometry"
+subtitle = "Arizona Winter School, 2019"
+tags = ["Arithmetic Geometry", "Motivic"]
+links = [
+  { label = "PDF", href = "https://dzackgarza.com/rawnotes/Obsidian/Archive/AWS2019/Typeset/Wickelgren/AWS2019_Wickelgren.pdf" },
+  { label = "Old version", href = "https://dzackgarza.com/assets/pdfs/AWS2019_Wickelgren.pdf" },
+]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/homological_algebra.png"
+title = "Morrow: Topological Hochschild Homology in Arithmetic Geometry"
+subtitle = "Arizona Winter School, 2019"
+tags = ["Arithmetic Geometry", "Homological Algebra"]
+links = [{ label = "PDF", href = "https://dzackgarza.com/rawnotes/Obsidian/Archive/AWS2019/Typeset/Morrow/ASS2019_Morrow.pdf" }]
+
+[[items]]
+type = "talk"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_geometry.png"
+title = "UCSD Algebraic Geometry Conference, 2019"
+subtitle = "Talk notes"
+tags = ["Algebraic Geometry"]
+links = [{ label = "Notes", href = "https://dzackgarza.com/_pages/UCSD-Algebraic-Geometry-Conference-2019.html" }]
+
+# ─── Expository ─────────────────────────────────────────────────────────────────
+
+[[items]]
+type = "expository"
+image = "https://dzackgarza.com/assets/images/covers/algebra.png"
+title = "Classifying groups of order pq via semidirect products"
+tags = ["Algebra", "Group Theory"]
+links = [{ label = "Read", href = "https://dzackgarza.com/_pages/PQ%20Classification.html" }]
+
+[[items]]
+type = "expository"
+image = "https://dzackgarza.com/assets/images/covers/algebraic_geometry.png"
+title = "A History of Modern Algebraic Geometry"
+subtitle = "Expository paper, 2017"
+tags = ["Algebraic Geometry", "History"]
+links = [{ label = "PDF", href = "https://dzackgarza.com/rawnotes/Class_Notes/2016%20and%20Earlier/GeometryFinalVersion.pdf" }]
+
+[[items]]
+type = "expository"
+image = "https://dzackgarza.com/assets/images/covers/undergraduate_compendium.png"
+title = "Notes on the Math GRE"
+subtitle = "GRE Workshop, Feb 2019"
+tags = ["Undergrad", "GRE"]
+links = [
+  { label = "Notes", href = "https://dzackgarza.com/assets/talks/02-22-2019-GRE-Workshop/General%20Notes.html" },
+  { label = "Slides (HTML)", href = "https://dzackgarza.com/assets/talks/02-22-2019-GRE-Workshop/Slides.html" },
+  { label = "Slides (PDF)", href = "https://dzackgarza.com/assets/talks/02-22-2019-GRE-Workshop/Slides.pdf" },
+]
+
