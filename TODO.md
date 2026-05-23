@@ -22,7 +22,7 @@ fix (GREEN), commit it.
     `src/components/PaginatedScroller.tsx` (and/or `CardScroller.tsx`) so every rendered
     class name is a literal string.
 
-- [ ] **3. Early-return in `FilterControls` when `filterable=false`**
+- [x] **3. Early-return in `FilterControls` when `filterable=false`**
   - **RED**: write a test rendering `FilterControls` with `filterable=false` that
     asserts no reactive filter state is maintained (the component should pass all items
     through unchanged).
@@ -44,7 +44,7 @@ fix (GREEN), commit it.
   - **GREEN**: replace the `pages.length === 0` branch in
     `src/components/PaginatedScroller.tsx` with `null` instead of an empty div.
 
-- [ ] **6. Make `ImageGallery` scroller columns/rows configurable via props**
+- [x] **6. Make `ImageGallery` scroller columns/rows configurable via props**
   - **RED**: write a test rendering `ImageGallery` with `layout="scroller"`,
     `columns={3}`, `rows={2}` and asserting the `PaginatedScroller` receives those
     values.
