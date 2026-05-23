@@ -3,6 +3,7 @@ import AcademicLayout from "@/components/AcademicLayout";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Clock, Calendar, Tag, BookOpen, ChevronRight } from "lucide-react";
 import { blogPosts } from "./Blog";
 import UndergradResources from "@/content/blog/undergrad-resources";
+import KrantzGuide from "@/content/blog/krantz-guide";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -57,6 +58,7 @@ const BlogPost = () => {
 
   const relatedPosts = getRelatedPosts();
   const isResources = post.slug === "undergrad-resources";
+  const isKrantz = post.slug === "krantz-mathematicians-survival-guide";
 
   // Table of Contents navigation items
   const tocItems = [
@@ -148,6 +150,8 @@ const BlogPost = () => {
           <article className="prose dark:prose-invert max-w-none">
             {isResources ? (
               <UndergradResources />
+            ) : isKrantz ? (
+              <KrantzGuide />
             ) : (
               <div className="rounded-lg border bg-accent/25 p-6 border-dashed text-center max-w-xl mx-auto my-12 space-y-4 shadow-sm">
                 <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
