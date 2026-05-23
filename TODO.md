@@ -48,6 +48,7 @@ commits ahead of `origin/main`, ~7,700 lines added).
   `tests/` or a `tools/` directory.
   Exclude generated screenshots (`.png`) from version control.
 
-- [ ] **Consider LFS or external hosting for binary assets** — ~180 image/video files
-  added to `public/assets/images/` (~multiple MB). The `worldofmath.svg` alone is 1,806
-  lines. This adds significant bloat to every clone.
+- [x] **Migrate binary assets to Git LFS** — 164 binary files in `public/assets/`
+  migrated to LFS across all history.
+  Tracked patterns: *.png, *.jpg, *.jpeg, *.mp4, *.gif, *.webp, *.ico, *.avif.
+  Repo size reduced from ~31 MB to pointer files.
