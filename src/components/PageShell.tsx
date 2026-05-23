@@ -1,14 +1,46 @@
 import { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import CardGrid from '@/components/CardGrid';
+import type { AcademicCardProps } from '@/components/AcademicCard';
 import FilteredGallery from '@/components/FilteredGallery';
-import AcademicCollection from '@/components/AcademicCollection';
+import type { ContentItem } from '@/content/items';
+import AcademicCollection, {
+  type CollectionItem,
+} from '@/components/AcademicCollection';
 import BlogListing from '@/components/islands/BlogListing';
 import ImageGallery from '@/components/ImageGallery';
 import LinkGroup from '@/components/LinkGroup';
 import { parseToml } from '@/content/_toml';
 import { cn } from '@/lib/utils';
 import '@/styles/academic-content.css';
+
+// ---------------------------------------------------------------------------
+// Slot data types
+// ---------------------------------------------------------------------------
+
+/** An item from a TOML data source passed to a slot renderer.
+ *  The TOML source determines which fields are present; known fields
+ *  are documented here for discoverability. */
+export interface SlotItem {
+  type?: string;
+  tags?: string[];
+  icon?: string;
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  image?: string;
+  links?: { label: string; href: string }[];
+  [key: string]: unknown;
+}
+
+/** Data bag passed to every slot renderer. Each renderer destructures
+ *  the fields it needs: items, types, groups, etc. */
+export interface CollectionSlotData {
+  items?: SlotItem[];
+  types?: { key: string; label: string; icon?: string }[];
+  groups?: { id: string; [key: string]: unknown }[];
+  [key: string]: unknown;
+}
 
 // ---------------------------------------------------------------------------
 // Dynamic module matching
@@ -44,7 +76,7 @@ function parseFilter(filter: string): Array<{ key: string; value: string }> {
     });
 }
 
-function applyFilter(items: any[], filter: string): any[] {
+function applyFilter(items: SlotItem[], filter: string): SlotItem[] {
   if (!filter) return items;
   const conditions = parseFilter(filter);
   return items.filter((item) =>
@@ -60,13 +92,18 @@ function applyFilter(items: any[], filter: string): any[] {
 
 /** Shared pipeline for collection-type slots:
  *  resolves filter, builds typeMap, maps icon fallbacks, and applies filter.
- *  Used by "collection", "card-grid", and "scroll-gallery" renderers. */
-function resolveCollectionData(el: HTMLElement, items: any[], types?: any[]) {
+ *  Used by "collection", "card-grid", and "scroll-gallery" renderers.
+ *  Returns items with icon defaults applied. */
+function resolveCollectionData(
+  el: HTMLElement,
+  items: SlotItem[],
+  types?: { key: string; label: string; icon?: string }[],
+) {
   const filter = el.dataset.filter ?? '';
   const typeMap = new Map((types ?? []).map((t) => [t.key, t]));
-  const mappedItems = items.map((item) => ({
+  const mappedItems: SlotItem[] = items.map((item) => ({
     ...item,
-    icon: item.icon ?? (typeMap.get(item.type)?.icon as any) ?? 'paper',
+    icon: item.icon ?? typeMap.get(item.type ?? '')?.icon ?? 'paper',
   }));
   return { filteredItems: applyFilter(mappedItems, filter) };
 }
@@ -108,7 +145,7 @@ const REGISTRY: Record<string, SlotRenderer> = {
 
     return (
       <AcademicCollection
-        items={filteredItems}
+        items={filteredItems as CollectionItem[]}
         types={types}
         layout={layout}
         filterable={filterable}
@@ -125,7 +162,7 @@ const REGISTRY: Record<string, SlotRenderer> = {
     const { filteredItems } = resolveCollectionData(el, items, types);
     const columns = (parseInt(el.dataset.columns ?? '2', 10) || 2) as 2 | 3;
 
-    return <CardGrid items={filteredItems} columns={columns} />;
+    return <CardGrid items={filteredItems as AcademicCardProps[]} columns={columns} />;
   },
 
   'scroll-gallery': (el, sourceData) => {
@@ -137,7 +174,7 @@ const REGISTRY: Record<string, SlotRenderer> = {
 
     return (
       <FilteredGallery
-        items={filteredItems}
+        items={filteredItems as ContentItem[]}
         types={types}
         columns={columns}
         rows={rows}

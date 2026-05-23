@@ -29,7 +29,7 @@ fix (GREEN), commit it.
   - **GREEN**: add an early `if (!filterable) return <>{children(items, 'all-')}</>;`
     guard at the top of the component body.
 
-- [ ] **4. Decouple `FilterControls` from `AcademicCardProps`**
+- [x] **4. Decouple `FilterControls` from `AcademicCardProps`**
   - **RED**: write a test rendering `FilterControls` configured with an explicit
     `TypeDef` that uses a `string` icon — it should render without importing
     `AcademicCardProps`.
@@ -37,7 +37,7 @@ fix (GREEN), commit it.
     `FilterControls.tsx:TypeDef.icon`; also apply the same change to
     `src/content/items.ts:TypeDef.icon`.
 
-- [ ] **5. Remove empty snap-start placeholder from `PaginatedScroller`**
+- [x] **5. Remove empty snap-start placeholder from `PaginatedScroller`**
   - **RED**: write a test rendering `PaginatedScroller` with an empty `items` array that
     asserts zero children are rendered inside the scroll container (i.e. no empty
     placeholder divs).
