@@ -84,6 +84,20 @@ type SlotRenderer = (
   rawData?: any,
 ) => React.ReactNode;
 
+/** Looks up a renderer by component type. Logs an error and returns null
+ *  for unrecognized types — no silent fallback. */
+export function getRenderer(type: string): SlotRenderer | null {
+  const renderer = REGISTRY[type];
+  if (!renderer) {
+    console.error(
+      `[PageShell] Unknown component type "${type}". ` +
+        `Available types: ${Object.keys(REGISTRY).join(', ')}`,
+    );
+    return null;
+  }
+  return renderer;
+}
+
 const REGISTRY: Record<string, SlotRenderer> = {
   collection: (el, items, types) => {
     const { filteredItems } = resolveCollectionData(el, items, types);
@@ -246,8 +260,7 @@ const PageShell = ({ html }: PageShellProps) => {
       const source = el.dataset.source;
       const sourceData = source ? data[source] || {} : {};
 
-      // Default to "collection" if the specified type isn't card-grid or scroll-gallery
-      const renderer = REGISTRY[type] || REGISTRY['collection'];
+      const renderer = getRenderer(type);
       if (!renderer) return;
 
       let root = (el as any)._reactRoot;
