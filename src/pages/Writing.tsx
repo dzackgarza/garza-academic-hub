@@ -16,39 +16,41 @@ const Writing = () => {
 
   return (
     <AcademicLayout showSidebar={false}>
-      <h1 className="text-3xl font-semibold mb-2">Writing</h1>
-      <p className="text-muted-foreground mb-4">
-        Lecture notes, course notes, talk transcripts, and expository writing. Filter by type or tag.
-      </p>
+      <div className="academic-page-content">
+        <h1 className="text-3xl font-semibold mb-2">Writing</h1>
+        <p className="text-muted-foreground mb-4">
+          Lecture notes, course notes, talk transcripts, and expository writing. Filter by type or tag.
+        </p>
 
-      <div className="callout mb-6">
-        For informal, in-progress writing, see my{" "}
-        <a href="http://notes.dzackgarza.com/" target="_blank" rel="noopener noreferrer">notes wiki</a>{" "}
-        and my{" "}
-        <a href="https://notes.dzackgarza.com/Notes/Quick_Notes.html" target="_blank" rel="noopener noreferrer">math journal</a>.
-      </div>
+        <div className="callout mb-6">
+          For informal, in-progress writing, see my{" "}
+          <a href="http://notes.dzackgarza.com/" target="_blank" rel="noopener noreferrer">notes wiki</a>{" "}
+          and my{" "}
+          <a href="https://notes.dzackgarza.com/Notes/Quick_Notes.html" target="_blank" rel="noopener noreferrer">math journal</a>.
+        </div>
 
-      <SectionHeading id="archive">Archive</SectionHeading>
-      <p className="text-sm text-muted-foreground mb-3">
-        {archive.length} items across courses, seminars, and talks.
-      </p>
-      <FilteredGallery items={archive} columns={3} rows={3} />
+        <SectionHeading id="archive">Archive</SectionHeading>
+        <p className="text-sm text-muted-foreground mb-3">
+          {archive.length} items across courses, seminars, and talks.
+        </p>
+        <FilteredGallery items={archive} columns={3} rows={3} />
 
-      {expository.length > 0 && (
-        <>
-          <SectionHeading id="expository">Expository</SectionHeading>
-          <p className="text-sm text-muted-foreground mb-3">
-            Short pieces written for workshops, study groups, and curiosity.
-          </p>
-          <FilteredGallery items={expository} columns={3} rows={2} />
-        </>
-      )}
+        {expository.length > 0 && (
+          <>
+            <SectionHeading id="expository">Expository</SectionHeading>
+            <p className="text-sm text-muted-foreground mb-3">
+              Short pieces written for workshops, study groups, and curiosity.
+            </p>
+            <FilteredGallery items={expository} columns={3} rows={2} />
+          </>
+        )}
 
-      <SectionHeading id="external">External Notes &amp; Tools</SectionHeading>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {linkGroups.map((group) => (
-          <LinkGroup key={group.id} group={group} />
-        ))}
+        <SectionHeading id="external">External Notes &amp; Tools</SectionHeading>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {linkGroups.map((group) => (
+            <LinkGroup key={group.id} group={group} />
+          ))}
+        </div>
       </div>
     </AcademicLayout>
   );

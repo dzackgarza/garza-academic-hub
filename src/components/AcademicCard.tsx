@@ -19,7 +19,7 @@ const iconMap = {
 const AcademicCard = ({ title, subtitle, description, tags, links, icon = "paper", image }: AcademicCardProps) => {
   const Icon = iconMap[icon];
   return (
-    <div className="group rounded-lg border bg-card overflow-hidden transition-shadow hover:shadow-md flex flex-col h-full">
+    <div className="group rounded-lg border bg-card overflow-hidden transition-shadow hover:shadow-md flex flex-col h-full academic-card">
       {image && (
         <div className="aspect-[16/9] w-full overflow-hidden bg-muted">
           <img

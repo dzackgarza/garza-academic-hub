@@ -4,6 +4,8 @@ import CardGrid from "@/components/CardGrid";
 import FilteredGallery from "@/components/FilteredGallery";
 import AcademicCollection from "@/components/AcademicCollection";
 import { parseToml } from "@/content/_toml";
+import { cn } from "@/lib/utils";
+
 
 // ---------------------------------------------------------------------------
 // Dynamic module matching
@@ -141,6 +143,7 @@ interface PageShellProps {
 
 const PageShell = ({ html }: PageShellProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const rootsRef = useRef<any[]>([]);
   const [data, setData] = useState<Record<string, { items: any[]; types?: any[] }>>({});
   const [loading, setLoading] = useState(true);
 
@@ -187,7 +190,24 @@ const PageShell = ({ html }: PageShellProps) => {
     };
   }, [html]);
 
-  // 2. Mount roots once loading finishes
+  // 2. Safe cleanup of dynamic roots when PageShell itself unmounts
+  useEffect(() => {
+    return () => {
+      const activeRoots = rootsRef.current;
+      rootsRef.current = [];
+      setTimeout(() => {
+        activeRoots.forEach((root) => {
+          try {
+            root.unmount();
+          } catch (err) {
+            // Already unmounted
+          }
+        });
+      }, 0);
+    };
+  }, []);
+
+  // 3. Mount/update roots once loading finishes
   useEffect(() => {
     if (loading) return;
 
@@ -198,23 +218,23 @@ const PageShell = ({ html }: PageShellProps) => {
       container.querySelectorAll<HTMLElement>("[data-component]")
     );
 
-    const roots = slots.flatMap((el) => {
+    slots.forEach((el) => {
       const type = el.dataset.component!;
       const source = el.dataset.source || "databases/items.toml";
       const sourceData = data[source] || { items: [] };
 
       // Default to "collection" if the specified type isn't card-grid or scroll-gallery
       const renderer = REGISTRY[type] || REGISTRY["collection"];
-      if (!renderer) return [];
+      if (!renderer) return;
 
-      const root = createRoot(el);
+      let root = (el as any)._reactRoot;
+      if (!root) {
+        root = createRoot(el);
+        (el as any)._reactRoot = root;
+        rootsRef.current.push(root);
+      }
       root.render(renderer(el, sourceData.items, sourceData.types));
-      return [root];
     });
-
-    return () => {
-      roots.forEach((root) => root.unmount());
-    };
   }, [loading, html, data]);
 
   return (
