@@ -1,5 +1,5 @@
-import { parse } from "smol-toml";
 import tomlSource from "./items.toml?raw";
+import { parseToml } from "./_toml";
 import type { AcademicCardProps } from "@/components/AcademicCard";
 
 export type ItemType = string;
@@ -19,7 +19,7 @@ interface ParsedToml {
   items: ContentItem[];
 }
 
-const parsed = parse(tomlSource) as unknown as ParsedToml;
+const parsed = parseToml<ParsedToml>(tomlSource);
 
 export const types: TypeDef[] = parsed.types ?? [];
 
