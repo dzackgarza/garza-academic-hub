@@ -54,8 +54,17 @@ for (const file of files) {
   // Compile markdown body using pandoc via stdin
   console.log(`- Compiling ${slug} using pandoc...`);
   
+  const templatePath = path.join(__dirname, 'post-template.html');
   const pandocProcess = Bun.spawnSync({
-    cmd: ['pandoc', '--from=markdown', '--to=html', '--mathjax'],
+    cmd: [
+      'pandoc',
+      '--from=markdown',
+      '--to=html',
+      '--mathjax',
+      '--toc',
+      '--toc-depth=3',
+      `--template=${templatePath}`
+    ],
     stdin: Buffer.from(markdownBody, 'utf8')
   });
 
