@@ -1,3 +1,5 @@
+# Writing
+
 Lecture notes, course notes, talk transcripts, and expository writing. Filter by type or tag.
 
 ::: callout
@@ -16,5 +18,16 @@ For informal, in-progress writing, see my [notes wiki](http://notes.dzackgarza.c
 
 ## External Notes & Tools
 
-::: {.component type="link-groups"}
+::: {.grid .grid-cols-1 .md:grid-cols-2 .gap-4}
+::: {.component type="link-group" source="databases/links.toml" group-id="notes-by-others"}
+:::
+
+::: {.component type="link-group" source="databases/links.toml" group-id="tools"}
+:::
+
+::: {.component type="link-group" source="databases/links.toml" group-id="configs"}
+:::
+
+::: {.component type="link-group" source="databases/links.toml" group-id="resources"}
+:::
 :::

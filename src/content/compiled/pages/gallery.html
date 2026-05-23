@@ -1,5 +1,12 @@
 <div class="academic-page-content prose dark:prose-invert max-w-none">
+  <h1 id="gallery">Gallery</h1>
   <p>Diagrams and images drawn or generated for notes, papers, and
   talks. Click any image to open the full-resolution version.</p>
-  <div data-component="image-gallery"></div>
+  <h2 id="hand-drawn">Hand-Drawn</h2>
+  <p>Sketches used in lecture notes and seminar talks.</p>
+  <div data-component="gallery-grid" data-source="databases/galleries.toml" data-gallery-id="hand-drawn"></div>
+  <h2 id="digital">Digital</h2>
+  <p>Computer-generated diagrams and figures (Sage, TikZ, and
+  friends).</p>
+  <div data-component="gallery-grid" data-source="databases/galleries.toml" data-gallery-id="digital"></div>
 </div>

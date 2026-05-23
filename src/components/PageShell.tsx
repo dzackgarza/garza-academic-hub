@@ -4,8 +4,8 @@ import CardGrid from "@/components/CardGrid";
 import FilteredGallery from "@/components/FilteredGallery";
 import AcademicCollection from "@/components/AcademicCollection";
 import BlogListing from "@/components/islands/BlogListing";
-import ImageGallerySection from "@/components/islands/ImageGallerySection";
-import LinkGroupSection from "@/components/islands/LinkGroupSection";
+import ImageGallery from "@/components/ImageGallery";
+import LinkGroup from "@/components/LinkGroup";
 import { parseToml } from "@/content/_toml";
 import { cn } from "@/lib/utils";
 
@@ -64,7 +64,7 @@ function applyFilter(items: any[], filter: string): any[] {
 // parsed items, and types, then returns a React node.
 // ---------------------------------------------------------------------------
 
-type SlotRenderer = (el: HTMLElement, items: any[], types?: any[]) => React.ReactNode;
+type SlotRenderer = (el: HTMLElement, items: any[], types?: any[], rawData?: any) => React.ReactNode;
 
 const REGISTRY: Record<string, SlotRenderer> = {
   "collection": (el, items, types) => {
@@ -135,8 +135,23 @@ const REGISTRY: Record<string, SlotRenderer> = {
 
   // Self-contained islands — data-source not required, items arg ignored
   "blog-listing": () => <BlogListing />,
-  "image-gallery": () => <ImageGallerySection />,
-  "link-groups": () => <LinkGroupSection />,
+
+  // Generic content elements to decouple layout structure from React components
+  "gallery-grid": (el, items, types, rawData) => {
+    const galleryId = el.dataset.galleryId;
+    const galleriesList = rawData?.items || [];
+    const gallery = galleriesList.find((g: any) => g.id === galleryId);
+    if (!gallery) return null;
+    return <ImageGallery gallery={gallery} />;
+  },
+
+  "link-group": (el, items, types, rawData) => {
+    const groupId = el.dataset.groupId;
+    const groupsList = rawData?.groups || [];
+    const group = groupsList.find((g: any) => g.id === groupId);
+    if (!group) return null;
+    return <LinkGroup group={group} />;
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -152,7 +167,7 @@ interface PageShellProps {
 const PageShell = ({ html }: PageShellProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rootsRef = useRef<any[]>([]);
-  const [data, setData] = useState<Record<string, { items: any[]; types?: any[] }>>({});
+  const [data, setData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
 
   // 1. Identify and fetch all required TOML sources (only for slots with explicit data-source)
@@ -176,20 +191,20 @@ const PageShell = ({ html }: PageShellProps) => {
         const modKey = findModuleKey(source);
         if (!modKey) {
           console.warn(`[PageShell] TOML source not found: "${source}"`);
-          return { source, data: { items: [] } };
+          return { source, data: {} };
         }
         try {
           const rawText = await tomlModules[modKey]();
-          const parsed = parseToml<{ items: any[]; types?: any[] }>(rawText);
+          const parsed = parseToml<any>(rawText);
           return { source, data: parsed };
         } catch (err) {
           console.error(`[PageShell] Failed to load/parse TOML source "${source}":`, err);
-          return { source, data: { items: [] } };
+          return { source, data: {} };
         }
       })
     ).then((results) => {
       if (!isMounted) return;
-      const dataMap: Record<string, { items: any[]; types?: any[] }> = {};
+      const dataMap: Record<string, any> = {};
       results.forEach(({ source, data }) => {
         dataMap[source] = data;
       });
@@ -233,7 +248,7 @@ const PageShell = ({ html }: PageShellProps) => {
     slots.forEach((el) => {
       const type = el.dataset.component!;
       const source = el.dataset.source;
-      const sourceData = source ? (data[source] || { items: [] }) : { items: [] };
+      const sourceData = source ? (data[source] || {}) : {};
 
       // Default to "collection" if the specified type isn't card-grid or scroll-gallery
       const renderer = REGISTRY[type] || REGISTRY["collection"];
@@ -245,7 +260,7 @@ const PageShell = ({ html }: PageShellProps) => {
         (el as any)._reactRoot = root;
         rootsRef.current.push(root);
       }
-      root.render(renderer(el, sourceData.items, sourceData.types));
+      root.render(renderer(el, sourceData.items || [], sourceData.types || [], sourceData));
     });
   }, [loading, html, data]);
 
