@@ -35,15 +35,14 @@ commits ahead of `origin/main`, ~7,700 lines added).
 - [x] **Remove stale compiled output directory** — Fixed in `5660d70`. Deleted
   `src/content/blog/compiled/` (15 files, 1172 lines removed).
 
-- [ ] **Fix compile.js runtime inconsistency** — `scripts/compile.js` uses
-  `require('fs')`, `require('yaml')` (Node CJS) but also `Bun.spawnSync(...)` (Bun-only
-  API). Running with `node scripts/compile.js` fails at `Bun is not defined`. Either
-  switch to `child_process.spawnSync` for Node-only consistency, or add
-  `#!/usr/bin/env bun` and use `Bun` APIs throughout.
+- [x] **Fix compile.js runtime inconsistency** — Fixed in `73a0a02`. Renamed to
+  `compile.cjs`, replaced `Bun.spawnSync` with `child_process.spawnSync`. Works with
+  both `bun` and `node`.
 
-- [ ] **Decompose src/index.css** — Migrates feature-specific styles (blog post layout,
-  TOC card, academic page content) out of the global CSS entry point into CSS modules
-  co-located with the components that own them.
+- [x] **Decompose src/index.css** — Fixed in `3e6b99b`. Moved blog post layout + TOC
+  styles to `src/styles/blog-post-layout.css` (imported by BlogPost.tsx), academic page
+  content to `src/styles/academic-content.css` (imported by PageShell.tsx).
+  index.css reduced from 227 to 99 lines.
 
 - [ ] **Tidy scratch/ directory** — Move test/verification scripts from `scratch/` into
   `tests/` or a `tools/` directory.
