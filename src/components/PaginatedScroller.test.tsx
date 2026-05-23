@@ -48,6 +48,17 @@ describe('PaginatedScroller', () => {
     expect(grid!.className).not.toContain('grid-cols-${columns}');
   });
 
+  it('renders no placeholder children in the scroll container when items are empty (RED: empty div exists)', () => {
+    render(
+      <PaginatedScroller items={[]} columns={2} rows={2} renderItem={() => <div />} />,
+    );
+
+    const scrollContainer = document.querySelector('.overflow-x-auto');
+    // Before the fix, an empty <div class="w-full flex-none snap-start" />
+    // is rendered as a child. After the fix, the scroll container has 0 children.
+    expect(scrollContainer?.children.length).toBe(0);
+  });
+
   it('renders each item', () => {
     const items = [{ id: 1 }, { id: 2 }];
 
