@@ -56,14 +56,19 @@ export default function KrantzGuide() {
           </p>
           <ul className="list-disc pl-6 space-y-4 font-serif text-muted-foreground italic text-base leading-relaxed">
             <li className="pl-1">
-              <span className="not-italic font-sans text-foreground block font-semibold mb-1">Turn the ideas over in your mind and ask:</span>
-              <ul className="list-circle pl-6 space-y-1 font-sans text-sm not-italic text-foreground">
-                <li>Why is the theorem stated this way?</li>
-                <li>Why is this hypothesis really needed?</li>
-                <li>What happens if we change the conclusion from this to that?</li>
-                <li>What would be a counterexample?</li>
-                <li>Why does the proof go like this?</li>
-              </ul>
+              Why is the theorem stated this way?
+            </li>
+            <li className="pl-1">
+              Why is this hypothesis really needed?
+            </li>
+            <li className="pl-1">
+              What happens if we change the conclusion from this to that?
+            </li>
+            <li className="pl-1">
+              What would be a counterexample?
+            </li>
+            <li className="pl-1">
+              Why does the proof go like this?
             </li>
             <li className="pl-1">
               I will conclude this section by enunciating a very important principle (which will be repeated often in this text) of getting an advanced education. You are no longer learning calculus or another trivial subject where it is sufficient to read the text and do the homework. You are now doing the toughest thing you will ever have done in your life. It is essential that you talk to people-all the time. In this way you can orient yourself, keep to your course, be sure you are doing the right thing, and have a constant reality check. It is also an important part of being a mathematician to be able to communicate - not just technical mathematics but also information about mathematics, about teaching, and about the profession. You are now not simply learning mathematics - you are learning to create it. So my advice is to talk to your fellow students and to the faculty (and to the staff) about everything. Eat lunch with a group, socialize, talk to your office mates. This is your new life.
@@ -76,9 +81,9 @@ export default function KrantzGuide() {
             </li>
             <li className="pl-1">
               Make a point of getting to know some of your classmates (your peers) and also some of the graduate students who are ahead of you in the program. The latter bunch will be full of a lot of gossip and a lot of baloney, but they also have passed the quals and they are familiar with how the program works. They know which classes to take, and the various hoops that a graduate student must jump through. Pick their brains. They can tell you which quals are hard and which are easy. Who writes the quals and who grades them. How quickly you are expected to get through the qualifying exams. They will know who the good instructors are, who gives good courses, and who the good thesis advisors are. This is vital information that you must know and understand.
-              <span className="block mt-2 not-italic font-sans text-xs text-foreground">
-                <strong>(Ask them)</strong> where the graduate students hang out, what is expected of you. Where the coffee pot is. Do the same with the Department Chairperson.
-              </span>
+            </li>
+            <li className="pl-1">
+              (Ask them) where the graduate students hang out, what is expected of you. Where the coffee pot is. Do the same with the Department Chairperson.
             </li>
             <li className="pl-1">
               (If) this is your first day in graduate school, I admonish you to take charge of the situation. Figure out where the math building is, go there, and introduce yourself to the Chairperson’s secretary and the Graduate secretary. If the Graduate Chairperson is around, shake hands and introduce yourself.
