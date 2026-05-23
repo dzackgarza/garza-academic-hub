@@ -1,0 +1,22 @@
+# Navigation items for the top navbar.
+# Order determines display order in the navbar.
+
+[[items]]
+label = "Teaching"
+path = "/teaching"
+
+[[items]]
+label = "Activities"
+path = "/activities"
+
+[[items]]
+label = "Writing"
+path = "/writing"
+
+[[items]]
+label = "Gallery"
+path = "/gallery"
+
+[[items]]
+label = "Blog"
+path = "/blog"

@@ -1,14 +1,7 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-
-const navItems = [
-  { label: "Teaching", path: "/teaching" },
-  { label: "Activities", path: "/activities" },
-  { label: "Writing", path: "/writing" },
-  { label: "Gallery", path: "/gallery" },
-  { label: "Blog", path: "/blog" },
-];
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
+import { navItems } from '@/content/navigation';
 
 const NavBar = () => {
   const location = useLocation();
@@ -17,7 +10,10 @@ const NavBar = () => {
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
-        <Link to="/" className="text-lg font-semibold tracking-tight hover:no-underline">
+        <Link
+          to="/"
+          className="text-lg font-semibold tracking-tight hover:no-underline"
+        >
           D. Zack Garza
         </Link>
         <nav className="hidden md:flex items-center gap-6">
@@ -27,8 +23,8 @@ const NavBar = () => {
               to={item.path}
               className={`text-sm transition-colors hover:no-underline ${
                 location.pathname === item.path
-                  ? "text-foreground font-medium"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? 'text-foreground font-medium'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               {item.label}
