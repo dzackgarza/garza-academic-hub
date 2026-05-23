@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AcademicLayout from "@/components/AcademicLayout";
+import PageShell from "@/components/PageShell";
 
 const Activities = () => {
   const [html, setHtml] = useState("");
@@ -12,7 +13,7 @@ const Activities = () => {
 
   return (
     <AcademicLayout showSidebar={false}>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <PageShell html={html} />
     </AcademicLayout>
   );
 };

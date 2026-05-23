@@ -2,7 +2,7 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 
-const BASE_URL = 'http://localhost:8082';
+const BASE_URL = 'http://localhost:8080';
 const screenshotsDir = path.join(__dirname, '../scratch/screenshots_refactor');
 
 if (!fs.existsSync(screenshotsDir)) {
