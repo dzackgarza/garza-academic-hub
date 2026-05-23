@@ -5,11 +5,12 @@ commits, ~5600 lines added).
 
 ## Critical
 
-- [ ] **Fix broken content watcher** — `vite.config.ts:20` calls
+- [x] **Fix broken content watcher** — `vite.config.ts:20` calls
   `spawnSync("bun", ["scripts/compile.js"])` but the file was renamed to `compile.cjs`
   (commit `73a0a02`). Only `compile.cjs` exists in `scripts/`. The dev server's
   hot-reload for markdown changes silently fails on every edit.
   Fix the filename, update the comment on line 7, and the error message on line 26.
+  *(Fixed in 4a26191 + 6517b1b)*
 
 ## Structural — High Priority
 
@@ -73,26 +74,29 @@ commits, ~5600 lines added).
   polymorphic so each slot type gets the correct data slice without needing `rawData` as
   an escape hatch.
 
-- [ ] **Replace silent fallback for unrecognized component types** — PageShell:250
+- [x] **Replace silent fallback for unrecognized component types** — PageShell:250
   silently defaults unknown `data-component` values to `collection`. A typo like
   `data-component="galllery-grid"` renders wrong content with no signal.
   Replace with a console error in dev mode, or render a visible "Unknown component type"
-  placeholder.
+  placeholder. *(Fixed in 18e437a — extracted `getRenderer()` that console.errors and
+  returns null)*
 
-- [ ] **Add loading and error states to CompiledPage** — Unlike BlogPost (which has
+- [x] **Add loading and error states to CompiledPage** — Unlike BlogPost (which has
   loading spinner, error content, and MathJax typesetting), CompiledPage has no
   `.catch()` on its dynamic `import(...html?raw)` call, no loading indicator, and no
   null-guard on `setHtml` after unmount.
   A failed import renders an empty page.
   Add loading/error states consistent with BlogPost's pattern.
+  *(Implemented + tested in 523b4e5)*
 
 ## Cleanup
 
-- [ ] **Fix hardcoded absolute path in screenshot test** — `tests/screenshots.spec.ts:4`
-  has `SCREENSHOT_DIR` hardcoded to
+- [x] **Fix hardcoded absolute path in screenshot test** — `tests/screenshots.spec.ts:4`
+  had `SCREENSHOT_DIR` hardcoded to
   `/home/dzack/.gemini/antigravity/brain/cee037cd-5ddf-4388-a1b1-084fff45bfd9/scratch`.
-  Derive from `$SCREENSHOT_DIR` env var or use a relative path under `test-results/`.
-  Also fix filename typo: `screenshots` → `screenshots`.
+  Changed to
+  `process.env.SCREENSHOT_DIR || path.resolve(__dirname, '../test-results/screenshots')`.
+  Also added `test-results/` to `.gitignore`.
 
 - [ ] **Externalize nav items from NavBar** — The five navigation items are hardcoded in
   `src/components/NavBar.tsx:5-11`. Per AGENTS.md Rule 5 (Absolute Separation of
