@@ -1,7 +1,39 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { navItems } from '@/content/navigation';
+import { navItems, type NavItem } from '@/content/navigation';
+
+/** Render a single nav link, given its item data and an optional className override.
+ *  Without a className override, the default desktop styling with active-path
+ *  highlighting is used. */
+function NavLink({
+  item,
+  pathname,
+  className,
+  onClick,
+}: {
+  item: NavItem;
+  pathname: string;
+  className?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <Link
+      to={item.path}
+      onClick={onClick}
+      className={
+        className ??
+        `text-sm transition-colors hover:no-underline ${
+          pathname === item.path
+            ? 'text-foreground font-medium'
+            : 'text-muted-foreground hover:text-foreground'
+        }`
+      }
+    >
+      {item.label}
+    </Link>
+  );
+}
 
 const NavBar = () => {
   const location = useLocation();
@@ -18,17 +50,7 @@ const NavBar = () => {
         </Link>
         <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`text-sm transition-colors hover:no-underline ${
-                location.pathname === item.path
-                  ? 'text-foreground font-medium'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              {item.label}
-            </Link>
+            <NavLink key={item.path} item={item} pathname={location.pathname} />
           ))}
         </nav>
         <button className="md:hidden p-1" onClick={() => setOpen(!open)}>
@@ -38,14 +60,13 @@ const NavBar = () => {
       {open && (
         <nav className="md:hidden border-t px-4 py-3 space-y-2 bg-background">
           {navItems.map((item) => (
-            <Link
+            <NavLink
               key={item.path}
-              to={item.path}
+              item={item}
+              pathname={location.pathname}
               onClick={() => setOpen(false)}
               className="block text-sm py-1.5 text-muted-foreground hover:text-foreground hover:no-underline"
-            >
-              {item.label}
-            </Link>
+            />
           ))}
         </nav>
       )}
