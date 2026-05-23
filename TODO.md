@@ -7,15 +7,12 @@ commits ahead of `origin/main`, ~7,700 lines added).
 
 ## Blocker
 
-- [ ] **BlogListing.tsx missing imports** — `src/components/islands/BlogListing.tsx`
-  only imports `{ blogPosts as posts, type Post }` from `@/content/posts` but uses
-  `useSearchParams`, `Link`, `SectionHeading`, `FileText`, `Clock` without importing
-  them. The compiled blog page has `<div data-component="blog-listing">`, so navigating
-  to `/blog` throws `ReferenceError` at runtime.
-  The Vite build succeeds because esbuild doesn't type-check.
-  Add the 5 missing imports: `useSearchParams`/`Link` from `react-router-dom`,
-  `FileText`/`Clock` from `lucide-react`, `SectionHeading` from
-  `@/components/SectionHeading`.
+- [x] **BlogListing.tsx missing imports** — Fixed in `7b90fca`. Added `useState`,
+  `useEffect`, `FileText`, `Clock`, `SectionHeading` imports.
+  Replaced `useSearchParams`/`Link` with direct DOM APIs (`URLSearchParams`,
+  `window.history.pushState`, `<a>` tags) because PageShell renders islands via
+  standalone `createRoot()` calls that don't inherit the parent tree's `BrowserRouter`
+  context.
 
 ## Structural — High Priority
 
