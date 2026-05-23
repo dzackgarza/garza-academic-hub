@@ -1,5 +1,5 @@
-import tomlSource from "@content/databases/galleries.toml?raw";
-import { parseToml } from "./_toml";
+import tomlSource from '@content/databases/galleries.toml?raw';
+import { parseToml } from './_toml';
 
 export interface GalleryImage {
   src: string;
@@ -15,4 +15,4 @@ export interface Gallery {
 
 const parsed = parseToml<{ galleries: Gallery[] }>(tomlSource);
 
-export const galleries: Gallery[] = parsed.items ?? [];
+export const galleries: Gallery[] = parsed.galleries ?? [];
