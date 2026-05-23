@@ -13,7 +13,7 @@ fix (GREEN), commit it.
   - **GREEN**: delete the local `TypeDef` definition from
     `src/components/AcademicCollection.tsx` and import it from `FilterControls` instead.
 
-- [ ] **2. Replace `grid-cols-${columns}` template literal with a literal lookup map**
+- [x] **2. Replace `grid-cols-${columns}` template literal with a literal lookup map**
   - **RED**: write a test that given a rendered `PaginatedScroller` or `CardScroller`,
     the grid container's class list contains exactly the expected Tailwind literal (e.g.
     `grid-cols-2` or `grid-cols-3`) and does NOT contain an unresolved template
