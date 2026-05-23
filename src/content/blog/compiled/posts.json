@@ -32,5 +32,177 @@
     ],
     "legacyUrl": "https://dzackgarza.com/resources/",
     "slug": "undergrad-resources"
+  },
+  {
+    "title": "Intro to Derived Algebraic Geometry 1: The Cotangent Complex and Derived de Rham Cohomology",
+    "date": "April 5, 2020",
+    "readMinutes": 20,
+    "excerpt": "Introductory notes from an MSRI workshop series.",
+    "tags": [
+      "Algebraic Geometry",
+      "Research Notes"
+    ],
+    "categories": [
+      "Mathematics",
+      "Research"
+    ],
+    "legacyUrl": "https://dzackgarza.com/intro-to-derived-algebraic-geometry-1-the-cotangent-complex-and-derived-de-rham-cohomology/",
+    "image": "/assets/images/bigo.png",
+    "slug": "derived-algebraic-geometry-1"
+  },
+  {
+    "title": "Introduction to Infinity Categories",
+    "date": "March 20, 2020",
+    "readMinutes": 12,
+    "excerpt": "Notes on a short introductory video covering foundational aspects of ∞-categories.",
+    "tags": [
+      "Category Theory"
+    ],
+    "categories": [
+      "Mathematics"
+    ],
+    "legacyUrl": "https://dzackgarza.com/introductory%20notes/mathematics%20research/introduction-to-infinity-categories/",
+    "slug": "introduction-to-infinity-categories"
+  },
+  {
+    "title": "How to do well in (my) Precalculus class",
+    "date": "February 15, 2020",
+    "readMinutes": 9,
+    "excerpt": "General student tips for getting the most out of precalc.",
+    "tags": [
+      "Teaching",
+      "Advice"
+    ],
+    "categories": [
+      "Teaching",
+      "Advice"
+    ],
+    "legacyUrl": "https://dzackgarza.com/advice%20and%20resources/precalculus-tips-and-tricks/",
+    "slug": "precalculus-tips-and-tricks"
+  },
+  {
+    "title": "Some topics to learn for graduate school in Mathematics",
+    "date": "January 10, 2020",
+    "readMinutes": 5,
+    "excerpt": "A short list of topics to learn before starting a math PhD.",
+    "tags": [
+      "Advice"
+    ],
+    "categories": [
+      "Advice"
+    ],
+    "slug": "topics-for-grad-school"
+  },
+  {
+    "title": "Some notes on Benson Farb's talk on surface bundles, mapping class groups, moduli spaces, and cohomology",
+    "date": "January 5, 2020",
+    "readMinutes": 15,
+    "excerpt": "Partial transcription and accompanying notes from Farb's lecture.",
+    "tags": [
+      "Topology",
+      "Research Notes"
+    ],
+    "categories": [
+      "Mathematics",
+      "Research"
+    ],
+    "slug": "benson-farb-surface-bundles"
+  },
+  {
+    "title": "Advice for Undergraduates in Mathematics",
+    "date": "January 3, 2020",
+    "readMinutes": 8,
+    "excerpt": "Pointers to other pages with great advice for undergraduate math majors.",
+    "tags": [
+      "Advice"
+    ],
+    "categories": [
+      "Advice"
+    ],
+    "slug": "undergrad-advice"
+  },
+  {
+    "title": "Recommendations: Graduate Level Texts and Notes",
+    "date": "January 2, 2020",
+    "readMinutes": 5,
+    "excerpt": "Texts and lecture notes I've found useful in graduate school.",
+    "tags": [
+      "Resources"
+    ],
+    "categories": [
+      "Resources"
+    ],
+    "slug": "grad-recommendations"
+  },
+  {
+    "title": "LaTeX Handwriting Practice Worksheets",
+    "date": "January 1, 2020",
+    "readMinutes": 1,
+    "excerpt": "Ever had trouble writing ξ? Practice worksheets for forming mathematical symbols by hand.",
+    "tags": [
+      "LaTeX",
+      "Resources"
+    ],
+    "categories": [
+      "Resources"
+    ],
+    "image": "/assets/images/LatexHandwriting.png",
+    "slug": "latex-handwriting-worksheets"
+  },
+  {
+    "title": "Moments and Center of Mass",
+    "date": "November 15, 2019",
+    "readMinutes": 1,
+    "excerpt": "A short writeup from UGA's teaching training course covering a multivariable calculus topic.",
+    "tags": [
+      "Teaching"
+    ],
+    "categories": [
+      "Teaching"
+    ],
+    "image": "/assets/images/moments.png",
+    "slug": "moments-and-center-of-mass"
+  },
+  {
+    "title": "Research Workflow",
+    "date": "October 12, 2019",
+    "readMinutes": 12,
+    "excerpt": "Notes from two quarters of undergraduate research — tools and habits I'd carry forward.",
+    "tags": [
+      "Workflow"
+    ],
+    "categories": [
+      "Workflow"
+    ],
+    "image": "/assets/images/1549961056228.png",
+    "slug": "research-workflow"
+  },
+  {
+    "title": "A Brief Introduction to Category Theory",
+    "date": "July 24, 2017",
+    "readMinutes": 28,
+    "excerpt": "A short introduction to category theory with concrete examples.",
+    "tags": [
+      "Category Theory"
+    ],
+    "categories": [
+      "Mathematics"
+    ],
+    "image": "/assets/images/category_theory.png",
+    "slug": "brief-intro-to-category-theory"
+  },
+  {
+    "title": "Setting Up a Haskell Dev Environment",
+    "date": "May 10, 2015",
+    "readMinutes": 7,
+    "excerpt": "Notes on packages and tools for getting started with Haskell.",
+    "tags": [
+      "Tools"
+    ],
+    "categories": [
+      "Tools"
+    ],
+    "image": "/assets/images/haskell.png",
+    "slug": "haskell-dev-environment"
   }
 ]
