@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "predev": "bun scripts/compile-posts.js",
     "build": "vite build",
+    "prebuild": "bun scripts/compile-posts.js",
     "build:dev": "vite build --mode development",
+    "prebuild:dev": "bun scripts/compile-posts.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",

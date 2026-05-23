@@ -1,17 +1,51 @@
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import AcademicLayout from "@/components/AcademicLayout";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Clock, Calendar, Tag, BookOpen, ChevronRight } from "lucide-react";
 import { blogPosts } from "./Blog";
-import UndergradResources from "@/content/blog/undergrad-resources";
-import KrantzGuide from "@/content/blog/krantz-guide";
 
-
+declare global {
+  interface Window {
+    MathJax?: any;
+  }
+}
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   
   // Find current post
   const post = blogPosts.find((p) => p.slug === slug);
+
+  const [htmlContent, setHtmlContent] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!post) return;
+    
+    setIsLoading(true);
+    // Vite dynamic import of raw HTML fragment
+    import(`../content/blog/compiled/${slug}.html?raw`)
+      .then((mod) => {
+        setHtmlContent(mod.default);
+        setIsLoading(false);
+        
+        // Trigger MathJax typesetting if available on window
+        setTimeout(() => {
+          if (window.MathJax && window.MathJax.Hub) {
+            try {
+              window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub]);
+            } catch (e) {
+              console.error("MathJax queuing failed:", e);
+            }
+          }
+        }, 100);
+      })
+      .catch((err) => {
+        console.error("Failed to load post content:", err);
+        setHtmlContent("<p>Failed to load post content.</p>");
+        setIsLoading(false);
+      });
+  }, [slug, post]);
 
   if (!post) {
     return (
@@ -60,7 +94,7 @@ const BlogPost = () => {
 
   const relatedPosts = getRelatedPosts();
   const isResources = post.slug === "undergrad-resources";
-  const isKrantz = post.slug === "krantz-mathematicians-survival-guide";
+  const isStub = post.slug !== "krantz-mathematicians-survival-guide" && post.slug !== "undergrad-resources";
 
   // Table of Contents navigation items
   const tocItems = [
@@ -156,13 +190,12 @@ const BlogPost = () => {
         {/* Main Content Area */}
         <main className={`${isResources ? "lg:col-span-9" : "lg:col-span-12"} space-y-12`}>
           <article className={`prose dark:prose-invert ${isResources ? "max-w-none" : "max-w-3xl mx-auto w-full"}`}>
-            {isResources ? (
-              <UndergradResources />
-            ) : isKrantz ? (
-              <div className="not-prose">
-                <KrantzGuide />
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-sm text-muted-foreground">Loading post content...</p>
               </div>
-            ) : (
+            ) : isStub ? (
               <div className="rounded-lg border bg-accent/25 p-6 border-dashed text-center max-w-xl mx-auto my-12 space-y-4 shadow-sm">
                 <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                   <BookOpen className="w-6 h-6" />
@@ -184,6 +217,11 @@ const BlogPost = () => {
                   </a>
                 </div>
               </div>
+            ) : (
+              <div 
+                dangerouslySetInnerHTML={{ __html: htmlContent }} 
+                className={post.slug === "krantz-mathematicians-survival-guide" ? "not-prose" : ""}
+              />
             )}
           </article>
 
