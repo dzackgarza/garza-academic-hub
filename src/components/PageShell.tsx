@@ -8,6 +8,7 @@ import ImageGallery from '@/components/ImageGallery';
 import LinkGroup from '@/components/LinkGroup';
 import { parseToml } from '@/content/_toml';
 import { cn } from '@/lib/utils';
+import '@/styles/academic-content.css';
 
 // ---------------------------------------------------------------------------
 // Dynamic module matching

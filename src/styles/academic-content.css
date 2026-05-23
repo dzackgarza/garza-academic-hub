@@ -1,0 +1,45 @@
+/* Academic Page Content — styles for Pandoc-compiled static pages (teaching, activities, home, etc.) */
+.academic-page-content h1 {
+  @apply text-3xl font-semibold mb-2 mt-0;
+}
+.academic-page-content h2 {
+  @apply text-xl font-semibold mt-8 mb-3 pb-2 border-b border-border;
+}
+.academic-page-content h3 {
+  @apply text-base font-semibold mt-4 mb-1;
+}
+.academic-page-content h4 {
+  @apply text-sm font-semibold uppercase tracking-wide text-muted-foreground mt-3 mb-1;
+}
+.academic-page-content > p,
+.academic-page-content > ul,
+.academic-page-content > ol {
+  @apply text-sm leading-relaxed text-foreground;
+}
+.academic-page-content ul {
+  @apply list-none p-0 m-0 space-y-2;
+}
+.academic-page-content ul li {
+  @apply border-l-2 border-border pl-4 py-1.5 text-sm;
+}
+.academic-page-content ul li > ul {
+  @apply mt-1 space-y-1;
+}
+.academic-page-content ul li > ul li {
+  @apply border-l-0 pl-0 py-0.5 text-xs text-muted-foreground;
+}
+.academic-page-content a {
+  @apply text-primary hover:text-link-hover underline;
+}
+.academic-page-content strong {
+  @apply font-semibold;
+}
+.academic-page-content em {
+  @apply text-muted-foreground not-italic;
+}
+.academic-page-content .callout,
+.academic-page-content div.callout {
+  background: hsl(var(--callout-bg));
+  border-left: 3px solid hsl(var(--callout-border));
+  @apply py-3 px-4 rounded-r-sm text-sm my-4;
+}

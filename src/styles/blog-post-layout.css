@@ -1,0 +1,53 @@
+/* Blog Post Grid & Sidebar Layout */
+.post-layout-grid {
+  display: block;
+}
+
+.post-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  /* Only apply 12-column grid layout if a sidebar is actually present */
+  .post-layout-grid:has(.post-sidebar) {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .post-layout-grid:has(.post-sidebar) .post-content {
+    grid-column: span 9 / span 9;
+  }
+
+  .post-layout-grid:has(.post-sidebar) .post-sidebar {
+    display: block;
+    grid-column: span 3 / span 3;
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+}
+
+/* Table of Contents Styling */
+.toc-card {
+  @apply rounded-xl border bg-card text-card-foreground p-5 shadow-sm space-y-4;
+}
+
+.toc-title {
+  @apply text-xs font-bold uppercase tracking-wider text-muted-foreground m-0 p-0;
+}
+
+.toc-card nav[role='doc-toc'] > ul {
+  @apply space-y-1 list-none p-0 m-0;
+}
+
+.toc-card nav[role='doc-toc'] ul li {
+  @apply p-0 m-0;
+}
+
+.toc-card nav[role='doc-toc'] ul li a {
+  @apply block text-xs text-muted-foreground hover:text-primary transition-colors py-1 pl-2 border-l border-transparent hover:border-primary font-medium no-underline hover:no-underline;
+}
