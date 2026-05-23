@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const YAML = require('yaml');
 
-const postsDir = '/home/dzack/gitclones/garza-academic-hub/src/content/blog/posts';
-const compiledDir = '/home/dzack/gitclones/garza-academic-hub/src/content/blog/compiled';
+const postsDir = path.join(__dirname, '../src/content/blog/posts');
+const compiledDir = path.join(__dirname, '../src/content/blog/compiled');
 
 // Ensure the compiled directory exists
 if (!fs.existsSync(compiledDir)) {
