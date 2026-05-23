@@ -5,6 +5,12 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 // Props
 // ---------------------------------------------------------------------------
 
+// Lookup map with literal class strings so Tailwind JIT can scan them at build time.
+const GRID_COLS: Record<number, string> = {
+  2: 'grid-cols-2',
+  3: 'grid-cols-3',
+};
+
 interface PaginatedScrollerProps<T> {
   /** All items to paginate into pages of columns × rows. */
   items: T[];
@@ -77,7 +83,7 @@ function PaginatedScroller<T>({
     el.scrollTo({ left: index * el.clientWidth, behavior: 'smooth' });
   };
 
-  const defaultGridClass = `grid grid-cols-${columns} gap-4`;
+  const defaultGridClass = `grid ${GRID_COLS[columns] ?? 'grid-cols-3'} gap-4`;
   const wrapperClass = pageClass
     ? `w-full flex-none snap-start ${pageClass}`
     : 'w-full flex-none snap-start';
