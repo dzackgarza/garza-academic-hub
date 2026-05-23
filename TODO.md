@@ -51,14 +51,14 @@ fix (GREEN), commit it.
   - **GREEN**: add optional `columns` and `rows` props to `ImageGalleryProps`, pass them
     through to `PaginatedScroller`, with current values as defaults.
 
-- [ ] **7. Type `resolveCollectionData` and REGISTRY slots with actual data shapes**
+- [x] **7. Type `resolveCollectionData` and REGISTRY slots with actual data shapes**
   - **RED**: write a type-level test (e.g. `expectTypeOf`) that a collection slot data
     object is rejected if it has unexpected fields beyond the known shape.
   - **GREEN**: introduce `CollectionSlotData` and `SlotItem` interfaces in
     `src/components/PageShell.tsx` and replace `any`/`Record<string, any>` usage
     accordingly.
 
-- [ ] **8. Extract shared nav-link rendering in `NavBar`**
+- [x] **8. Extract shared nav-link rendering in `NavBar`**
   - **RED**: write a test asserting that adding a nav item to the data source
     automatically renders it in both desktop and mobile nav menus.
   - **GREEN**: extract a shared `renderNavLinks` helper (or inline map) in
