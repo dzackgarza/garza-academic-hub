@@ -147,7 +147,7 @@ const BlogPost = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Main Content Area */}
         <main className={`${isResources ? "lg:col-span-9" : "lg:col-span-12"} space-y-12`}>
-          <article className="prose dark:prose-invert max-w-none">
+          <article className={`prose dark:prose-invert ${isResources ? "max-w-none" : "max-w-3xl mx-auto w-full"}`}>
             {isResources ? (
               <UndergradResources />
             ) : isKrantz ? (
