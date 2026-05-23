@@ -1,13 +1,9 @@
-import FilterControls from '@/components/FilterControls';
+import FilterControls, { type TypeDef } from '@/components/FilterControls';
 import CardScroller from '@/components/CardScroller';
 import CardGrid from '@/components/CardGrid';
 import type { AcademicCardProps } from '@/components/AcademicCard';
 
-export interface TypeDef {
-  key: string;
-  label: string;
-  icon?: AcademicCardProps['icon'];
-}
+export type { TypeDef };
 
 export interface CollectionItem extends AcademicCardProps {
   type: string;
