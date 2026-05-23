@@ -1,0 +1,35 @@
+name = "D. Zack Garza"
+pronouns = "He/Him/His"
+affiliation = "Mathematics, University of Georgia"
+office = "Office: 438 Boyd"
+email = "zack@uga.edu"
+avatar_text = "DZG"
+
+[[links]]
+icon = "map-pin"
+label = "Athens, GA"
+
+[[links]]
+icon = "graduation-cap"
+label = "Google Scholar"
+href = "https://scholar.google.com"
+
+[[links]]
+icon = "building"
+label = "UGA Profile"
+href = "https://www.math.uga.edu"
+
+[[links]]
+icon = "mail"
+label = "Email"
+href = "mailto:zack@uga.edu"
+
+[[links]]
+icon = "github"
+label = "GitHub"
+href = "https://github.com/dzackgarza"
+
+[[links]]
+icon = "youtube"
+label = "YouTube"
+href = "https://youtube.com"
