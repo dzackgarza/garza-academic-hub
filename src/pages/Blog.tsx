@@ -14,6 +14,7 @@ interface Post {
   tags?: string[];
   categories?: string[];
   legacyUrl?: string;
+  image?: string;
 }
 
 const posts: Post[] = [
@@ -50,6 +51,7 @@ const posts: Post[] = [
     tags: ["Algebraic Geometry", "Research Notes"],
     categories: ["Mathematics", "Research"],
     legacyUrl: "https://dzackgarza.com/intro-to-derived-algebraic-geometry-1-the-cotangent-complex-and-derived-de-rham-cohomology/",
+    image: "/assets/images/bigo.png",
   },
   {
     slug: "introduction-to-infinity-categories",
@@ -122,6 +124,7 @@ const posts: Post[] = [
     excerpt: "Ever had trouble writing ξ? Practice worksheets for forming mathematical symbols by hand.",
     tags: ["LaTeX", "Resources"],
     categories: ["Resources"],
+    image: "/assets/images/LatexHandwriting.png",
   },
   {
     slug: "moments-and-center-of-mass",
@@ -132,6 +135,7 @@ const posts: Post[] = [
     excerpt: "A short writeup from UGA's teaching training course covering a multivariable calculus topic.",
     tags: ["Teaching"],
     categories: ["Teaching"],
+    image: "/assets/images/moments.png",
   },
   {
     slug: "research-workflow",
@@ -142,6 +146,7 @@ const posts: Post[] = [
     excerpt: "Notes from two quarters of undergraduate research — tools and habits I'd carry forward.",
     tags: ["Workflow"],
     categories: ["Workflow"],
+    image: "/assets/images/1549961056228.png",
   },
   {
     slug: "brief-intro-to-category-theory",
@@ -152,6 +157,7 @@ const posts: Post[] = [
     excerpt: "A short introduction to category theory with concrete examples.",
     tags: ["Category Theory"],
     categories: ["Mathematics"],
+    image: "/assets/images/category_theory.png",
   },
   {
     slug: "haskell-dev-environment",
@@ -162,6 +168,7 @@ const posts: Post[] = [
     excerpt: "Notes on packages and tools for getting started with Haskell.",
     tags: ["Tools"],
     categories: ["Tools"],
+    image: "/assets/images/haskell.png",
   },
 ];
 
