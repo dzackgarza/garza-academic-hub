@@ -97,19 +97,17 @@ function PaginatedScroller<T>({
         ref={scrollRef}
         className="flex max-w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {pages.length === 0 ? (
-          <div className="w-full flex-none snap-start" />
-        ) : (
-          pages.map((pageItems, pageIndex) => (
-            <div key={pageIndex} className={wrapperClass}>
-              <div className={gridClass ?? defaultGridClass}>
-                {pageItems.map((item, i) => (
-                  <div key={i}>{renderItem(item, pageIndex * pageSize + i)}</div>
-                ))}
+        {pages.length === 0
+          ? null
+          : pages.map((pageItems, pageIndex) => (
+              <div key={pageIndex} className={wrapperClass}>
+                <div className={gridClass ?? defaultGridClass}>
+                  {pageItems.map((item, i) => (
+                    <div key={i}>{renderItem(item, pageIndex * pageSize + i)}</div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))
-        )}
+            ))}
       </div>
 
       {/* Edge fades */}
