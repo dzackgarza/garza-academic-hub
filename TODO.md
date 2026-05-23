@@ -27,16 +27,10 @@ commits ahead of `origin/main`, ~7,700 lines added).
   All three renderers (`collection`, `card-grid`, `scroll-gallery`) now call it.
   Each renderer only specifies its unique component and layout props.
 
-- [ ] **Enable TypeScript strict mode** — `tsconfig.json` has `strict: false`,
-  `noImplicitAny: false`, `noUnusedLocals: false`, `noUnusedParameters: false`,
-  `strictNullChecks: false`, `skipLibCheck: true`. Every type annotation in the codebase
-  is decorative — none are enforced.
-  Enable `strict: true` and fix the real type errors this reveals.
-  The types are already written; they just need to be checked.
-  LSP already catches one: `src/content/galleries.ts:18` accesses `.items` on type
-  `{ galleries: Gallery[] }` — property does not exist.
-
-## Cleanup — Medium Priority
+- [x] **Enable TypeScript strict mode** — Fixed in `c9fa435`. Enabled `strict: true` in
+  `tsconfig.app.json`, removed redundant false overrides.
+  Fixed the one real error: `src/content/galleries.ts:18` accessed `.items` on
+  `{ galleries: Gallery[] }`.
 
 - [ ] **Remove stale compiled output directory** — `src/content/blog/compiled/` (11
   `.html` files + `posts.json`) is a dead artifact from a previous iteration.
