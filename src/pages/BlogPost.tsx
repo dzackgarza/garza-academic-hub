@@ -151,7 +151,9 @@ const BlogPost = () => {
             {isResources ? (
               <UndergradResources />
             ) : isKrantz ? (
-              <KrantzGuide />
+              <div className="not-prose">
+                <KrantzGuide />
+              </div>
             ) : (
               <div className="rounded-lg border bg-accent/25 p-6 border-dashed text-center max-w-xl mx-auto my-12 space-y-4 shadow-sm">
                 <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
