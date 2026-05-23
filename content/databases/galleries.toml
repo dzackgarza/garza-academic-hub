@@ -175,3 +175,13 @@ caption = "Image segmentation for classification."
 [[items.images]]
 src = "https://dzackgarza.com/assets/images/cv-matching.jpg"
 caption = "Matching points via projective and epipolar geometry."
+
+[[items]]
+id = "research"
+title = "Research"
+description = "Research talks and presentations."
+
+[[items.images]]
+type = "youtube"
+url = "https://www.youtube.com/watch?v=PuH5VKlhH_Y"
+caption = "D. Zack Garza — Compactifications of moduli spaces of Enriques surfaces"
