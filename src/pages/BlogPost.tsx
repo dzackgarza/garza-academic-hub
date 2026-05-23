@@ -144,7 +144,7 @@ const BlogPost = () => {
       {/* Two-Column Responsive Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Main Content Area */}
-        <main className={`lg:col-span-${isResources ? "9" : "12"} space-y-12`}>
+        <main className={`${isResources ? "lg:col-span-9" : "lg:col-span-12"} space-y-12`}>
           <article className="prose dark:prose-invert max-w-none">
             {isResources ? (
               <UndergradResources />
@@ -161,7 +161,7 @@ const BlogPost = () => {
                 </div>
                 <div className="pt-2">
                   <a
-                    href={`https://dzackgarza.com/${post.slug}/`}
+                    href={post.legacyUrl || `https://dzackgarza.com/${post.slug}/`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/95 transition-colors hover:no-underline shadow-sm"

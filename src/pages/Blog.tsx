@@ -13,6 +13,7 @@ interface Post {
   excerpt?: string;
   tags?: string[];
   categories?: string[];
+  legacyUrl?: string;
 }
 
 const posts: Post[] = [
@@ -26,6 +27,7 @@ const posts: Post[] = [
     excerpt: "Highlights and reflections on Krantz's guide to navigating life as a working mathematician.",
     tags: ["Advice", "Math", "Reference"],
     categories: ["Advice"],
+    legacyUrl: "https://dzackgarza.com/some-notes-on-krantz-s-a-mathematician-s-survival-guide/",
   },
   {
     slug: "undergrad-resources",
@@ -47,6 +49,7 @@ const posts: Post[] = [
     excerpt: "Introductory notes from an MSRI workshop series.",
     tags: ["Algebraic Geometry", "Research Notes"],
     categories: ["Mathematics", "Research"],
+    legacyUrl: "https://dzackgarza.com/intro-to-derived-algebraic-geometry-1-the-cotangent-complex-and-derived-de-rham-cohomology/",
   },
   {
     slug: "introduction-to-infinity-categories",
@@ -57,6 +60,7 @@ const posts: Post[] = [
     excerpt: "Notes on a short introductory video covering foundational aspects of ∞-categories.",
     tags: ["Category Theory"],
     categories: ["Mathematics"],
+    legacyUrl: "https://dzackgarza.com/introductory%20notes/mathematics%20research/introduction-to-infinity-categories/",
   },
   {
     slug: "precalculus-tips-and-tricks",
@@ -67,6 +71,7 @@ const posts: Post[] = [
     excerpt: "General student tips for getting the most out of precalc.",
     tags: ["Teaching", "Advice"],
     categories: ["Teaching", "Advice"],
+    legacyUrl: "https://dzackgarza.com/advice%20and%20resources/precalculus-tips-and-tricks/",
   },
   {
     slug: "topics-for-grad-school",
