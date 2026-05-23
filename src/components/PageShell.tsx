@@ -1,28 +1,27 @@
-import { useEffect, useRef, useState } from "react";
-import { createRoot } from "react-dom/client";
-import CardGrid from "@/components/CardGrid";
-import FilteredGallery from "@/components/FilteredGallery";
-import AcademicCollection from "@/components/AcademicCollection";
-import BlogListing from "@/components/islands/BlogListing";
-import ImageGallery from "@/components/ImageGallery";
-import LinkGroup from "@/components/LinkGroup";
-import { parseToml } from "@/content/_toml";
-import { cn } from "@/lib/utils";
-
+import { useEffect, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import CardGrid from '@/components/CardGrid';
+import FilteredGallery from '@/components/FilteredGallery';
+import AcademicCollection from '@/components/AcademicCollection';
+import BlogListing from '@/components/islands/BlogListing';
+import ImageGallery from '@/components/ImageGallery';
+import LinkGroup from '@/components/LinkGroup';
+import { parseToml } from '@/content/_toml';
+import { cn } from '@/lib/utils';
 
 // ---------------------------------------------------------------------------
 // Dynamic module matching
 // ---------------------------------------------------------------------------
 
-const tomlModules = import.meta.glob("../../content/databases/*.toml", {
-  query: "raw",
-  import: "default",
+const tomlModules = import.meta.glob('../../content/databases/*.toml', {
+  query: 'raw',
+  import: 'default',
 }) as Record<string, () => Promise<string>>;
 
 function findModuleKey(source: string): string | null {
-  const normalized = source.replace(/^(content\/|databases\/)/, ""); // e.g. "items.toml"
+  const normalized = source.replace(/^(content\/|databases\/)/, ''); // e.g. "items.toml"
   for (const key of Object.keys(tomlModules)) {
-    if (key.endsWith("/" + normalized)) {
+    if (key.endsWith('/' + normalized)) {
       return key;
     }
   }
@@ -35,12 +34,12 @@ function findModuleKey(source: string): string | null {
 
 function parseFilter(filter: string): Array<{ key: string; value: string }> {
   return filter
-    .split(",")
+    .split(',')
     .map((f) => f.trim())
     .filter(Boolean)
     .map((f) => {
-      const [key, value] = f.split("=");
-      return { key: key.trim(), value: value?.trim() ?? "" };
+      const [key, value] = f.split('=');
+      return { key: key.trim(), value: value?.trim() ?? '' };
     });
 }
 
@@ -54,8 +53,21 @@ function applyFilter(items: any[], filter: string): any[] {
         return itemVal.includes(value);
       }
       return itemVal === value;
-    })
+    }),
   );
+}
+
+/** Shared pipeline for collection-type slots:
+ *  resolves filter, builds typeMap, maps icon fallbacks, and applies filter.
+ *  Used by "collection", "card-grid", and "scroll-gallery" renderers. */
+function resolveCollectionData(el: HTMLElement, items: any[], types?: any[]) {
+  const filter = el.dataset.filter ?? '';
+  const typeMap = new Map((types ?? []).map((t) => [t.key, t]));
+  const mappedItems = items.map((item) => ({
+    ...item,
+    icon: item.icon ?? (typeMap.get(item.type)?.icon as any) ?? 'paper',
+  }));
+  return { filteredItems: applyFilter(mappedItems, filter) };
 }
 
 // ---------------------------------------------------------------------------
@@ -64,23 +76,20 @@ function applyFilter(items: any[], filter: string): any[] {
 // parsed items, and types, then returns a React node.
 // ---------------------------------------------------------------------------
 
-type SlotRenderer = (el: HTMLElement, items: any[], types?: any[], rawData?: any) => React.ReactNode;
+type SlotRenderer = (
+  el: HTMLElement,
+  items: any[],
+  types?: any[],
+  rawData?: any,
+) => React.ReactNode;
 
 const REGISTRY: Record<string, SlotRenderer> = {
-  "collection": (el, items, types) => {
-    const filter = el.dataset.filter ?? "";
-    const layout = (el.dataset.layout ?? "grid") as "grid" | "scroller";
-    const filterable = el.dataset.filterable === "true";
-    const columns = (parseInt(el.dataset.columns ?? "3", 10) || 3) as 2 | 3;
-    const rows = (parseInt(el.dataset.rows ?? "1", 10) || 1) as 1 | 2 | 3;
-
-    const typeMap = new Map((types ?? []).map((t) => [t.key, t]));
-    const mappedItems = items.map((item) => ({
-      ...item,
-      icon: item.icon ?? (typeMap.get(item.type)?.icon as any) ?? "paper",
-    }));
-
-    const filteredItems = applyFilter(mappedItems, filter);
+  collection: (el, items, types) => {
+    const { filteredItems } = resolveCollectionData(el, items, types);
+    const layout = (el.dataset.layout ?? 'grid') as 'grid' | 'scroller';
+    const filterable = el.dataset.filterable === 'true';
+    const columns = (parseInt(el.dataset.columns ?? '3', 10) || 3) as 2 | 3;
+    const rows = (parseInt(el.dataset.rows ?? '1', 10) || 1) as 1 | 2 | 3;
 
     return (
       <AcademicCollection
@@ -95,33 +104,17 @@ const REGISTRY: Record<string, SlotRenderer> = {
   },
 
   // Backward compatibility delegates
-  "card-grid": (el, items, types) => {
-    const filter = el.dataset.filter ?? "";
-    const columns = (parseInt(el.dataset.columns ?? "2", 10) || 2) as 2 | 3;
-
-    const typeMap = new Map((types ?? []).map((t) => [t.key, t]));
-    const mappedItems = items.map((item) => ({
-      ...item,
-      icon: item.icon ?? (typeMap.get(item.type)?.icon as any) ?? "paper",
-    }));
-
-    const filteredItems = applyFilter(mappedItems, filter);
+  'card-grid': (el, items, types) => {
+    const { filteredItems } = resolveCollectionData(el, items, types);
+    const columns = (parseInt(el.dataset.columns ?? '2', 10) || 2) as 2 | 3;
 
     return <CardGrid items={filteredItems} columns={columns} />;
   },
 
-  "scroll-gallery": (el, items, types) => {
-    const filter = el.dataset.filter ?? "";
-    const columns = (parseInt(el.dataset.columns ?? "3", 10) || 3) as 2 | 3;
-    const rows = (parseInt(el.dataset.rows ?? "3", 10) || 3) as 2 | 3;
-
-    const typeMap = new Map((types ?? []).map((t) => [t.key, t]));
-    const mappedItems = items.map((item) => ({
-      ...item,
-      icon: item.icon ?? (typeMap.get(item.type)?.icon as any) ?? "paper",
-    }));
-
-    const filteredItems = applyFilter(mappedItems, filter);
+  'scroll-gallery': (el, items, types) => {
+    const { filteredItems } = resolveCollectionData(el, items, types);
+    const columns = (parseInt(el.dataset.columns ?? '3', 10) || 3) as 2 | 3;
+    const rows = (parseInt(el.dataset.rows ?? '3', 10) || 3) as 2 | 3;
 
     return (
       <FilteredGallery
@@ -134,19 +127,19 @@ const REGISTRY: Record<string, SlotRenderer> = {
   },
 
   // Self-contained islands — data-source not required, items arg ignored
-  "blog-listing": () => <BlogListing />,
+  'blog-listing': () => <BlogListing />,
 
   // Generic content elements to decouple layout structure from React components
-  "gallery-grid": (el, items, types, rawData) => {
+  'gallery-grid': (el, items, types, rawData) => {
     const galleryId = el.dataset.galleryId;
-    const layout = el.dataset.layout as "grid" | "scroller" | undefined;
+    const layout = el.dataset.layout as 'grid' | 'scroller' | undefined;
     const galleriesList = rawData?.items || [];
     const gallery = galleriesList.find((g: any) => g.id === galleryId);
     if (!gallery) return null;
     return <ImageGallery gallery={gallery} layout={layout} />;
   },
 
-  "link-group": (el, items, types, rawData) => {
+  'link-group': (el, items, types, rawData) => {
     const groupId = el.dataset.groupId;
     const groupsList = rawData?.groups || [];
     const group = groupsList.find((g: any) => g.id === groupId);
@@ -173,15 +166,13 @@ const PageShell = ({ html }: PageShellProps) => {
 
   // 1. Identify and fetch all required TOML sources (only for slots with explicit data-source)
   useEffect(() => {
-    const tempDiv = document.createElement("div");
+    const tempDiv = document.createElement('div');
     tempDiv.innerHTML = html;
-    const slots = Array.from(tempDiv.querySelectorAll<HTMLElement>("[data-component]"));
+    const slots = Array.from(tempDiv.querySelectorAll<HTMLElement>('[data-component]'));
     const sources = Array.from(
       new Set(
-        slots
-          .map((el) => el.dataset.source)
-          .filter((s): s is string => Boolean(s))
-      )
+        slots.map((el) => el.dataset.source).filter((s): s is string => Boolean(s)),
+      ),
     );
 
     let isMounted = true;
@@ -199,10 +190,13 @@ const PageShell = ({ html }: PageShellProps) => {
           const parsed = parseToml<any>(rawText);
           return { source, data: parsed };
         } catch (err) {
-          console.error(`[PageShell] Failed to load/parse TOML source "${source}":`, err);
+          console.error(
+            `[PageShell] Failed to load/parse TOML source "${source}":`,
+            err,
+          );
           return { source, data: {} };
         }
-      })
+      }),
     ).then((results) => {
       if (!isMounted) return;
       const dataMap: Record<string, any> = {};
@@ -243,16 +237,16 @@ const PageShell = ({ html }: PageShellProps) => {
     if (!container) return;
 
     const slots = Array.from(
-      container.querySelectorAll<HTMLElement>("[data-component]")
+      container.querySelectorAll<HTMLElement>('[data-component]'),
     );
 
     slots.forEach((el) => {
       const type = el.dataset.component!;
       const source = el.dataset.source;
-      const sourceData = source ? (data[source] || {}) : {};
+      const sourceData = source ? data[source] || {} : {};
 
       // Default to "collection" if the specified type isn't card-grid or scroll-gallery
-      const renderer = REGISTRY[type] || REGISTRY["collection"];
+      const renderer = REGISTRY[type] || REGISTRY['collection'];
       if (!renderer) return;
 
       let root = (el as any)._reactRoot;
@@ -261,7 +255,9 @@ const PageShell = ({ html }: PageShellProps) => {
         (el as any)._reactRoot = root;
         rootsRef.current.push(root);
       }
-      root.render(renderer(el, sourceData.items || [], sourceData.types || [], sourceData));
+      root.render(
+        renderer(el, sourceData.items || [], sourceData.types || [], sourceData),
+      );
     });
   }, [loading, html, data]);
 
@@ -269,7 +265,7 @@ const PageShell = ({ html }: PageShellProps) => {
     <div
       ref={containerRef}
       dangerouslySetInnerHTML={{ __html: html }}
-      className={cn("w-full", loading && "opacity-60 transition-opacity duration-200")}
+      className={cn('w-full', loading && 'opacity-60 transition-opacity duration-200')}
     />
   );
 };

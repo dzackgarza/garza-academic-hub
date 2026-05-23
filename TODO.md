@@ -21,13 +21,11 @@ commits ahead of `origin/main`, ~7,700 lines added).
   Deleted all 6 redundant files.
   Net -98 lines.
 
-- [ ] **Deduplicate REGISTRY pipeline in PageShell** — The `collection`, `card-grid`,
-  and `scroll-gallery` renderers in `src/components/PageShell.tsx` repeat the same
-  5-step pipeline: parse filter → parse columns/rows → build typeMap → map item icons →
-  applyFilter. Only the final component type differs.
-  Extract a `resolveCollectionProps(el, items, types)` helper, or converge all three
-  into the `"collection"` renderer since `AcademicCollection` already wraps the
-  sub-components.
+- [x] **Deduplicate REGISTRY pipeline in PageShell** — Fixed in `<pending commit>`.
+  Extracted `resolveCollectionData()` helper that unifies the
+  filter/typeMap/icon/applyFilter pipeline.
+  All three renderers (`collection`, `card-grid`, `scroll-gallery`) now call it.
+  Each renderer only specifies its unique component and layout props.
 
 - [ ] **Enable TypeScript strict mode** — `tsconfig.json` has `strict: false`,
   `noImplicitAny: false`, `noUnusedLocals: false`, `noUnusedParameters: false`,
