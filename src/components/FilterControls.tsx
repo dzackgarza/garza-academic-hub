@@ -54,6 +54,11 @@ function FilterControls<T extends FilterItem>({
   defaultType = 'all',
   children,
 }: FilterControlsProps<T>) {
+  // When filtering is disabled, skip all state/memo overhead and pass items through.
+  if (!filterable) {
+    return <>{children(items, 'all-')}</>;
+  }
+
   const [activeType, setActiveType] = useState<string>(defaultType);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [matchMode, setMatchMode] = useState<MatchMode>('any');
