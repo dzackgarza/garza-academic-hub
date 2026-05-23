@@ -79,9 +79,7 @@ function resolveCollectionData(el: HTMLElement, items: any[], types?: any[]) {
 
 type SlotRenderer = (
   el: HTMLElement,
-  items: any[],
-  types?: any[],
-  rawData?: any,
+  sourceData: Record<string, any>,
 ) => React.ReactNode;
 
 /** Looks up a renderer by component type. Logs an error and returns null
@@ -99,7 +97,9 @@ export function getRenderer(type: string): SlotRenderer | null {
 }
 
 const REGISTRY: Record<string, SlotRenderer> = {
-  collection: (el, items, types) => {
+  collection: (el, sourceData) => {
+    const items = sourceData.items ?? [];
+    const types = sourceData.types;
     const { filteredItems } = resolveCollectionData(el, items, types);
     const layout = (el.dataset.layout ?? 'grid') as 'grid' | 'scroller';
     const filterable = el.dataset.filterable === 'true';
@@ -119,14 +119,18 @@ const REGISTRY: Record<string, SlotRenderer> = {
   },
 
   // Backward compatibility delegates
-  'card-grid': (el, items, types) => {
+  'card-grid': (el, sourceData) => {
+    const items = sourceData.items ?? [];
+    const types = sourceData.types;
     const { filteredItems } = resolveCollectionData(el, items, types);
     const columns = (parseInt(el.dataset.columns ?? '2', 10) || 2) as 2 | 3;
 
     return <CardGrid items={filteredItems} columns={columns} />;
   },
 
-  'scroll-gallery': (el, items, types) => {
+  'scroll-gallery': (el, sourceData) => {
+    const items = sourceData.items ?? [];
+    const types = sourceData.types;
     const { filteredItems } = resolveCollectionData(el, items, types);
     const columns = (parseInt(el.dataset.columns ?? '3', 10) || 3) as 2 | 3;
     const rows = (parseInt(el.dataset.rows ?? '3', 10) || 3) as 2 | 3;
@@ -141,22 +145,23 @@ const REGISTRY: Record<string, SlotRenderer> = {
     );
   },
 
-  // Self-contained islands — data-source not required, items arg ignored
+  // Self-contained islands — data-source not required
   'blog-listing': () => <BlogListing />,
 
-  // Generic content elements to decouple layout structure from React components
-  'gallery-grid': (el, items, types, rawData) => {
+  // Galleries — sourceData.items is an array of Gallery objects
+  'gallery-grid': (el, sourceData) => {
     const galleryId = el.dataset.galleryId;
     const layout = el.dataset.layout as 'grid' | 'scroller' | undefined;
-    const galleriesList = rawData?.items || [];
+    const galleriesList = sourceData.items ?? [];
     const gallery = galleriesList.find((g: any) => g.id === galleryId);
     if (!gallery) return null;
     return <ImageGallery gallery={gallery} layout={layout} />;
   },
 
-  'link-group': (el, items, types, rawData) => {
+  // Link groups — sourceData.groups is an array of LinkGroup objects
+  'link-group': (el, sourceData) => {
     const groupId = el.dataset.groupId;
-    const groupsList = rawData?.groups || [];
+    const groupsList = sourceData.groups ?? [];
     const group = groupsList.find((g: any) => g.id === groupId);
     if (!group) return null;
     return <LinkGroup group={group} />;
@@ -269,9 +274,7 @@ const PageShell = ({ html }: PageShellProps) => {
         (el as any)._reactRoot = root;
         rootsRef.current.push(root);
       }
-      root.render(
-        renderer(el, sourceData.items || [], sourceData.types || [], sourceData),
-      );
+      root.render(renderer(el, sourceData));
     });
   }, [loading, html, data]);
 
