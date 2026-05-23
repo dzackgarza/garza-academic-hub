@@ -5,22 +5,22 @@ export default function KrantzGuide() {
     <div className="space-y-12 text-foreground leading-relaxed">
       
       {/* Intro Quote / Context */}
-      <div className="text-base sm:text-lg text-muted-foreground italic font-sans border-l-2 border-primary/30 pl-4 py-1 mb-8">
+      <p className="text-base sm:text-lg text-foreground font-sans mb-8">
         The following are just some random snippets I extracted while reading{" "}
-        <strong className="text-foreground not-italic">
+        <strong className="font-semibold text-foreground">
           “A Mathematician’s Survival Guide: Graduate School and Early Career Development”
         </strong>{" "}
         by Steven Krantz. I don’t necessarily endorse any of this advice in particular, I just found these snippets to be interesting things to remember and think about.
-      </div>
+      </p>
 
       <div className="space-y-10">
 
         {/* Section 1 */}
         <div className="space-y-4">
-          <p className="text-foreground font-sans font-medium text-base sm:text-lg leading-relaxed">
-            When I advise undergraduates applying to graduate school in mathematics, I always tell them the same thing: “Go to the best school you can get into, find the hottest, smartest professor around, sign up to work with that professor, and do anything he or she tells you to do.” That is what I did, and it worked like a charm. Of course this is not necessarily the best advice for everyone. Some students do not want to go to an extremely competitive program…
-          </p>
           <ul className="list-disc pl-6 space-y-4 font-serif text-muted-foreground italic text-base leading-relaxed">
+            <li className="pl-1">
+              When I advise undergraduates applying to graduate school in mathematics, I always tell them the same thing: “Go to the best school you can get into, find the hottest, smartest professor around, sign up to work with that professor, and do anything he or she tells you to do.” That is what I did, and it worked like a charm. Of course this is not necessarily the best advice for everyone. Some students do not want to go to an extremely competitive program…
+            </li>
             <li className="pl-1">
               It is of the essence that you work in a subject area, and on a thesis problem, that you like and can develop some enthusiasm for. Just as an athlete will say, “No pain, no gain.”, so a Ph.D. student in mathematics might say, “No passion, no thesis.” Just so, you also want a thesis advisor who can light a fire under you and can find a problem that will absorb you. You want a mentor who will inspire you to strive for excellence and achievement. You also want a thesis advisor with whom you can work comfortably and have a congenial relationship.
             </li>
@@ -51,24 +51,16 @@ export default function KrantzGuide() {
 
         {/* Section 2 */}
         <div className="space-y-4 pt-4 border-t border-border/50">
-          <p className="text-foreground font-sans font-medium text-base sm:text-lg leading-relaxed">
-            So how do you study for an exam that contains such questions? Typically, you are not going to find questions like these in books. And, even if you do, you are not going to find the answers laid out for you. Let me put it this way: When you study for a qual, it is not enough to learn just the statements of the theorems and the proofs. Of course you must do at least that much. And at some schools this basic effort may be sufficient for a low pass. But the new thing that you must learn to do in graduate school is to ask yourself questions. Turn the ideas over in your mind and ask:
-          </p>
           <ul className="list-disc pl-6 space-y-4 font-serif text-muted-foreground italic text-base leading-relaxed">
             <li className="pl-1">
-              Why is the theorem stated this way?
-            </li>
-            <li className="pl-1">
-              Why is this hypothesis really needed?
-            </li>
-            <li className="pl-1">
-              What happens if we change the conclusion from this to that?
-            </li>
-            <li className="pl-1">
-              What would be a counterexample?
-            </li>
-            <li className="pl-1">
-              Why does the proof go like this?
+              So how do you study for an exam that contains such questions? Typically, you are not going to find questions like these in books. And, even if you do, you are not going to find the answers laid out for you. Let me put it this way: When you study for a qual, it is not enough to learn just the statements of the theorems and the proofs. Of course you must do at least that much. And at some schools this basic effort may be sufficient for a low pass. But the new thing that you must learn to do in graduate school is to ask yourself questions. Turn the ideas over in your mind and ask:
+              <ul className="list-circle pl-6 mt-2 space-y-1 not-italic font-sans text-sm text-muted-foreground">
+                <li>Why is the theorem stated this way?</li>
+                <li>Why is this hypothesis really needed?</li>
+                <li>What happens if we change the conclusion from this to that?</li>
+                <li>What would be a counterexample?</li>
+                <li>Why does the proof go like this?</li>
+              </ul>
             </li>
             <li className="pl-1">
               I will conclude this section by enunciating a very important principle (which will be repeated often in this text) of getting an advanced education. You are no longer learning calculus or another trivial subject where it is sufficient to read the text and do the homework. You are now doing the toughest thing you will ever have done in your life. It is essential that you talk to people-all the time. In this way you can orient yourself, keep to your course, be sure you are doing the right thing, and have a constant reality check. It is also an important part of being a mathematician to be able to communicate - not just technical mathematics but also information about mathematics, about teaching, and about the profession. You are now not simply learning mathematics - you are learning to create it. So my advice is to talk to your fellow students and to the faculty (and to the staff) about everything. Eat lunch with a group, socialize, talk to your office mates. This is your new life.
@@ -81,9 +73,9 @@ export default function KrantzGuide() {
             </li>
             <li className="pl-1">
               Make a point of getting to know some of your classmates (your peers) and also some of the graduate students who are ahead of you in the program. The latter bunch will be full of a lot of gossip and a lot of baloney, but they also have passed the quals and they are familiar with how the program works. They know which classes to take, and the various hoops that a graduate student must jump through. Pick their brains. They can tell you which quals are hard and which are easy. Who writes the quals and who grades them. How quickly you are expected to get through the qualifying exams. They will know who the good instructors are, who gives good courses, and who the good thesis advisors are. This is vital information that you must know and understand.
-            </li>
-            <li className="pl-1">
-              (Ask them) where the graduate students hang out, what is expected of you. Where the coffee pot is. Do the same with the Department Chairperson.
+              <ul className="list-circle pl-6 mt-2 space-y-1 not-italic font-sans text-sm text-muted-foreground">
+                <li>(Ask them) where the graduate students hang out, what is expected of you. Where the coffee pot is. Do the same with the Department Chairperson.</li>
+              </ul>
             </li>
             <li className="pl-1">
               (If) this is your first day in graduate school, I admonish you to take charge of the situation. Figure out where the math building is, go there, and introduce yourself to the Chairperson’s secretary and the Graduate secretary. If the Graduate Chairperson is around, shake hands and introduce yourself.
@@ -108,7 +100,7 @@ export default function KrantzGuide() {
             </li>
             <li className="pl-1">
               For the most part, you must go through the formality of submitting job applications. This includes:
-              <ul className="list-circle pl-6 mt-1 space-y-1 font-sans text-xs not-italic text-foreground">
+              <ul className="list-circle pl-6 mt-2 space-y-1 not-italic font-sans text-sm text-muted-foreground">
                 <li>Completing an AMS Cover Sheet (available from the American Mathematical Society web site or in issues of the Notices of the AMS),</li>
                 <li>Putting together a Curriculum Vitae (see [KRA2] for some advice on how to write your vita),</li>
                 <li>Getting letters of recommendation (usually three),</li>
@@ -124,7 +116,7 @@ export default function KrantzGuide() {
             </li>
             <li className="pl-1">
               After you have graduated and you have been in the profession for a while, it will appear that:
-              <ul className="list-circle pl-6 my-2 space-y-1 font-sans text-xs not-italic text-foreground">
+              <ul className="list-circle pl-6 my-2 space-y-1 not-italic font-sans text-sm text-muted-foreground">
                 <li>Everyone else is getting invited to all of the big conferences;</li>
                 <li>Everyone else has lots of research grants;</li>
                 <li>Everyone else is winning Sloan Fellowships;</li>
@@ -133,7 +125,7 @@ export default function KrantzGuide() {
               </ul>
               …at that time was for the advisors to just shuffle us off to the plum jobs - the Moore Instructorships at MIT, the Dickson Instructorships at Chicago, the Peirce Instructorships at Harvard. It was a halcyon time…
               <span className="block mt-2 not-italic font-sans text-sm font-semibold text-foreground">Other prestigious appointments:</span>
-              <ul className="list-circle pl-6 mt-1 space-y-1 font-sans text-xs not-italic text-foreground">
+              <ul className="list-circle pl-6 mt-1 space-y-1 not-italic font-sans text-sm text-muted-foreground">
                 <li>Elected to the National Academy of Sciences;</li>
                 <li>A Chair Professorship at Harvard;</li>
                 <li>Winning the Wolf Prize;</li>
@@ -157,9 +149,9 @@ export default function KrantzGuide() {
 
         {/* Section 3 */}
         <div className="space-y-4 pt-4 border-t border-border/50">
-          <p className="text-foreground font-sans font-medium text-base sm:text-lg leading-relaxed">
+          <h3 className="text-foreground font-sans font-semibold text-lg sm:text-xl leading-relaxed">
             Learn good work habits.
-          </p>
+          </h3>
           <ul className="list-disc pl-6 space-y-4 font-serif text-muted-foreground italic text-base leading-relaxed">
             <li className="pl-1">
               When a calculation finally works out, write it up carefully, number the pages, date it, and put your name on it. File it away in an organized manner so that you can find it again.
@@ -181,9 +173,9 @@ export default function KrantzGuide() {
 
         {/* Section 4 */}
         <div className="space-y-4 pt-4 border-t border-border/50">
-          <p className="text-foreground font-sans font-medium text-base sm:text-lg leading-relaxed">
+          <h3 className="text-foreground font-sans font-semibold text-lg sm:text-xl leading-relaxed">
             (On how to finish a thesis)
-          </p>
+          </h3>
           <ul className="list-disc pl-6 space-y-4 font-serif text-muted-foreground italic text-base leading-relaxed">
             <li className="pl-1">
               The short answer to the question is: You work on your thesis problem by sitting in a quiet place and calculating. You try things and then modify them and jiggle them and then try them again. Fill dozens and dozens of pages with your speculations and trials and scribblings and conjectures, then throw them away and start again. During this process, you are constantly talking to people, going to seminars, writing e-mails, and asking questions. You immerse yourself in the problem and swim around in it until you find something that floats - something to latch onto. Gradually, you develop that handhold into a thesis.
@@ -202,9 +194,9 @@ export default function KrantzGuide() {
 
         {/* Section 5 */}
         <div className="space-y-4 pt-4 border-t border-border/50">
-          <p className="text-foreground font-sans font-medium text-base sm:text-lg leading-relaxed">
+          <h3 className="text-foreground font-sans font-semibold text-lg sm:text-xl leading-relaxed">
             (On Krantz’s advisor)
-          </p>
+          </h3>
           <ul className="list-disc pl-6 space-y-4 font-serif text-muted-foreground italic text-base leading-relaxed">
             <li className="pl-1">
               The thesis problems that he gave me were completely unfamiliar and they were all quite difficult. But they were good, they were the kinds of problems that you could jump in and start working on right away, and they had connections to many other things. In other words, they were ideal thesis problems.
