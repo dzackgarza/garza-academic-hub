@@ -1,12 +1,42 @@
-import { blogPosts as posts, type Post } from "@/content/posts";
+import { useState, useEffect } from 'react';
+import { FileText, Clock } from 'lucide-react';
+import SectionHeading from '@/components/SectionHeading';
+import { blogPosts as posts, type Post } from '@/content/posts';
 
-/** Self-contained island: renders the blog post listing with tag filtering. */
+/** Self-contained island: renders the blog post listing with tag filtering.
+ *
+ * Uses window.location directly instead of react-router hooks because
+ * PageShell renders islands via standalone createRoot() calls that don't
+ * inherit the parent React tree's BrowserRouter context. */
 const BlogListing = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const activeTag = searchParams.get("tag");
+  const [activeTag, setActiveTag] = useState<string | null>(() =>
+    new URLSearchParams(window.location.search).get('tag'),
+  );
+
+  useEffect(() => {
+    const onPopState = () => {
+      setActiveTag(new URLSearchParams(window.location.search).get('tag'));
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  const setTag = (tag: string | null) => {
+    const params = new URLSearchParams(window.location.search);
+    if (tag) {
+      params.set('tag', tag);
+    } else {
+      params.delete('tag');
+    }
+    const qs = params.toString();
+    window.history.pushState(null, '', qs ? `/blog?${qs}` : '/blog');
+    setActiveTag(tag);
+  };
 
   const filtered = activeTag
-    ? posts.filter((p) => p.tags?.some((t) => t.toLowerCase() === activeTag.toLowerCase()))
+    ? posts.filter((p) =>
+        p.tags?.some((t) => t.toLowerCase() === activeTag.toLowerCase()),
+      )
     : posts;
 
   const byYear = filtered.reduce<Record<number, Post[]>>((acc, p) => {
@@ -14,17 +44,20 @@ const BlogListing = () => {
     return acc;
   }, {});
 
-  const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
+  const years = Object.keys(byYear)
+    .map(Number)
+    .sort((a, b) => b - a);
 
   return (
     <div>
       {activeTag && (
         <div className="mb-6 p-3 bg-primary/5 rounded-lg border border-primary/20 flex items-center justify-between text-sm animate-fade-in">
           <span className="text-foreground">
-            Showing posts tagged with <span className="font-semibold text-primary">#{activeTag}</span>
+            Showing posts tagged with{' '}
+            <span className="font-semibold text-primary">#{activeTag}</span>
           </span>
           <button
-            onClick={() => setSearchParams({})}
+            onClick={() => setTag(null)}
             className="text-xs font-semibold text-primary hover:text-link-hover hover:underline"
           >
             Clear Filter
@@ -47,20 +80,23 @@ const BlogListing = () => {
                     <FileText className="w-4 h-4 text-primary" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <Link to={`/blog/${p.slug}`} className="text-sm font-semibold hover:text-link-hover">
+                    <a
+                      href={`/blog/${p.slug}`}
+                      className="text-sm font-semibold hover:text-link-hover"
+                    >
                       {p.title}
-                    </Link>
+                    </a>
                     <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                       <Clock className="w-3 h-3" />
                       <span>{p.readMinutes} min read</span>
                       {p.tags && p.tags.length > 0 && (
                         <>
-                          <span>•</span>
+                          <span>&bull;</span>
                           <div className="flex gap-1.5 items-center">
                             {p.tags.map((t) => (
                               <button
                                 key={t}
-                                onClick={() => setSearchParams({ tag: t })}
+                                onClick={() => setTag(t)}
                                 className="hover:text-primary hover:underline transition-colors"
                               >
                                 #{t}
@@ -71,7 +107,9 @@ const BlogListing = () => {
                       )}
                     </div>
                     {p.excerpt && (
-                      <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{p.excerpt}</p>
+                      <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                        {p.excerpt}
+                      </p>
                     )}
                   </div>
                 </li>
