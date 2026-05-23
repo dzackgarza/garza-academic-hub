@@ -127,24 +127,34 @@ All colors MUST be HSL.
 
   /* Blog Post Grid & Sidebar Layout */
   .post-layout-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    align-items: start;
+    display: block;
+  }
+
+  .post-sidebar {
+    display: none;
   }
 
   @media (min-width: 1024px) {
-    .post-layout-grid {
+    /* Only apply 12-column grid layout if a sidebar is actually present */
+    .post-layout-grid:has(.post-sidebar) {
+      display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 2.5rem;
+      align-items: start;
     }
-    .post-content {
+    
+    .post-layout-grid:has(.post-sidebar) .post-content {
       grid-column: span 9 / span 9;
     }
-    .post-sidebar {
+    
+    .post-layout-grid:has(.post-sidebar) .post-sidebar {
+      display: block;
       grid-column: span 3 / span 3;
       position: sticky;
-      top: 2rem;
-      @apply hidden lg:block;
+      top: 5rem;
+      max-height: calc(100vh - 8rem);
+      overflow-y: auto;
+      padding-right: 0.5rem;
     }
   }
 
