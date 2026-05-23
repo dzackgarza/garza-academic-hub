@@ -1,0 +1,36 @@
+[
+  {
+    "title": "Some notes on Krantz's \"A Mathematician's Survival Guide\"",
+    "date": "December 31, 2022",
+    "updatedDate": "December 31, 2022",
+    "readMinutes": 16,
+    "excerpt": "Highlights and reflections on Krantz's guide to navigating life as a working mathematician.",
+    "tags": [
+      "Advice",
+      "Math",
+      "Reference"
+    ],
+    "categories": [
+      "Advice"
+    ],
+    "legacyUrl": "https://dzackgarza.com/some-notes-on-krantz-s-a-mathematician-s-survival-guide/",
+    "slug": "krantz-mathematicians-survival-guide"
+  },
+  {
+    "title": "Recommendations: Undergraduate Resources",
+    "date": "April 11, 2021",
+    "updatedDate": "April 11, 2021",
+    "readMinutes": 9,
+    "excerpt": "A comprehensive roadmap and set of textbook recommendations for undergraduate math majors.",
+    "tags": [
+      "Advice",
+      "Math",
+      "Reference"
+    ],
+    "categories": [
+      "Advice"
+    ],
+    "legacyUrl": "https://dzackgarza.com/resources/",
+    "slug": "undergrad-resources"
+  }
+]
