@@ -139,10 +139,11 @@ const REGISTRY: Record<string, SlotRenderer> = {
   // Generic content elements to decouple layout structure from React components
   "gallery-grid": (el, items, types, rawData) => {
     const galleryId = el.dataset.galleryId;
+    const layout = el.dataset.layout as "grid" | "scroller" | undefined;
     const galleriesList = rawData?.items || [];
     const gallery = galleriesList.find((g: any) => g.id === galleryId);
     if (!gallery) return null;
-    return <ImageGallery gallery={gallery} />;
+    return <ImageGallery gallery={gallery} layout={layout} />;
   },
 
   "link-group": (el, items, types, rawData) => {

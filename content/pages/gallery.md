@@ -6,12 +6,12 @@ Diagrams and images drawn or generated for notes, papers, and talks. Click any i
 
 Sketches used in lecture notes and seminar talks.
 
-::: {.component type="gallery-grid" source="databases/galleries.toml" gallery-id="hand-drawn"}
+::: {.component type="gallery-grid" source="databases/galleries.toml" gallery-id="hand-drawn" layout="scroller"}
 :::
 
 ## Digital
 
 Computer-generated diagrams and figures (Sage, TikZ, and friends).
 
-::: {.component type="gallery-grid" source="databases/galleries.toml" gallery-id="digital"}
+::: {.component type="gallery-grid" source="databases/galleries.toml" gallery-id="digital" layout="scroller"}
 :::
