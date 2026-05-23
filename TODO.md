@@ -7,7 +7,7 @@ fix (GREEN), commit it.
 
 * * *
 
-- [ ] **1. Remove duplicate `TypeDef` interface from `AcademicCollection.tsx`**
+- [x] **1. Remove duplicate `TypeDef` interface from `AcademicCollection.tsx`**
   - **RED**: write a test asserting that `TypeDef` imported from `FilterControls` is
     structurally identical to what `AcademicCollection` currently defines.
   - **GREEN**: delete the local `TypeDef` definition from
