@@ -6,7 +6,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import type { AcademicCardProps } from '@/components/AcademicCard';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -15,7 +14,7 @@ import type { AcademicCardProps } from '@/components/AcademicCard';
 export interface TypeDef {
   key: string;
   label: string;
-  icon?: AcademicCardProps['icon'];
+  icon?: string;
 }
 
 export interface FilterItem {

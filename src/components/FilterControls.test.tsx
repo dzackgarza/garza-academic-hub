@@ -2,7 +2,29 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import FilterControls from '@/components/FilterControls';
 
+// This file deliberately does NOT import AcademicCard — FilterControls
+// should not be coupled to a specific card component's icon type.
+
 describe('FilterControls', () => {
+  // -----------------------------------------------------------------------
+  // Type contract: TypeDef.icon should accept any string, not just the
+  // AcademicCardProps icon union ("paper" | "talk" | "notes").
+  // This test asserts that a non-standard icon string compiles and renders.
+  // -----------------------------------------------------------------------
+
+  it('renders with a TypeDef using a non-standard icon string', () => {
+    const items = [{ type: 'a' }];
+    const customTypes = [{ key: 'a', label: 'Custom', icon: 'custom-icon' }];
+
+    render(
+      <FilterControls items={items} types={customTypes} filterable>
+        {() => <div>rendered</div>}
+      </FilterControls>,
+    );
+
+    expect(screen.getByText('Custom')).toBeInTheDocument();
+  });
+
   describe('when filterable=false', () => {
     it('passes all items through unchanged with key "all-"', () => {
       const items = [
@@ -20,14 +42,9 @@ describe('FilterControls', () => {
         </FilterControls>,
       );
 
-      // All items must pass through
       expect(renderFn).toHaveBeenCalledWith(items, expect.any(String));
-
-      // The filter key when unfiltered is "all-" (no filtering applied)
       const callArgs = renderFn.mock.calls[0];
       expect(callArgs[1]).toBe('all-');
-
-      // No filter UI should be rendered
       expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     });
 

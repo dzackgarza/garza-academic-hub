@@ -1,13 +1,13 @@
-import tomlSource from "@content/databases/items.toml?raw";
-import { parseToml } from "./_toml";
-import type { AcademicCardProps } from "@/components/AcademicCard";
+import tomlSource from '@content/databases/items.toml?raw';
+import { parseToml } from './_toml';
+import type { AcademicCardProps } from '@/components/AcademicCard';
 
 export type ItemType = string;
 
 export interface TypeDef {
   key: string;
   label: string;
-  icon?: AcademicCardProps["icon"];
+  icon?: string;
 }
 
 export interface ContentItem extends AcademicCardProps {
@@ -27,7 +27,8 @@ const typeMap = new Map(types.map((t) => [t.key, t]));
 
 export const allItems: ContentItem[] = (parsed.items ?? []).map((item) => ({
   ...item,
-  icon: item.icon ?? (typeMap.get(item.type)?.icon as AcademicCardProps["icon"]) ?? "paper",
+  icon:
+    item.icon ?? (typeMap.get(item.type)?.icon as AcademicCardProps['icon']) ?? 'paper',
 }));
 
 export const itemsByType = (type: ItemType) =>
