@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const YAML = require('yaml');
 
 const contentDir = path.join(__dirname, '../content');
@@ -21,7 +22,7 @@ if (!fs.existsSync(compiledPagesDir)) {
 
 // 1. Compile Blog Posts
 console.log('Compiling blog posts...');
-const blogFiles = fs.readdirSync(blogPostsDir).filter(file => file.endsWith('.md'));
+const blogFiles = fs.readdirSync(blogPostsDir).filter((file) => file.endsWith('.md'));
 const postsMetadata = [];
 
 for (const file of blogFiles) {
@@ -60,36 +61,47 @@ for (const file of blogFiles) {
   console.log(`- Compiling blog post ${slug} using pandoc...`);
 
   const templatePath = path.join(templatesDir, 'post-template.html');
-  const pandocProcess = Bun.spawnSync({
-    cmd: [
-      'pandoc',
+  const pandocProcess = spawnSync(
+    'pandoc',
+    [
       '--from=markdown',
       '--to=html',
       '--mathjax',
       '--toc',
       '--toc-depth=3',
-      `--template=${templatePath}`
+      `--template=${templatePath}`,
     ],
-    stdin: Buffer.from(markdownBody, 'utf8')
-  });
+    {
+      input: Buffer.from(markdownBody, 'utf8'),
+    },
+  );
 
-  if (pandocProcess.exitCode !== 0) {
+  if (pandocProcess.status !== 0) {
     console.error(`Error: Pandoc compilation failed for blog post ${slug}`);
     console.error(pandocProcess.stderr.toString());
     process.exit(1);
   }
 
-  fs.writeFileSync(path.join(compiledBlogDir, `${slug}.html`), pandocProcess.stdout.toString('utf8'), 'utf8');
+  fs.writeFileSync(
+    path.join(compiledBlogDir, `${slug}.html`),
+    pandocProcess.stdout.toString('utf8'),
+    'utf8',
+  );
 }
 
 postsMetadata.sort((a, b) => new Date(b.date) - new Date(a.date));
-fs.writeFileSync(path.join(compiledBlogDir, 'posts.json'), JSON.stringify(postsMetadata, null, 2), 'utf8');
-console.log(`Successfully compiled ${postsMetadata.length} blog posts to ${compiledBlogDir}/!\n`);
-
+fs.writeFileSync(
+  path.join(compiledBlogDir, 'posts.json'),
+  JSON.stringify(postsMetadata, null, 2),
+  'utf8',
+);
+console.log(
+  `Successfully compiled ${postsMetadata.length} blog posts to ${compiledBlogDir}/!\n`,
+);
 
 // 2. Compile Static Pages (with component Lua filter)
 console.log('Compiling static pages...');
-const pageFiles = fs.readdirSync(staticPagesDir).filter(file => file.endsWith('.md'));
+const pageFiles = fs.readdirSync(staticPagesDir).filter((file) => file.endsWith('.md'));
 const componentsFilter = path.join(filtersDir, 'components.lua');
 
 for (const file of pageFiles) {
@@ -104,25 +116,33 @@ for (const file of pageFiles) {
   console.log(`- Compiling static page ${slug} using pandoc...`);
 
   const templatePath = path.join(templatesDir, 'page-template.html');
-  const pandocProcess = Bun.spawnSync({
-    cmd: [
-      'pandoc',
+  const pandocProcess = spawnSync(
+    'pandoc',
+    [
       '--from=markdown',
       '--to=html',
       '--mathjax',
       `--lua-filter=${componentsFilter}`,
-      `--template=${templatePath}`
+      `--template=${templatePath}`,
     ],
-    stdin: Buffer.from(markdownBody, 'utf8')
-  });
+    {
+      input: Buffer.from(markdownBody, 'utf8'),
+    },
+  );
 
-  if (pandocProcess.exitCode !== 0) {
+  if (pandocProcess.status !== 0) {
     console.error(`Error: Pandoc compilation failed for static page ${slug}`);
     console.error(pandocProcess.stderr.toString());
     process.exit(1);
   }
 
-  fs.writeFileSync(path.join(compiledPagesDir, `${slug}.html`), pandocProcess.stdout.toString('utf8'), 'utf8');
+  fs.writeFileSync(
+    path.join(compiledPagesDir, `${slug}.html`),
+    pandocProcess.stdout.toString('utf8'),
+    'utf8',
+  );
 }
 
-console.log(`Successfully compiled ${pageFiles.length} static pages to ${compiledPagesDir}/!`);
+console.log(
+  `Successfully compiled ${pageFiles.length} static pages to ${compiledPagesDir}/!`,
+);

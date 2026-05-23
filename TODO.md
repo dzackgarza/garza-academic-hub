@@ -32,10 +32,8 @@ commits ahead of `origin/main`, ~7,700 lines added).
   Fixed the one real error: `src/content/galleries.ts:18` accessed `.items` on
   `{ galleries: Gallery[] }`.
 
-- [ ] **Remove stale compiled output directory** — `src/content/blog/compiled/` (11
-  `.html` files + `posts.json`) is a dead artifact from a previous iteration.
-  The compile script now writes to `src/content/compiled/blog/`. Delete the stale
-  directory.
+- [x] **Remove stale compiled output directory** — Fixed in `5660d70`. Deleted
+  `src/content/blog/compiled/` (15 files, 1172 lines removed).
 
 - [ ] **Fix compile.js runtime inconsistency** — `scripts/compile.js` uses
   `require('fs')`, `require('yaml')` (Node CJS) but also `Bun.spawnSync(...)` (Bun-only
