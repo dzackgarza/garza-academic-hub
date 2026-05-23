@@ -7,8 +7,8 @@ export default {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
-    "./src/content/blog/compiled/**/*.html",
-    "./scripts/post-template.html"
+    "./src/content/compiled/**/*.html",
+    "./content/templates/**/*.html"
   ],
   prefix: "",
   theme: {

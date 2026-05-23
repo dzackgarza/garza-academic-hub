@@ -24,7 +24,7 @@ const BlogPost = () => {
     
     setIsLoading(true);
     // Vite dynamic import of raw HTML fragment
-    import(`../content/blog/compiled/${slug}.html?raw`)
+    import(`../content/compiled/blog/${slug}.html?raw`)
       .then((mod) => {
         setHtmlContent(mod.default);
         setIsLoading(false);
@@ -93,7 +93,7 @@ const BlogPost = () => {
   };
 
   const relatedPosts = getRelatedPosts();
-  const isStub = post.slug !== "krantz-mathematicians-survival-guide" && post.slug !== "undergrad-resources";
+  const isStub = !!post.legacyUrl;
 
   return (
     <AcademicLayout showSidebar={false}>

@@ -1,4 +1,4 @@
-import tomlSource from "./links.toml?raw";
+import tomlSource from "@content/databases/links.toml?raw";
 import { parseToml } from "./_toml";
 
 export interface LinkEntry {

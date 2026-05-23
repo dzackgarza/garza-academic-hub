@@ -1,4 +1,4 @@
-import tomlSource from "./galleries.toml?raw";
+import tomlSource from "@content/databases/galleries.toml?raw";
 import { parseToml } from "./_toml";
 
 export interface GalleryImage {

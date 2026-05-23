@@ -1,4 +1,4 @@
-import tomlSource from "./items.toml?raw";
+import tomlSource from "@content/databases/items.toml?raw";
 import { parseToml } from "./_toml";
 import type { AcademicCardProps } from "@/components/AcademicCard";
 

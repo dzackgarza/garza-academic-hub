@@ -17,7 +17,7 @@ interface Post {
   image?: string;
 }
 
-import rawPosts from "@/content/blog/compiled/posts.json";
+import rawPosts from "@/content/compiled/blog/posts.json";
 
 const posts: Post[] = (rawPosts as any[]).map((p) => ({
   ...p,
