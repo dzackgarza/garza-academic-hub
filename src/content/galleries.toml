@@ -1,0 +1,177 @@
+# Image galleries. Each [[galleries]] block becomes a section in the Gallery page.
+# Add new sections or images by appending blocks below. The Gallery page renders
+# them in declaration order. Caption is required for accessibility (alt text).
+
+[[galleries]]
+id = "hand-drawn"
+title = "Hand-Drawn"
+description = "Sketches used in lecture notes and seminar talks."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/sphere-v-ball-correct.png"
+caption = "Low-dimensional variants of the sphere and ball."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/mobius-band.png"
+caption = "The classic Möbius band."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/klein-bottle.png"
+caption = "The classic Klein bottle."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/foliation-diagram.png"
+caption = "Fibers of a fiber bundle foliating the total space."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/group-swarm.png"
+caption = "Group swarm."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/J_Holo_Curve.png"
+caption = "Embedded J-holomorphic curve."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/Embedded_Blowup.png"
+caption = "Intersecting curves on a hyperplane."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/Embedded_J_holo_curve.png"
+caption = "An embedded curve with marked points."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/cell_complex_gluing.png"
+caption = "Building a cell complex."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/tangent_space_lie_group.png"
+caption = "Tangent space at the identity."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/derived_yoga.png"
+caption = "Embedding a category into a graded category."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/moduli_of_curves.png"
+caption = "Moduli of curves."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/handle_slide.png"
+caption = "Handle slides."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/finger_moves.png"
+caption = "Finger moves."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/QuadricChart.png"
+caption = "Quadric surfaces."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/drawings/sphere_bundle.png"
+caption = "A family of spheres over a sphere."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/sseq_colors.jpeg"
+caption = "Spectral sequence."
+
+[[galleries]]
+id = "digital"
+title = "Digital"
+description = "Computer-generated diagrams and figures (Sage, TikZ, and friends)."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/manifold_charts.png"
+caption = "Manifold charts."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/lattice.png"
+caption = "Lattice."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/double_complex.png"
+caption = "Double complex."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/korbi.png"
+caption = "Korbi."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/bundle_over_pn.png"
+caption = "A bundle over projective space."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/tangent_identity.jpeg"
+caption = "Tangent at the identity."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/morse_decompose.png"
+caption = "Morse decomposition."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/blowup_one.png"
+caption = "Blowups."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/tikz-twisted-sequence.jpg"
+caption = "A 'twisted' long exact sequence."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/tikz-lift.jpg"
+caption = "Fibers of the exponential map — universal cover of S¹."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/tikz-projection.jpg"
+caption = "Stereographic projection from the sphere onto the plane."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/SSDoubleComplexDifferentialPatternOutOfNode.jpg"
+caption = "Differentials in a spectral sequence."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/section_point.png"
+caption = "Conic section: degenerate case of a point."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/section_lines.png"
+caption = "Conic section: degenerate case of two lines."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/section_circle.png"
+caption = "Conic section: a circle."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/section_ellipse.png"
+caption = "Conic section: an ellipse."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/section_hyperbola.png"
+caption = "Conic section: a hyperbola."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/section_parabola.png"
+caption = "Conic section: a parabola."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/intersect-cylinder-sphere.jpg"
+caption = "Intersection of a cylinder and a sphere."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/cv-3dfaceplot.jpg"
+caption = "3D plot of a 2D image, using pixel intensity as height."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/cv-face-normals.jpg"
+caption = "Dynamically generating face normals from pixel intensity."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/cv-eigenfaces.jpg"
+caption = "'Eigenface' SVD decomposition, sorted by singular value."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/cv-segmentation.jpg"
+caption = "Image segmentation for classification."
+
+[[galleries.images]]
+src = "https://dzackgarza.com/assets/images/cv-matching.jpg"
+caption = "Matching points via projective and epipolar geometry."

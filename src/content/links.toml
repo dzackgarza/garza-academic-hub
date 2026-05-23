@@ -1,0 +1,174 @@
+# Curated external link groups rendered on the Writing page.
+# Each [[groups]] block becomes a titled list. Append new groups or links freely.
+
+[[groups]]
+id = "notes-by-others"
+title = "Notes by Others"
+description = "If you share LaTeX notes, let me know and I'll happily link your site here."
+
+[[groups.links]]
+label = "Arun Debray"
+href = "https://web.ma.utexas.edu/users/a.debray/lecture_notes/"
+note = "Lecture notes."
+
+[[groups.links]]
+label = "Gilles Castel"
+href = "https://castel.dev/notes"
+note = "Lecture notes."
+
+[[groups.links]]
+label = "Evan Chen"
+href = "https://web.evanchen.cc/coursework.html"
+note = "Coursework — and The Infinite Napkin."
+
+[[groups.links]]
+label = "Dexter Chua"
+href = "http://dec41.user.srcf.net/notes/"
+note = "Cambridge course notes."
+
+[[groups.links]]
+label = "Aleksander Shmakov"
+href = "http://shmakov.us/"
+
+[[groups.links]]
+label = "Anton Geraschenko"
+href = "https://stacky.net/wiki/index.php?title=Course_notes"
+
+[[groups.links]]
+label = "Chris Schommer-Pries"
+href = "https://sites.google.com/site/chrisschommerpriesmath/Home/course-notes-and-materials"
+
+[[groups.links]]
+label = "Dongryul Kim"
+href = "https://github.com/Dongryul-Kim/harvard_notes"
+note = "Live-tex'd Harvard notes."
+
+[[groups.links]]
+label = "Zoë Farmer"
+href = "https://www.dataleek.io/archive/pages/latex-notes.html"
+
+[[groups.links]]
+label = "Akhil Mathew"
+href = "http://math.uchicago.edu/~amathew/notes.html"
+
+[[groups.links]]
+label = "Henry Liu"
+href = "https://people.maths.ox.ac.uk/liu/notes/"
+
+[[groups]]
+id = "tools"
+title = "Tools I Use"
+description = "Editor, conversion, and diagram tools for live-texing."
+
+[[groups.links]]
+label = "Neovim"
+href = "https://neovim.io/"
+note = "Primary editor."
+
+[[groups.links]]
+label = "Ranger"
+href = "https://github.com/ranger/ranger"
+note = "File manager."
+
+[[groups.links]]
+label = "Pandoc"
+href = "https://pandoc.org/"
+note = "PDF/HTML conversion."
+
+[[groups.links]]
+label = "Inkscape"
+href = "https://inkscape.org/"
+note = "Freehand stylus drawings."
+
+[[groups.links]]
+label = "q.uiver"
+href = "https://q.uiver.app/"
+note = "TikzCD commutative diagrams."
+
+[[groups.links]]
+label = "Mathcha"
+href = "https://www.mathcha.io/"
+note = "Hand-drawn → TikZ."
+
+[[groups.links]]
+label = "QTikz / KTikz"
+href = "https://github.com/fhackenberger/ktikz"
+
+[[groups.links]]
+label = "coc.nvim"
+href = "https://github.com/neoclide/coc.nvim"
+
+[[groups.links]]
+label = "quicktex (fork)"
+href = "https://github.com/dzackgarza/quicktex"
+note = "Shortcut expansion."
+
+[[groups]]
+id = "configs"
+title = "My Configs"
+description = "Personal dotfiles, macros, and snippets."
+
+[[groups.links]]
+label = "Notes repository"
+href = "https://github.com/dzackgarza/Notes"
+
+[[groups.links]]
+label = "vim config"
+href = "https://github.com/dzackgarza/dotfiles/blob/master/.config-sync/nvim/init.vim"
+
+[[groups.links]]
+label = "Pandoc templates & filters"
+href = "https://github.com/dzackgarza/dotfiles/tree/master/.pandoc"
+
+[[groups.links]]
+label = "LaTeX macros (general)"
+href = "https://github.com/dzackgarza/dotfiles/blob/master/.pandoc/custom/latexmacs.tex"
+
+[[groups.links]]
+label = "LaTeX macros (categories)"
+href = "https://github.com/dzackgarza/dotfiles/blob/master/.pandoc/custom/latexmacs_categories.tex"
+
+[[groups.links]]
+label = "LaTeX macros (commands)"
+href = "https://github.com/dzackgarza/dotfiles/blob/master/.pandoc/custom/latexmacs_commands.tex"
+
+[[groups.links]]
+label = "Quicktex shortcut dictionary"
+href = "https://github.com/dzackgarza/dotfiles/blob/master/.config-sync/nvim/after/ftplugin/pandoc/quicktex_dict.vim"
+
+[[groups]]
+id = "resources"
+title = "Useful Resources"
+description = "Other tools and references for live-texing."
+
+[[groups.links]]
+label = "Mathpix snipping tool"
+href = "https://mathpix.com/"
+note = "Convert image clips to TeX."
+
+[[groups.links]]
+label = "Mathpix Snip Notes"
+href = "https://snip.mathpix.com/"
+note = "Convert entire PDFs / book pages."
+
+[[groups.links]]
+label = "Obsidian"
+href = "https://obsidian.md/"
+note = "Loose research notes."
+
+[[groups.links]]
+label = "Gummi"
+href = "https://github.com/alexandervdm/gummi"
+note = "Side-by-side LaTeX + PDF preview."
+
+[[groups.links]]
+label = "Castel: live-texing with vim"
+href = "https://castel.dev/post/lecture-notes-1/"
+
+[[groups.links]]
+label = "Castel: Inkscape figures"
+href = "https://castel.dev/post/lecture-notes-2/"
+
+[[groups.links]]
+label = "Schommer-Pries on Secret Blogging Seminar"
+href = "https://sbseminar.wordpress.com/2010/02/25/chromatic-homotopy-ii-or-how-i-learned-to-stop-worrying-and-love-latexing-in-real-time/"
