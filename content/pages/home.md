@@ -6,12 +6,12 @@ You can find my CV [here](#) and preprints of my papers on [Arxiv](https://arxiv
 
 ## Research
 
-::: {.component type="card-grid" filter="type=paper" columns="2"}
+::: {.component type="collection" source="databases/items.toml" layout="grid" filter="type=paper" columns="2"}
 :::
 
 ## Talks & Notes
 
 Browse items from my expository writing and conference talks.
 
-::: {.component type="scroll-gallery" filter="type=talk,type=notes" columns="3" rows="3"}
+::: {.component type="collection" source="databases/items.toml" layout="scroller" filterable="true" filter="type=talk,type=notes" columns="3" rows="3"}
 :::

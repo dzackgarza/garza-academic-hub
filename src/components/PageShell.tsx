@@ -1,18 +1,33 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import CardGrid from "@/components/CardGrid";
 import FilteredGallery from "@/components/FilteredGallery";
-import { allItems } from "@/content/items";
-import type { ContentItem } from "@/content/items";
+import AcademicCollection from "@/components/AcademicCollection";
+import { parseToml } from "@/content/_toml";
+
+// ---------------------------------------------------------------------------
+// Dynamic module matching
+// ---------------------------------------------------------------------------
+
+const tomlModules = import.meta.glob("../../content/databases/*.toml", {
+  query: "raw",
+  import: "default",
+}) as Record<string, () => Promise<string>>;
+
+function findModuleKey(source: string): string | null {
+  const normalized = source.replace(/^(content\/|databases\/)/, ""); // e.g. "items.toml"
+  for (const key of Object.keys(tomlModules)) {
+    if (key.endsWith("/" + normalized)) {
+      return key;
+    }
+  }
+  return null;
+}
 
 // ---------------------------------------------------------------------------
 // Filter helpers
 // ---------------------------------------------------------------------------
 
-/**
- * Parse a filter string like "type=paper" or "type=talk,type=notes" into
- * a list of {key, value} conditions. Items matching ANY condition are kept.
- */
 function parseFilter(filter: string): Array<{ key: string; value: string }> {
   return filter
     .split(",")
@@ -24,43 +39,100 @@ function parseFilter(filter: string): Array<{ key: string; value: string }> {
     });
 }
 
-function applyFilter(items: ContentItem[], filter: string): ContentItem[] {
+function applyFilter(items: any[], filter: string): any[] {
   if (!filter) return items;
   const conditions = parseFilter(filter);
   return items.filter((item) =>
-    conditions.some(({ key, value }) => (item as Record<string, unknown>)[key] === value)
+    conditions.some(({ key, value }) => {
+      const itemVal = (item as Record<string, unknown>)[key];
+      if (Array.isArray(itemVal)) {
+        return itemVal.includes(value);
+      }
+      return itemVal === value;
+    })
   );
 }
 
 // ---------------------------------------------------------------------------
 // Component registry
-// Maps data-component value → renderer that receives the placeholder element
-// and returns a React node to mount into it.
+// Maps data-component value → renderer that receives the placeholder element,
+// parsed items, and types, then returns a React node.
 // ---------------------------------------------------------------------------
 
-type SlotRenderer = (el: HTMLElement) => React.ReactNode;
+type SlotRenderer = (el: HTMLElement, items: any[], types?: any[]) => React.ReactNode;
 
 const REGISTRY: Record<string, SlotRenderer> = {
-  "card-grid": (el) => {
+  "collection": (el, items, types) => {
     const filter = el.dataset.filter ?? "";
-    const columns = (parseInt(el.dataset.columns ?? "2", 10) || 2) as 2 | 3;
-    const items = applyFilter(allItems, filter);
-    return <CardGrid items={items} columns={columns} />;
+    const layout = (el.dataset.layout ?? "grid") as "grid" | "scroller";
+    const filterable = el.dataset.filterable === "true";
+    const columns = (parseInt(el.dataset.columns ?? "3", 10) || 3) as 2 | 3;
+    const rows = (parseInt(el.dataset.rows ?? "1", 10) || 1) as 1 | 2 | 3;
+
+    const typeMap = new Map((types ?? []).map((t) => [t.key, t]));
+    const mappedItems = items.map((item) => ({
+      ...item,
+      icon: item.icon ?? (typeMap.get(item.type)?.icon as any) ?? "paper",
+    }));
+
+    const filteredItems = applyFilter(mappedItems, filter);
+
+    return (
+      <AcademicCollection
+        items={filteredItems}
+        types={types}
+        layout={layout}
+        filterable={filterable}
+        columns={columns}
+        rows={rows}
+      />
+    );
   },
 
-  "scroll-gallery": (el) => {
+  // Backward compatibility delegates
+  "card-grid": (el, items, types) => {
+    const filter = el.dataset.filter ?? "";
+    const columns = (parseInt(el.dataset.columns ?? "2", 10) || 2) as 2 | 3;
+
+    const typeMap = new Map((types ?? []).map((t) => [t.key, t]));
+    const mappedItems = items.map((item) => ({
+      ...item,
+      icon: item.icon ?? (typeMap.get(item.type)?.icon as any) ?? "paper",
+    }));
+
+    const filteredItems = applyFilter(mappedItems, filter);
+
+    return <CardGrid items={filteredItems} columns={columns} />;
+  },
+
+  "scroll-gallery": (el, items, types) => {
     const filter = el.dataset.filter ?? "";
     const columns = (parseInt(el.dataset.columns ?? "3", 10) || 3) as 2 | 3;
     const rows = (parseInt(el.dataset.rows ?? "3", 10) || 3) as 2 | 3;
-    const items = applyFilter(allItems, filter);
-    return <FilteredGallery items={items} columns={columns} rows={rows} />;
+
+    const typeMap = new Map((types ?? []).map((t) => [t.key, t]));
+    const mappedItems = items.map((item) => ({
+      ...item,
+      icon: item.icon ?? (typeMap.get(item.type)?.icon as any) ?? "paper",
+    }));
+
+    const filteredItems = applyFilter(mappedItems, filter);
+
+    return (
+      <FilteredGallery
+        items={filteredItems}
+        types={types}
+        columns={columns}
+        rows={rows}
+      />
+    );
   },
 };
 
 // ---------------------------------------------------------------------------
 // PageShell
-// Renders compiled Pandoc HTML and mounts React components into every
-// [data-component] placeholder the Lua filter emitted.
+// Renders compiled Pandoc HTML, asynchronously loads required TOML
+// data sources dynamically, then mounts React collection components.
 // ---------------------------------------------------------------------------
 
 interface PageShellProps {
@@ -69,8 +141,56 @@ interface PageShellProps {
 
 const PageShell = ({ html }: PageShellProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [data, setData] = useState<Record<string, { items: any[]; types?: any[] }>>({});
+  const [loading, setLoading] = useState(true);
 
+  // 1. Identify and fetch all required TOML sources
   useEffect(() => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    const slots = Array.from(tempDiv.querySelectorAll<HTMLElement>("[data-component]"));
+    const sources = Array.from(
+      new Set(slots.map((el) => el.dataset.source || "databases/items.toml"))
+    );
+
+    let isMounted = true;
+    setLoading(true);
+
+    Promise.all(
+      sources.map(async (source) => {
+        const modKey = findModuleKey(source);
+        if (!modKey) {
+          console.warn(`[PageShell] TOML source not found: "${source}"`);
+          return { source, data: { items: [] } };
+        }
+        try {
+          const rawText = await tomlModules[modKey]();
+          const parsed = parseToml<{ items: any[]; types?: any[] }>(rawText);
+          return { source, data: parsed };
+        } catch (err) {
+          console.error(`[PageShell] Failed to load/parse TOML source "${source}":`, err);
+          return { source, data: { items: [] } };
+        }
+      })
+    ).then((results) => {
+      if (!isMounted) return;
+      const dataMap: Record<string, { items: any[]; types?: any[] }> = {};
+      results.forEach(({ source, data }) => {
+        dataMap[source] = data;
+      });
+      setData(dataMap);
+      setLoading(false);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [html]);
+
+  // 2. Mount roots once loading finishes
+  useEffect(() => {
+    if (loading) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -80,25 +200,28 @@ const PageShell = ({ html }: PageShellProps) => {
 
     const roots = slots.flatMap((el) => {
       const type = el.dataset.component!;
-      const renderer = REGISTRY[type];
-      if (!renderer) {
-        console.warn(`[PageShell] Unknown component type: "${type}"`);
-        return [];
-      }
+      const source = el.dataset.source || "databases/items.toml";
+      const sourceData = data[source] || { items: [] };
+
+      // Default to "collection" if the specified type isn't card-grid or scroll-gallery
+      const renderer = REGISTRY[type] || REGISTRY["collection"];
+      if (!renderer) return [];
+
       const root = createRoot(el);
-      root.render(renderer(el));
+      root.render(renderer(el, sourceData.items, sourceData.types));
       return [root];
     });
 
     return () => {
       roots.forEach((root) => root.unmount());
     };
-  }, [html]);
+  }, [loading, html, data]);
 
   return (
     <div
       ref={containerRef}
       dangerouslySetInnerHTML={{ __html: html }}
+      className={cn("w-full", loading && "opacity-60 transition-opacity duration-200")}
     />
   );
 };
