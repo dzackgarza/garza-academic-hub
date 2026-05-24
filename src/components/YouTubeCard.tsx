@@ -8,8 +8,12 @@ interface YouTubeCardProps {
 /** Extracts the YouTube video ID from a watch URL.
  *  e.g. "https://www.youtube.com/watch?v=PuH5VKlhH_Y" → "PuH5VKlhH_Y" */
 function extractYouTubeId(url: string): string | null {
-  const parsed = URL.parse(url);
-  if (!parsed) return null;
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
   if (parsed.hostname?.includes('youtube.com')) {
     return parsed.searchParams.get('v');
   }

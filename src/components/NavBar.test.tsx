@@ -1,19 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 
-// Mock react-router-dom — Link renders as <a>, useLocation returns root path
-vi.mock('react-router-dom', () => ({
-  useLocation: () => ({ pathname: '/' }),
-  Link: ({ children, to, className, ...props }: any) => (
-    <a href={to} className={className} {...props}>
-      {children}
-    </a>
-  ),
-}));
-
-// Mock navigation TOML data — use a static set instead of the parsed file
+// Mock nav data source — static test data instead of filesystem TOML
 vi.mock('@/content/navigation', () => ({
   navItems: [
     { label: 'Research', path: '/research' },
@@ -21,6 +12,14 @@ vi.mock('@/content/navigation', () => ({
     { label: 'Notes', path: '/notes' },
   ],
 }));
+
+function renderWithRouter(path = '/') {
+  return render(
+    <MemoryRouter initialEntries={[path]}>
+      <NavBar />
+    </MemoryRouter>,
+  );
+}
 
 function getNavs() {
   const navs = document.querySelectorAll<HTMLElement>('nav');
@@ -32,7 +31,7 @@ function getNavs() {
 
 describe('NavBar', () => {
   it('renders desktop nav links from navItems data source', () => {
-    render(<NavBar />);
+    renderWithRouter();
     const { desktopNav } = getNavs();
 
     expect(within(desktopNav).getByText('Research')).toBeInTheDocument();
@@ -42,7 +41,7 @@ describe('NavBar', () => {
 
   it('shows mobile nav when hamburger is toggled open', async () => {
     const user = userEvent.setup();
-    render(<NavBar />);
+    renderWithRouter();
 
     // Before click: mobile nav is NOT in the DOM
     expect(document.querySelector('nav.md\\:hidden')).not.toBeInTheDocument();
@@ -51,10 +50,6 @@ describe('NavBar', () => {
     await user.click(screen.getByRole('button'));
 
     // After click: mobile nav IS in the DOM with all links
-    const mobileNav = document.querySelector<HTMLElement>('nav.md\\:hidden');
-
-    // But actually the class might be a long Tailwind string.
-    // Let's just check that the second nav exists and has items.
     const { mobileNav: mn } = getNavs();
     expect(mn).toBeInTheDocument();
     expect(within(mn).getByText('Research')).toBeInTheDocument();
@@ -63,26 +58,23 @@ describe('NavBar', () => {
   });
 
   it('marks active link with different class from inactive links', () => {
-    // Active class: "text-foreground font-medium" (on / path)
-    // Inactive class: "text-muted-foreground hover:text-foreground"
-    render(<NavBar />);
+    // Render at /research — that link should have the active class
+    renderWithRouter('/research');
     const { desktopNav } = getNavs();
 
-    // Home link rendered by the brand, not by navItems — so /research is inactive
-    const researchLink = within(desktopNav).getByText('Research').closest('a')!;
-    const talksLink = within(desktopNav).getByText('Talks').closest('a')!;
+    const activeLink = within(desktopNav).getByText('Research').closest('a')!;
+    const inactiveLink = within(desktopNav).getByText('Talks').closest('a')!;
 
-    // Both are inactive when pathname='/'
-    expect(researchLink.className).toContain('text-muted-foreground');
-    expect(talksLink.className).toContain('text-muted-foreground');
-    // Neither has the active class
-    expect(researchLink.className).not.toContain('font-medium');
-    expect(talksLink.className).not.toContain('font-medium');
+    // Active link gets the active class
+    expect(activeLink.className).toContain('text-foreground');
+    expect(activeLink.className).toContain('font-medium');
+    // Inactive link gets the muted class
+    expect(inactiveLink.className).toContain('text-muted-foreground');
   });
 
   it('closes mobile nav when a nav link is clicked', async () => {
     const user = userEvent.setup();
-    render(<NavBar />);
+    renderWithRouter();
 
     // Open mobile menu
     await user.click(screen.getByRole('button'));

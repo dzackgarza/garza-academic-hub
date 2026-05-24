@@ -32,20 +32,38 @@ describe('ImageGallery', () => {
   });
 
   describe('grid layout', () => {
-    it('renders all images in a grid', () => {
+    it('renders a YouTube card when an item has type=youtube', () => {
       const gallery: Gallery = {
         id: 'test',
         title: 'Test Gallery',
         images: [
-          { src: '/a.jpg', caption: 'Alpha' },
-          { src: '/b.jpg', caption: 'Beta' },
+          {
+            type: 'youtube',
+            url: 'https://www.youtube.com/watch?v=PuH5VKlhH_Y',
+            caption: 'Research Talk',
+          },
         ],
       };
 
       render(<ImageGallery gallery={gallery} layout="grid" />);
 
-      expect(screen.getByText('Alpha')).toBeInTheDocument();
-      expect(screen.getByText('Beta')).toBeInTheDocument();
+      // Grid container renders with correct CSS class
+      expect(document.querySelector('div.grid')).not.toBeNull();
+
+      // Caption renders
+      expect(screen.getByText('Research Talk')).toBeInTheDocument();
+
+      // Link points to YouTube
+      const link = screen.getByTitle('Research Talk');
+      expect(link).toHaveAttribute(
+        'href',
+        'https://www.youtube.com/watch?v=PuH5VKlhH_Y',
+      );
+
+      // Thumbnail img points to YouTube thumbnail
+      const img = link.querySelector('img');
+      expect(img).not.toBeNull();
+      expect(img!.getAttribute('src')).toContain('img.youtube.com/vi/PuH5VKlhH_Y');
     });
   });
 });

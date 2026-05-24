@@ -1,10 +1,16 @@
 import { test, expect } from '@playwright/test';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:8080';
 const SCREENSHOT_DIR =
   process.env.SCREENSHOT_DIR ||
-  path.resolve(__dirname, '..', 'test-results', 'screenshots');
+  path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    '..',
+    'test-results',
+    'screenshots',
+  );
 
 const ROUTES = [
   { path: '/', name: 'home' },

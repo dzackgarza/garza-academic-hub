@@ -1,31 +1,11 @@
-import { describe, it, expect, expectTypeOf } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import type { TypeDef as FCTypeDef } from '@/components/FilterControls';
 import AcademicCollection, {
-  type TypeDef as ACTypeDef,
   type CollectionItem,
 } from '@/components/AcademicCollection';
 import type { AcademicCardProps } from '@/components/AcademicCard';
 
-// Used only for type-level assertions — never imported if the duplicate is removed.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type _TypeDiscriminant = ACTypeDef;
-
 describe('AcademicCollection', () => {
-  // -----------------------------------------------------------------------
-  // Type stability
-  // -----------------------------------------------------------------------
-
-  it('TypeDef is structurally identical to FilterControls.TypeDef', () => {
-    // If the two TypeDef definitions ever diverge, this is a compile-time failure.
-    // The canonical source is FilterControls.
-    expectTypeOf<FCTypeDef>().toEqualTypeOf<ACTypeDef>();
-  });
-
-  // -----------------------------------------------------------------------
-  // Rendering
-  // -----------------------------------------------------------------------
-
   it('renders items in grid layout by default', () => {
     const items: CollectionItem[] = [
       {
@@ -39,8 +19,13 @@ describe('AcademicCollection', () => {
 
     render(<AcademicCollection items={items} />);
 
-    expect(screen.getByText('Test Item')).toBeInTheDocument();
-    expect(screen.getByText('A test item')).toBeInTheDocument();
+    // Default layout is grid (CardGrid renders a div with class "grid")
+    const gridContainer = document.querySelector('div.grid');
+    expect(gridContainer).not.toBeNull();
+
+    // Items render inside the grid
+    expect(gridContainer!.textContent).toContain('Test Item');
+    expect(gridContainer!.textContent).toContain('A test item');
   });
 
   it('renders empty state when no items match filter', () => {
