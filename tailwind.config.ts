@@ -7,7 +7,7 @@ export default {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-    './content/compiled/**/*.html',
+    './.generated/**/*.html',
     './content/templates/**/*.html',
   ],
   prefix: '',

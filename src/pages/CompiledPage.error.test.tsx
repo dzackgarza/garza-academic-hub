@@ -17,7 +17,7 @@ vi.mock('react-router-dom', () => ({
 }));
 
 // Mock the content module so that accessing `default` throws
-vi.mock('../../content/compiled/pages/home.html?raw', () => {
+vi.mock('../../.generated/pages/home.html?raw', () => {
   const mod: Record<string, unknown> = {};
   Object.defineProperty(mod, 'default', {
     get: () => {
