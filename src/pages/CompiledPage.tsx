@@ -38,7 +38,7 @@ const CompiledPage = () => {
     setError(null);
     mountedRef.current = true;
 
-    import(`../content/compiled/pages/${config.html}.html?raw`)
+    import(`../../content/compiled/pages/${config.html}.html?raw`)
       .then((mod) => {
         if (!mountedRef.current) return;
         setHtml(mod.default);

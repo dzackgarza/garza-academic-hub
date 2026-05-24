@@ -17,7 +17,7 @@ vi.mock('react-router-dom', () => ({
 }));
 
 // Return valid HTML content
-vi.mock('../content/compiled/pages/home.html?raw', () => ({
+vi.mock('../../content/compiled/pages/home.html?raw', () => ({
   default: '<p data-testid="content">Hello from compiled content</p>',
 }));
 

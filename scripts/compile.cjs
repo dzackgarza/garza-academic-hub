@@ -9,8 +9,8 @@ const staticPagesDir = path.join(contentDir, 'pages');
 const templatesDir = path.join(contentDir, 'templates');
 const filtersDir = path.join(contentDir, 'filters');
 
-const compiledBlogDir = path.join(__dirname, '../src/content/compiled/blog');
-const compiledPagesDir = path.join(__dirname, '../src/content/compiled/pages');
+const compiledBlogDir = path.join(__dirname, '../content/compiled/blog');
+const compiledPagesDir = path.join(__dirname, '../content/compiled/pages');
 
 // Ensure compiled target directories exist
 if (!fs.existsSync(compiledBlogDir)) {

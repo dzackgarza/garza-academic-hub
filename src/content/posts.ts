@@ -1,4 +1,4 @@
-import rawPosts from "@/content/compiled/blog/posts.json";
+import rawPosts from '../../content/compiled/blog/posts.json';
 
 export interface Post {
   slug: string;
