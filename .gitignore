@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 *.png
+# Track Playwright visual regression golden snapshots
+!tests/*.spec.ts-snapshots/*.png
+!tests/**/__snapshots__/*.png
 
 # Editor directories and files
 .vscode/*

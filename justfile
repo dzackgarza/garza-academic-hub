@@ -30,14 +30,25 @@ compile:
 
 # ─── Tests ─────────────────────────────────────────────────────────────────────
 
+# Unit tests (vitest)
 test:
     npx vitest --run
+
+# End-to-end visual regression tests (Playwright)
+# Generates golden screenshots first, then asserts against them on subsequent runs
+test:e2e:
+    npx playwright test
+
+# Update golden snapshot baselines for visual regression tests
+# Run this AFTER verifying the site renders correctly
+update-snapshots:
+    npx playwright test --update-snapshots
 
 # Typecheck only (no emit)
 typecheck:
     npx tsc --noEmit
 
-# Full check: tests + typecheck + production build
+# Full check: unit tests + typecheck + production build
 check: test typecheck
     npx vite build
 
