@@ -34,8 +34,15 @@ deploy:
     @rsync -av --delete dist/ /var/www/html/website/
     @echo "Deployment complete."
 
+# [RETIRED] The persistent dev server is retired. Use static Nginx deployment.
 run:
-    fuser -k 8080/tcp 2>/dev/null || true; sleep 0.3; npx vite preview --host :: --port 8080 --strictPort
+    @echo "ERROR: The persistent dev server has been retired."
+    @echo "Please compile statically and serve via Nginx by running:"
+    @echo "  just deploy"
+    @echo ""
+    @echo "To run staging E2E tests, run:"
+    @echo "  just test-staging"
+    @exit 1
 
 # ─── Tests ─────────────────────────────────────────────────────────────────────
 
