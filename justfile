@@ -40,10 +40,15 @@ test: compile build
 test-e2e:
     npx playwright test
 
-# Update golden snapshot baselines for visual regression tests
-# Run this AFTER verifying the site renders correctly
-update-snapshots:
-    npx playwright test --update-snapshots
+# Update golden snapshot baselines for visual regression tests.
+# Requires a milestone or version tag — golden images must not be overwritten
+# without declaring intent. The pre-commit hook enforces this at commit time.
+# Usage:  just update-snapshots MILESTONE=v0.2.0
+#         just update-snapshots MILESTONE="redesign: home page layout"
+update-snapshots milestone:
+    @test -n "{{milestone}}" || { echo 'ERROR: milestone/version required.'; echo 'Usage: just update-snapshots MILESTONE=<version-or-description>'; exit 1; }
+    @echo 'Updating golden snapshots for: {{milestone}}'
+    @npx playwright test --update-snapshots
 
 # Typecheck only (no emit)
 typecheck:
@@ -57,3 +62,8 @@ check: test typecheck
 
 list-posts:
     @echo "Blog posts:"; ls content/blog/*.md; echo ""; echo "Pages:"; ls content/pages/*.md; echo ""; echo "TOML databases:"; ls content/databases/*.toml
+
+# Configure git to use .githooks/ for pre-commit checks
+setup-hooks:
+    git config core.hooksPath .githooks
+    @echo "Git hooks configured from .githooks/"

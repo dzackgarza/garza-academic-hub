@@ -1,0 +1,56 @@
+#!/bin/sh
+# Pre-commit hook — golden snapshot guard
+#
+# Rejects commits that contain modified Playwright snapshot images
+# unless the commit message references a milestone or version bump.
+#
+# Bypass with: git commit --no-verify  (not recommended)
+
+SNAPSHOT_PATTERN='^tests/.*\.spec\.ts-snapshots/.*\.png$'
+
+# Check if any snapshot files are staged (added or modified)
+staged_snapshots=$(git diff --cached --name-only --diff-filter=AM | grep -E "$SNAPSHOT_PATTERN" || true)
+
+if [ -z "$staged_snapshots" ]; then
+    # No snapshot changes — nothing to enforce
+    exit 0
+fi
+
+# Allow merge commits automatically (auto-generated messages)
+commit_msg_file=".git/COMMIT_EDITMSG"
+if [ -f "$commit_msg_file" ] && head -1 "$commit_msg_file" | grep -qiE '^Merge '; then
+    exit 0
+fi
+
+# Read the full commit message
+commit_msg=""
+if [ -f "$commit_msg_file" ]; then
+    commit_msg=$(cat "$commit_msg_file")
+fi
+
+# Check for milestone or version reference anywhere in the message
+if echo "$commit_msg" | grep -qiE \
+    '(v[0-9]+\.[0-9]+(\.[0-9]+)?|milestone(\s|:|$)|version(\s|:|$)|version bump|bump version|release(\s|:|$))'
+then
+    exit 0
+fi
+
+echo ""
+echo "ERROR: Golden snapshot images are staged but the commit message"
+echo "does not reference a milestone or version bump."
+echo ""
+echo "Staged snapshot files:"
+echo "$staged_snapshots" | sed 's/^/  /'
+echo ""
+echo "Add one of these to your commit message:"
+echo "  vX.Y.Z              — semver tag (e.g. v0.2.0)"
+echo "  milestone: <desc>   — milestone reference"
+echo "  version: <vX.Y.Z>  — version declaration"
+echo "  release: <vX.Y.Z>  — release reference"
+echo ""
+echo "Examples:"
+echo "  git commit -m \"feat: redesign gallery page (v0.2.0)\""
+echo "  git commit -m \"chore: update golden snapshots for milestone=v0.2.0\""
+echo ""
+echo "To bypass this check (not recommended): git commit --no-verify"
+exit 1
