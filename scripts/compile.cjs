@@ -465,11 +465,15 @@ for (const file of blogFiles) {
 
   try {
     console.log(`- Compiling blog post ${blogEntry.slug} using pandoc...`);
-    const html = compileWithDefaults(
+    const html = runPandoc(
       blogEntry.filePath,
-      blogEntry.template,
-      postTemplates,
+      [
+        `--defaults=${defaultsPathFor(blogEntry.filePath, blogEntry.template, postTemplates)}`,
+        `--metadata=pg_slug:${blogEntry.slug}`,
+        `--metadata=pg_title:${blogEntry.entry.title.replace(/"/g, '\\"')}`,
+      ],
       blogEntry.rawContent,
+      { env: { PANDOC_SITE_DATA_DIR: dataDir, BASE_URL: process.env.BASE_URL ?? '' } },
     );
     fs.writeFileSync(blogEntry.output, html, 'utf8');
   } catch (err) {

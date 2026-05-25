@@ -84,3 +84,133 @@
   border-left: 3px solid hsl(var(--callout-border));
   @apply py-3 px-4 rounded-r-sm text-sm my-4;
 }
+/* Blog Post Grid: article + optional TOC sidebar inside profile-card layout */
+/* Body typography owned by Tailwind prose plugin — do not duplicate. */
+
+.post-layout-grid {
+  min-width: 0;
+}
+
+.post-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .post-layout-grid:has(.post-sidebar) {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .post-layout-grid:has(.post-sidebar) .post-sidebar {
+    display: block;
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+}
+
+/* Post metadata — beyond prose's scope */
+.post-date {
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+  margin: 0.25rem 0 !important;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0.5rem 0 0 0 !important;
+}
+
+.post-tags li {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+/* Table of Contents */
+.toc-card {
+  @apply rounded-xl border bg-card text-card-foreground p-5 shadow-sm space-y-4;
+}
+
+.toc-title {
+  @apply text-xs font-bold uppercase tracking-wider text-muted-foreground m-0 p-0;
+}
+
+.toc-card nav[role='doc-toc'] > ul {
+  @apply space-y-1 list-none p-0 m-0;
+}
+
+.toc-card nav[role='doc-toc'] ul li {
+  @apply p-0 m-0;
+}
+
+.toc-card nav[role='doc-toc'] ul li a {
+  @apply block text-xs text-muted-foreground hover:text-primary transition-colors py-1 pl-2 border-l border-transparent hover:border-primary font-medium no-underline hover:no-underline;
+}
+
+/* Post navigation: previous/next + related */
+.post-nav-wrapper {
+  @apply mt-12 mb-8;
+}
+
+.post-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.post-nav-prev,
+.post-nav-next {
+  @apply flex-1 min-w-[12rem] rounded-lg border border-border p-4 text-sm no-underline hover:border-primary transition-colors;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.post-nav-next {
+  text-align: right;
+}
+
+.post-nav-direction {
+  @apply text-xs font-medium text-muted-foreground uppercase tracking-wide;
+}
+
+.post-nav-title {
+  @apply text-sm font-medium text-foreground;
+}
+
+.post-nav-prev:hover .post-nav-title,
+.post-nav-next:hover .post-nav-title {
+  @apply text-primary;
+}
+
+.post-nav-related {
+  @apply w-full mt-6 pt-6 border-t border-border;
+}
+
+.post-nav-related-title {
+  @apply text-sm font-semibold mb-3;
+}
+
+.post-nav-related ul {
+  @apply list-none p-0 m-0 flex flex-wrap gap-x-8 gap-y-2;
+}
+
+.post-nav-related li {
+  @apply text-sm;
+}
+
+.post-nav-related li a {
+  @apply text-primary no-underline hover:underline;
+}
