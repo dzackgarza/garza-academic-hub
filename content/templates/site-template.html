@@ -8,6 +8,37 @@
     </div>
   </nav>
 
+  $if(date)$
+  <main class="post-layout-grid">
+    <article class="post-content prose dark:prose-invert max-w-none">
+      $if(title)$
+      <header class="post-header">
+        <h1>$title$</h1>
+        $if(date)$
+        <p class="post-date">$date$</p>
+        $endif$ $if(updatedDate)$
+        <p class="post-date">Updated: $updatedDate$</p>
+        $endif$ $if(tags)$
+        <ul class="post-tags">
+          $for(tags)$
+          <li>$tags$</li>
+          $endfor$
+        </ul>
+        $endif$
+      </header>
+      $endif$ $body$
+    </article>
+
+    $if(toc)$
+    <aside class="post-sidebar">
+      <div class="toc-card">
+        <h3 class="toc-title">Table of Contents</h3>
+        $toc$
+      </div>
+    </aside>
+    $endif$
+  </main>
+  $else$
   <main class="academic-site-main">
     <aside class="academic-profile-card" aria-label="Profile">
       <div class="academic-profile-avatar">$site.profile.avatar_text$</div>
@@ -21,19 +52,19 @@
         <li>
           $if(site.profile.links.href)$
           <a href="$site.profile.links.href$">$site.profile.links.label$</a>
-          $else$
-          $site.profile.links.label$
-          $endif$
+          $else$ $site.profile.links.label$ $endif$
         </li>
         $endfor$
       </ul>
     </aside>
 
     <article class="academic-page-content prose dark:prose-invert max-w-none">
-      $if(title)$<h1>$title$</h1>$endif$
-      $body$
+      $if(title)$
+      <h1>$title$</h1>
+      $endif$ $body$
     </article>
   </main>
+  $endif$
 
   <footer class="academic-site-footer">
     <p>$site.profile.name$</p>

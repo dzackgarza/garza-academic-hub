@@ -1,6 +1,6 @@
 from: markdown
 to: html
-template: content/templates/page-template.html
+template: content/templates/site-template.html
 metadata-files:
   - .generated/pandoc-data/site.yaml
 filters:
