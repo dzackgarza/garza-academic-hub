@@ -83,6 +83,14 @@ test.describe('Site Integrity and Hydration Tests', () => {
         const cardCount = await cards.count();
         expect(cardCount).toBeGreaterThan(0);
       }
+
+      // 7. Assert that there is exactly one <h1> element on the page (SEO and visual purity).
+      const h1Elements = page.locator('h1');
+      const h1Count = await h1Elements.count();
+      expect(
+        h1Count,
+        `[${route.path}] should have exactly one <h1> tag to prevent duplicate headings, but found ${h1Count}`
+      ).toBe(1);
     });
   });
 });
