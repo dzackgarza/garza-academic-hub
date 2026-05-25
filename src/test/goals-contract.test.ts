@@ -595,6 +595,69 @@ describe('GOALS contract: app source is generic', () => {
   });
 });
 
+describe('GOALS contract: asset integrity', () => {
+  it('validates all static asset images have valid image headers (not LFS pointers, not corrupt)', () => {
+    const publicDir = path.join(repoRoot, 'public');
+    const imageExtensions = new Set([
+      '.png',
+      '.jpg',
+      '.jpeg',
+      '.gif',
+      '.webp',
+      '.svg',
+      '.ico',
+    ]);
+    const imageFiles = walkFiles(publicDir).filter((f) =>
+      imageExtensions.has(path.extname(f).toLowerCase()),
+    );
+    const violations: Array<{ file: string; detected: string; header: string }> = [];
+
+    for (const file of imageFiles) {
+      const buf = readFileSync(file);
+      const header = buf.subarray(0, Math.min(64, buf.length)).toString('utf8');
+
+      // LFS pointer check: starts with "version https://git-lfs.github.com"
+      if (header.startsWith('version https://git-lfs.github.com')) {
+        violations.push({
+          file: path.relative(repoRoot, file),
+          detected: 'Git LFS pointer (not actual image content)',
+          header: header.slice(0, 80),
+        });
+        continue;
+      }
+
+      // Validate known image magic bytes
+      const magic = buf.subarray(0, 8);
+      const isValidImage =
+        (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) || // PNG
+        (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) || // JPEG
+        (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46) || // GIF
+        (buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46) || // WebP (RIFF)
+        header.trimStart().startsWith('<svg') || // SVG
+        header.trimStart().startsWith('<?xml') || // XML-based SVG
+        (buf[0] === 0x00 && buf[1] === 0x00 && buf[2] === 0x01 && buf[3] === 0x00); // ICO
+
+      if (!isValidImage) {
+        violations.push({
+          file: path.relative(repoRoot, file),
+          detected: 'unrecognized file format (no valid image magic bytes)',
+          header: header.slice(0, 80),
+        });
+      }
+    }
+
+    expect(
+      violations,
+      violations.length > 0
+        ? `Found ${violations.length} invalid image file(s) in public/assets/:\n` +
+            violations
+              .map((v) => `  ${v.file}: ${v.detected} (header: ${v.header})`)
+              .join('\n')
+        : undefined,
+    ).toEqual([]);
+  });
+});
+
 describe('GOALS contract: post navigation content', () => {
   it('renders teaser images in the related posts section of compiled blog output', () => {
     const postFiles = readdirSync(path.join(generatedDir, 'blog'))
