@@ -557,6 +557,36 @@ describe('GOALS contract: app source is generic', () => {
 
     expect(violations).toEqual([]);
   });
+
+  it('renders identical nav and footer across compiled page and post templates', () => {
+    const navPattern = /(<nav class="academic-site-nav"[^>]*>.*?<\/nav>)/s;
+    const footerPattern = /(<footer class="academic-site-footer"[^>]*>.*?<\/footer>)/s;
+    const pageFiles = readdirSync(path.join(generatedDir, 'pages'))
+      .filter((f) => f.endsWith('.html') && f !== 'posts.json')
+      .map((f) => path.join(generatedDir, 'pages', f));
+    const postFiles = readdirSync(path.join(generatedDir, 'blog'))
+      .filter((f) => f.endsWith('.html') && f !== 'posts.json')
+      .map((f) => path.join(generatedDir, 'blog', f));
+    const extract = (html: string) => ({
+      nav: html.match(navPattern)?.[1] ?? '',
+      footer: html.match(footerPattern)?.[1] ?? '',
+    });
+    if (pageFiles.length === 0 || postFiles.length === 0) {
+      return; // compile not yet run
+    }
+    const pageRef = extract(readFileSync(pageFiles[0], 'utf8'));
+    for (const file of pageFiles) {
+      const { nav, footer } = extract(readFileSync(file, 'utf8'));
+      expect(nav, `${path.relative(generatedDir, file)}: nav mismatch`).toBe(pageRef.nav);
+      expect(footer, `${path.relative(generatedDir, file)}: footer mismatch`).toBe(pageRef.footer);
+    }
+    for (const file of postFiles) {
+      const { nav, footer } = extract(readFileSync(file, 'utf8'));
+      expect(nav, `${path.relative(generatedDir, file)}: nav mismatch`).toBe(pageRef.nav);
+      expect(footer, `${path.relative(generatedDir, file)}: footer mismatch`).toBe(pageRef.footer);
+    }
+  });
+
 });
 
 describe('GOALS contract: tests derive route coverage from generated artifacts', () => {
