@@ -23,26 +23,17 @@ preview-open file:
 compile:
     @node scripts/compile.cjs
 
-build: compile
-    npx vite build
-
-deploy:
-    @echo "Deploying to /var/www/html/website/..."
+# Build the project and deploy it statically to /var/www/html/website/
+build:
+    @echo "Building and deploying to /var/www/html/website/..."
     @BASE_URL="/website" node scripts/compile.cjs
     @npx vite build
     @mkdir -p /var/www/html/website/
     @rsync -av --delete dist/ /var/www/html/website/
-    @echo "Deployment complete."
+    @echo "Build and deployment complete."
 
-# [RETIRED] The persistent dev server is retired. Use static Nginx deployment.
-run:
-    @echo "ERROR: The persistent dev server has been retired."
-    @echo "Please compile statically and serve via Nginx by running:"
-    @echo "  just deploy"
-    @echo ""
-    @echo "To run staging E2E tests, run:"
-    @echo "  just test-staging"
-    @exit 1
+deploy: build
+
 
 # ─── Tests ─────────────────────────────────────────────────────────────────────
 

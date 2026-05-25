@@ -44,15 +44,8 @@ const blogSlugs = fs
   .map((f) => `/blog/${path.basename(f, '.md')}`);
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/website/' : '/',
-  server: {
-    host: '::',
-    port: 8080,
-    hmr: {
-      overlay: false,
-    },
-  },
+export default defineConfig({
+  base: '/website/',
   plugins: [
     react(),
     contentWatcher(),
@@ -67,12 +60,11 @@ export default defineConfig(({ mode }) => ({
         ...blogSlugs,
       ],
     }),
-    mode === 'development' && componentTagger(),
-  ].filter(Boolean),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@content': path.resolve(__dirname, './content'),
     },
   },
-}));
+});
