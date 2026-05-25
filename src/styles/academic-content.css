@@ -159,11 +159,11 @@
   @apply block text-xs text-muted-foreground hover:text-primary transition-colors py-1 pl-2 border-l border-transparent hover:border-primary font-medium no-underline hover:no-underline;
 }
 
-/* Post navigation: previous/next pagination (legacy Minimal Mistakes style) */
+/* Post navigation: previous/next pagination + related (legacy Minimal Mistakes style) */
 .post-nav-wrapper {
   clear: both;
   margin-top: 2em;
-  padding-top: 2em;
+  padding-top: 1em;
   border-top: 1px solid hsl(var(--border));
 }
 
@@ -206,7 +206,8 @@
 
 /* Related posts section (legacy Minimal Mistakes style) */
 .page__related {
-  margin-top: 2em;
+  clear: both;
+  margin-top: 1.5em;
   padding-top: 1em;
   border-top: 1px solid hsl(var(--border));
 }

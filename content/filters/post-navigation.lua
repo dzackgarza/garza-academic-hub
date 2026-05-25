@@ -146,27 +146,31 @@ function Pandoc(doc)
     table.insert(related_html, make_related_card(r.post, blog_base, base_url))
   end
 
+  local all_html = {}
+
+  if #html_parts > 0 then
+    table.insert(all_html, '<nav class="post-nav" aria-label="Post navigation">'
+      .. table.concat(html_parts, "\n") .. '</nav>')
+  end
+
   if #related_html > 0 then
-    table.insert(html_parts, [[
+    table.insert(all_html, [[
 <div class="page__related">
   <h4 class="page__related-title">You May Also Enjoy</h4>
   <div class="grid__wrapper">]] .. table.concat(related_html, "\n") .. [[</div>
 </div>]])
   end
 
-  if #html_parts == 0 then
+  if #all_html == 0 then
     return nil
   end
 
-  local nav_html = '<nav class="post-nav" aria-label="Post navigation">'
-    .. table.concat(html_parts, "\n") .. '</nav>'
-
-  local nav_div = pandoc.Div(
-    { pandoc.RawBlock("html", nav_html) },
+  local wrapper = pandoc.Div(
+    { pandoc.RawBlock("html", table.concat(all_html, "\n")) },
     pandoc.Attr("", { "post-nav-wrapper" })
   )
 
   local blocks = doc.blocks
-  table.insert(blocks, nav_div)
+  table.insert(blocks, wrapper)
   return pandoc.Pandoc(blocks, doc.meta)
 end
