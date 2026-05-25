@@ -7,7 +7,7 @@ const BASE_URL = process.env.TEST_URL || 'http://localhost/website';
 const testDir = path.dirname(fileURLToPath(import.meta.url));
 const manifest = JSON.parse(
   readFileSync(path.resolve(testDir, '../.generated/site-manifest.json'), 'utf8'),
-) as { routes: Array<{ path: string; title: string }> };
+) as { routes: Array<{ path: string; title: string; type: string }> };
 
 const routes = manifest.routes;
 
@@ -40,7 +40,7 @@ test.describe('Site Integrity and Hydration Tests', () => {
       expect(consoleErrors).toEqual([]);
 
       // 2. Assert that the page shell was successfully injected and contains the compiled article wrapper
-      const pageWrapper = page.locator('.page');
+      const pageWrapper = page.locator('.academic-page-content, .post-content');
       await expect(pageWrapper).toBeVisible();
 
       // 3. Assert actual page content renders (not just shell)
@@ -100,30 +100,37 @@ test.describe('Site Integrity and Hydration Tests', () => {
 });
 
 test.describe('Nav link navigation', () => {
-  const navLabels = ['Resources', 'Teaching', 'Writing'];
+  const pageNavLinks = manifest.routes
+    .filter((r) => r.path !== '/' && r.type === 'page')
+    .map((r) => ({ path: r.path, title: r.title }));
 
-  navLabels.forEach((label) => {
-    test(`clicking "${label}" nav link navigates to the correct page, not 404`, async ({
+  pageNavLinks.forEach(({ path, title }) => {
+    test(`clicking "${title}" nav navigates to ${path} and renders page content`, async ({
       page,
     }) => {
       await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
-      // Click the nav link by its text
-      await page.locator('.academic-site-nav a', { hasText: label }).click();
-      await page.waitForURL('**/*');
-      await page.waitForTimeout(500);
+      // Click the nav link by its text (matches title)
+      await page.locator('.academic-site-nav a', { hasText: title }).click();
 
-      // Check we didn't get a 404 page
+      // Wait for page content to render after navigation
+      await page.waitForTimeout(1500);
+
+      // Verify no 404
       const body = await page.locator('body').textContent();
       expect(
         body?.includes('404') || body?.includes('not found'),
-        `Nav link "${label}" led to a 404 page`,
+        `Nav "${title}" → ${path} led to 404 at ${page.url()}`,
       ).toBe(false);
 
-      // The page should have an h1 with the label (or similar content)
-      const h1 = await page.locator('h1');
-      await expect(h1).toBeVisible();
+      // Verify correct page title rendered
+      await expect(page.locator('h1')).toContainText(title, { timeout: 5000 });
+
+      // Verify page content rendered (not empty shell)
+      const content = page.locator('.academic-page-content, .post-content');
+      const contentText = await content.textContent();
+      expect(contentText?.trim().length).toBeGreaterThan(0);
     });
   });
 });
