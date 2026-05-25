@@ -15,14 +15,9 @@ import { afterEach, describe, expect, it } from 'vitest';
 const repoRoot = path.resolve(__dirname, '../..');
 const generatedDir = path.join(repoRoot, '.generated');
 const manifestPath = path.join(generatedDir, 'site-manifest.json');
-const legacyRoutesPath = path.join(
-  repoRoot,
-  'content/databases/legacy-routes.toml',
-);
+const legacyRoutesPath = path.join(repoRoot, 'content/databases/legacy-routes.toml');
 const pandocContractTimeout = 60000;
-let cleanCompileResult:
-  | ReturnType<typeof spawnSync>
-  | undefined;
+let cleanCompileResult: ReturnType<typeof spawnSync> | undefined;
 
 const proofPage = {
   slug: 'goals-proof-resource',
@@ -136,10 +131,12 @@ afterEach(() => {
 });
 
 describe.sequential('GOALS contract: content boundary and generated manifest', () => {
-  it('discovers new content files and emits a route manifest consumed by the site', () => {
-    writeFileSync(
-      proofPage.path,
-      `---
+  it(
+    'discovers new content files and emits a route manifest consumed by the site',
+    () => {
+      writeFileSync(
+        proofPage.path,
+        `---
 title: "${proofPage.title}"
 template: "page"
 ---
@@ -148,10 +145,10 @@ template: "page"
 
 This page proves that content pages become routes without editing src.
 `,
-    );
-    writeFileSync(
-      proofPost.path,
-      `---
+      );
+      writeFileSync(
+        proofPost.path,
+        `---
 title: "${proofPost.title}"
 date: "May 24, 2026"
 tags: ["GOALS"]
@@ -163,64 +160,72 @@ template: "post"
 
 This post proves that blog posts become routes without editing src.
 `,
-    );
+      );
 
-    const compile = runCompile();
+      const compile = runCompile();
 
-    expect(compile.status, compile.stderr || compile.stdout).toBe(0);
-    expect(existsSync(manifestPath)).toBe(true);
+      expect(compile.status, compile.stderr || compile.stdout).toBe(0);
+      expect(existsSync(manifestPath)).toBe(true);
 
-    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as {
-      routes: Array<{
-        path: string;
-        source: string;
-        output: string;
-        type: string;
-        title: string;
-      }>;
-    };
+      const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as {
+        routes: Array<{
+          path: string;
+          source: string;
+          output: string;
+          type: string;
+          title: string;
+        }>;
+      };
 
-    expect(manifest.routes).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          path: proofPage.route,
-          source: 'content/pages/goals-proof-resource.md',
-          output: '.generated/pages/goals-proof-resource.html',
-          type: 'page',
-          title: proofPage.title,
-        }),
-        expect.objectContaining({
-          path: proofPost.route,
-          source: 'content/blog/goals-proof-post.md',
-          output: '.generated/blog/goals-proof-post.html',
-          type: 'post',
-          title: proofPost.title,
-        }),
-      ]),
-    );
-  }, pandocContractTimeout);
+      expect(manifest.routes).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: proofPage.route,
+            source: 'content/pages/goals-proof-resource.md',
+            output: '.generated/pages/goals-proof-resource.html',
+            type: 'page',
+            title: proofPage.title,
+          }),
+          expect.objectContaining({
+            path: proofPost.route,
+            source: 'content/blog/goals-proof-post.md',
+            output: '.generated/blog/goals-proof-post.html',
+            type: 'post',
+            title: proofPost.title,
+          }),
+        ]),
+      );
+    },
+    pandocContractTimeout,
+  );
 
-  it('fails fast instead of silently skipping malformed blog content', () => {
-    writeFileSync(
-      malformedPost.path,
-      `# Missing Frontmatter
+  it(
+    'fails fast instead of silently skipping malformed blog content',
+    () => {
+      writeFileSync(
+        malformedPost.path,
+        `# Missing Frontmatter
 
 This post is invalid because GOALS.md requires explicit metadata.
 `,
-    );
+      );
 
-    const compile = runCompile();
+      const compile = runCompile();
 
-    expect(compile.status).not.toBe(0);
-    expect(`${compile.stdout}\n${compile.stderr}`).toContain(
-      'content/blog/goals-proof-malformed.md',
-    );
-  }, pandocContractTimeout);
+      expect(compile.status).not.toBe(0);
+      expect(`${compile.stdout}\n${compile.stderr}`).toContain(
+        'content/blog/goals-proof-malformed.md',
+      );
+    },
+    pandocContractTimeout,
+  );
 
-  it('fails fast on duplicate explicit routes', () => {
-    writeFileSync(
-      duplicateRoutePage.path,
-      `---
+  it(
+    'fails fast on duplicate explicit routes',
+    () => {
+      writeFileSync(
+        duplicateRoutePage.path,
+        `---
 title: "Duplicate Route"
 template: "page"
 route: "/teaching"
@@ -228,42 +233,50 @@ route: "/teaching"
 
 # Duplicate Route
 `,
-    );
+      );
 
-    const compile = runCompile();
+      const compile = runCompile();
 
-    expect(compile.status).not.toBe(0);
-    expect(`${compile.stdout}\n${compile.stderr}`).toContain(
-      'content/pages/goals-proof-duplicate.md',
-    );
-    expect(`${compile.stdout}\n${compile.stderr}`).toContain('duplicate route');
-  }, pandocContractTimeout);
+      expect(compile.status).not.toBe(0);
+      expect(`${compile.stdout}\n${compile.stderr}`).toContain(
+        'content/pages/goals-proof-duplicate.md',
+      );
+      expect(`${compile.stdout}\n${compile.stderr}`).toContain('duplicate route');
+    },
+    pandocContractTimeout,
+  );
 
-  it('fails fast on unknown template names', () => {
-    writeFileSync(
-      unknownTemplatePage.path,
-      `---
+  it(
+    'fails fast on unknown template names',
+    () => {
+      writeFileSync(
+        unknownTemplatePage.path,
+        `---
 title: "Unknown Template"
 template: "experimental"
 ---
 
 # Unknown Template
 `,
-    );
+      );
 
-    const compile = runCompile();
+      const compile = runCompile();
 
-    expect(compile.status).not.toBe(0);
-    expect(`${compile.stdout}\n${compile.stderr}`).toContain(
-      'content/pages/goals-proof-unknown-template.md',
-    );
-    expect(`${compile.stdout}\n${compile.stderr}`).toContain('template');
-  }, pandocContractTimeout);
+      expect(compile.status).not.toBe(0);
+      expect(`${compile.stdout}\n${compile.stderr}`).toContain(
+        'content/pages/goals-proof-unknown-template.md',
+      );
+      expect(`${compile.stdout}\n${compile.stderr}`).toContain('template');
+    },
+    pandocContractTimeout,
+  );
 
-  it('fails fast on invalid Pandoc component declarations', () => {
-    writeFileSync(
-      invalidComponentPage.path,
-      `---
+  it(
+    'fails fast on invalid Pandoc component declarations',
+    () => {
+      writeFileSync(
+        invalidComponentPage.path,
+        `---
 title: "Invalid Component"
 template: "page"
 ---
@@ -273,92 +286,104 @@ template: "page"
 :::{.component type="unknown-widget"}
 :::
 `,
-    );
+      );
 
-    const compile = runCompile();
+      const compile = runCompile();
 
-    expect(compile.status).not.toBe(0);
-    expect(`${compile.stdout}\n${compile.stderr}`).toContain(
-      'content/pages/goals-proof-invalid-component.md',
-    );
-    expect(`${compile.stdout}\n${compile.stderr}`).toContain(
-      'unknown component type',
-    );
-  }, pandocContractTimeout);
+      expect(compile.status).not.toBe(0);
+      expect(`${compile.stdout}\n${compile.stderr}`).toContain(
+        'content/pages/goals-proof-invalid-component.md',
+      );
+      expect(`${compile.stdout}\n${compile.stderr}`).toContain(
+        'unknown component type',
+      );
+    },
+    pandocContractTimeout,
+  );
 
-  it('renders content-declared component slots into generated HTML without app-side interpretation', () => {
-    const compile = runCleanCompile();
+  it(
+    'renders content-declared component slots into generated HTML without app-side interpretation',
+    () => {
+      const compile = runCleanCompile();
 
-    expect(compile.status, compile.stderr || compile.stdout).toBe(0);
+      expect(compile.status, compile.stderr || compile.stdout).toBe(0);
 
-    const homeHtml = readFileSync(
-      path.join(generatedDir, 'pages', 'home.html'),
-      'utf8',
-    );
-    const blogHtml = readFileSync(
-      path.join(generatedDir, 'pages', 'blog.html'),
-      'utf8',
-    );
-    const writingHtml = readFileSync(
-      path.join(generatedDir, 'pages', 'writing.html'),
-      'utf8',
-    );
-    const galleryHtml = readFileSync(
-      path.join(generatedDir, 'pages', 'gallery.html'),
-      'utf8',
-    );
-    const normalizedBlogHtml = blogHtml.replace(/\s+/g, ' ');
+      const homeHtml = readFileSync(
+        path.join(generatedDir, 'pages', 'home.html'),
+        'utf8',
+      );
+      const blogHtml = readFileSync(
+        path.join(generatedDir, 'pages', 'blog.html'),
+        'utf8',
+      );
+      const writingHtml = readFileSync(
+        path.join(generatedDir, 'pages', 'writing.html'),
+        'utf8',
+      );
+      const galleryHtml = readFileSync(
+        path.join(generatedDir, 'pages', 'gallery.html'),
+        'utf8',
+      );
+      const normalizedBlogHtml = blogHtml.replace(/\s+/g, ' ');
 
-    expect(`${homeHtml}${blogHtml}${writingHtml}${galleryHtml}`).toContain(
-      'data-component',
-    );
-    expect(homeHtml).toContain(
-      'Compact moduli of Enriques surfaces with a numerical polarization of degree 2',
-    );
-    expect(normalizedBlogHtml).toContain('Undergraduate Mathematics Resources');
-    expect(writingHtml).toContain('Notes by Others');
-    expect(galleryHtml).toContain('Hand-Drawn');
-  }, pandocContractTimeout);
+      expect(`${homeHtml}${blogHtml}${writingHtml}${galleryHtml}`).toContain(
+        'data-component',
+      );
+      expect(homeHtml).toContain(
+        'Compact moduli of Enriques surfaces with a numerical polarization of degree 2',
+      );
+      expect(normalizedBlogHtml).toContain('Undergraduate Mathematics Resources');
+      expect(writingHtml).toContain('Notes by Others');
+      expect(galleryHtml).toContain('Hand-Drawn');
+    },
+    pandocContractTimeout,
+  );
 });
 
 describe.sequential('GOALS contract: Pandoc defaults, preview, and sitemap', () => {
-  it('uses the same Pandoc component/data path for single-page preview', () => {
-    const compile = runCleanCompile();
-    expect(compile.status, compile.stderr || compile.stdout).toBe(0);
+  it(
+    'uses the same Pandoc component/data path for single-page preview',
+    () => {
+      const compile = runCleanCompile();
+      expect(compile.status, compile.stderr || compile.stdout).toBe(0);
 
-    const preview = runPreview(path.join(repoRoot, 'content/pages/home.md'));
+      const preview = runPreview(path.join(repoRoot, 'content/pages/home.md'));
 
-    expect(preview.status, preview.stderr || preview.stdout).toBe(0);
-    expect(preview.stdout).toContain('academic-site-nav');
-    expect(preview.stdout).toContain('Compact moduli of Enriques surfaces');
-    expect(preview.stdout).toContain('data-component');
-  }, pandocContractTimeout);
+      expect(preview.status, preview.stderr || preview.stdout).toBe(0);
+      expect(preview.stdout).toContain('academic-site-nav');
+      expect(preview.stdout).toContain('Compact moduli of Enriques surfaces');
+      expect(preview.stdout).toContain('data-component');
+    },
+    pandocContractTimeout,
+  );
 
-  it('generates sitemap routes from the same manifest consumed by the app and tests', () => {
-    const compile = runCleanCompile();
-    expect(compile.status, compile.stderr || compile.stdout).toBe(0);
+  it(
+    'generates sitemap routes from the same manifest consumed by the app and tests',
+    () => {
+      const compile = runCleanCompile();
+      expect(compile.status, compile.stderr || compile.stdout).toBe(0);
 
-    const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as {
-      routes: Array<{ path: string; sitemap: boolean }>;
-    };
-    const sitemap = readFileSync(
-      path.join(generatedDir, 'sitemap.xml'),
-      'utf8',
-    );
+      const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as {
+        routes: Array<{ path: string; sitemap: boolean }>;
+      };
+      const sitemap = readFileSync(path.join(generatedDir, 'sitemap.xml'), 'utf8');
 
-    const sitemapRoutes = manifest.routes
-      .filter((route) => route.sitemap)
-      .map((route) => route.path);
+      const sitemapRoutes = manifest.routes
+        .filter((route) => route.sitemap)
+        .map((route) => route.path);
 
-    for (const route of sitemapRoutes) {
-      expect(sitemap).toContain(`<loc>${route}</loc>`);
-    }
-  }, pandocContractTimeout);
+      for (const route of sitemapRoutes) {
+        expect(sitemap).toContain(`<loc>${route}</loc>`);
+      }
+    },
+    pandocContractTimeout,
+  );
 });
 
 describe('GOALS contract: automated source and content hygiene', () => {
   it('keeps compiled content markdown free of raw block-level HTML', () => {
-    const rawBlockHtml = /<(div|ul|li|section|article|header|footer|nav|aside|span|p|img|a)\b/i;
+    const rawBlockHtml =
+      /<(div|ul|li|section|article|header|footer|nav|aside|span|p|img|a)\b/i;
     const violations = walkFiles(path.join(repoRoot, 'content'))
       .filter((file) => file.endsWith('.md'))
       .flatMap((file) =>
@@ -375,11 +400,9 @@ describe('GOALS contract: automated source and content hygiene', () => {
     const scopedFiles = scopedRoots.flatMap((root) =>
       walkFiles(path.join(repoRoot, root)),
     );
-    const additionalFiles = [
-      'justfile',
-      'vite.config.ts',
-      'playwright.config.ts',
-    ].map((file) => path.join(repoRoot, file));
+    const additionalFiles = ['justfile', 'vite.config.ts', 'playwright.config.ts'].map(
+      (file) => path.join(repoRoot, file),
+    );
     const forbiddenLocalRoot = ['/', 'home', 'dzack'].join('/');
     const violations = [...scopedFiles, ...additionalFiles].flatMap((file) =>
       readFileSync(file, 'utf8').includes(forbiddenLocalRoot)
@@ -395,9 +418,7 @@ describe('GOALS contract: legacy parity inventory', () => {
   it('maps or explicitly excludes every legacy post and top-level page source', () => {
     const legacyRoot = path.join(homedir(), 'website');
     const legacySources = [
-      ...readdirSync(path.join(legacyRoot, '_posts')).map(
-        (file) => `_posts/${file}`,
-      ),
+      ...readdirSync(path.join(legacyRoot, '_posts')).map((file) => `_posts/${file}`),
       ...readdirSync(path.join(legacyRoot, '_pages'))
         .filter((file) => file.endsWith('.md') || file.endsWith('.html'))
         .map((file) => `_pages/${file}`),
@@ -411,9 +432,7 @@ describe('GOALS contract: legacy parity inventory', () => {
       ...inventory.excluded.map((entry) => entry.excluded_source),
     ]);
 
-    expect(
-      legacySources.filter((source) => !represented.has(source)),
-    ).toEqual([]);
+    expect(legacySources.filter((source) => !represented.has(source))).toEqual([]);
   });
 
   it('maps each migrated legacy source to a generated route and inventories non-route legacy surfaces', () => {
@@ -437,15 +456,14 @@ describe('GOALS contract: legacy parity inventory', () => {
         .filter((entry) => !manifestRoutes.has(entry.new_route))
         .map((entry) => entry.new_route),
     ).toEqual([]);
-    expect(inventory.excluded.filter((entry) => entry.reason.trim() === '')).toEqual([]);
+    expect(inventory.excluded.filter((entry) => entry.reason.trim() === '')).toEqual(
+      [],
+    );
     expect(inventory.legacy_surface_inventory.data_files).toEqual([
       '_data/navigation.yml',
     ]);
     expect(inventory.legacy_surface_inventory.includes).toEqual(
-      expect.arrayContaining([
-        '_includes/footer.html',
-        '_includes/social-share.html',
-      ]),
+      expect.arrayContaining(['_includes/footer.html', '_includes/social-share.html']),
     );
     expect(inventory.legacy_surface_inventory.layouts).toEqual(
       expect.arrayContaining([
@@ -473,15 +491,17 @@ describe('GOALS contract: app source is generic', () => {
       .map((route) => route.slice(1));
     const violations = productionSourceFiles().flatMap((file) => {
       const content = readFileSync(file, 'utf8');
-      const hasRouteLiteral = routes.some((route) =>
-        content.includes(`'${route}'`) ||
-        content.includes(`"${route}"`) ||
-        content.includes(`\`${route}\``),
+      const hasRouteLiteral = routes.some(
+        (route) =>
+          content.includes(`'${route}'`) ||
+          content.includes(`"${route}"`) ||
+          content.includes(`\`${route}\``),
       );
-      const hasPageNameLiteral = pageSlugs.some((slug) =>
-        content.includes(`'${slug}'`) ||
-        content.includes(`"${slug}"`) ||
-        content.includes(`\`${slug}\``),
+      const hasPageNameLiteral = pageSlugs.some(
+        (slug) =>
+          content.includes(`'${slug}'`) ||
+          content.includes(`"${slug}"`) ||
+          content.includes(`\`${slug}\``),
       );
       if (hasRouteLiteral || hasPageNameLiteral) {
         return [path.relative(repoRoot, file)];
@@ -489,6 +509,21 @@ describe('GOALS contract: app source is generic', () => {
       return [];
     });
 
+    expect(violations).toEqual([]);
+  });
+
+  it('does not hardcode page route literals in vite.config.ts sitemap configuration', () => {
+    const pageRoutes = contentRoutes().filter(
+      (route) => route !== '/' && !route.startsWith('/blog/'),
+    );
+    const viteConfig = readFileSync(path.join(repoRoot, 'vite.config.ts'), 'utf8');
+    const violations = pageRoutes.flatMap((route) =>
+      viteConfig.includes("'" + route + "'") ||
+      viteConfig.includes('"' + route + '"') ||
+      viteConfig.includes('`' + route + '`')
+        ? [route]
+        : [],
+    );
     expect(violations).toEqual([]);
   });
 
@@ -512,10 +547,11 @@ describe('GOALS contract: tests derive route coverage from generated artifacts',
     );
     const violations = testFiles.flatMap((file) => {
       const content = readFileSync(file, 'utf8');
-      const hardcodedRoutes = routes.some((route) =>
-        content.includes(`'${route}'`) ||
-        content.includes(`"${route}"`) ||
-        content.includes(`\`${route}\``),
+      const hardcodedRoutes = routes.some(
+        (route) =>
+          content.includes(`'${route}'`) ||
+          content.includes(`"${route}"`) ||
+          content.includes(`\`${route}\``),
       );
       return hardcodedRoutes ? [path.relative(repoRoot, file)] : [];
     });
