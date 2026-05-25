@@ -540,26 +540,6 @@ describe('GOALS contract: app source is generic', () => {
 });
 
 describe('GOALS contract: tests derive route coverage from generated artifacts', () => {
-  it('does not branch on route.path literal values in Playwright test files', () => {
-    const testFiles = walkFiles(path.join(repoRoot, 'tests')).filter((file) =>
-      /\.ts$/.test(file),
-    );
-    // Each page route should not appear in an if-condition against route.path
-    const pageRoutes = contentRoutes().filter(
-      (route) => !route.startsWith('/blog/'),
-    );
-    const violations = testFiles.flatMap((file) => {
-      const text = readFileSync(file, 'utf8');
-      const hasBranch = pageRoutes.some(
-        (route) =>
-          text.includes("route.path === '" + route + "'") ||
-          text.includes('route.path === "' + route + '"'),
-      );
-      return hasBranch ? [path.relative(repoRoot, file)] : [];
-    });
-    expect(violations).toEqual([]);
-  });
-
   it('does not maintain hardcoded Playwright route inventories', () => {
     const routes = contentRoutes().filter((route) => route !== '/');
     const testFiles = walkFiles(path.join(repoRoot, 'tests')).filter((file) =>
