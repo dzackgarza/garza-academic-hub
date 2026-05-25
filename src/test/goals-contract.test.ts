@@ -481,6 +481,26 @@ describe('GOALS contract: legacy parity inventory', () => {
       ]),
     );
   });
+
+  it('populates every legacy asset root in public/ with migrated files', () => {
+    const inventory = TOML.parse(
+      readFileSync(legacyRoutesPath, 'utf8'),
+    ) as {
+      legacy_surface_inventory: { asset_roots: string[] };
+    };
+    const publicDir = path.join(repoRoot, 'public');
+    const walkDir = (dir: string): string[] =>
+      existsSync(dir)
+        ? readdirSync(dir, { recursive: true, withFileTypes: true })
+            .filter((entry) => entry.isFile())
+            .map((entry) => path.relative(dir, path.join(entry.parentPath ?? dir, entry.name)))
+        : [];
+    const emptyRoots = inventory.legacy_surface_inventory.asset_roots.filter(
+      (root) => walkDir(path.join(publicDir, root)).length === 0,
+    );
+    expect(emptyRoots).toEqual([]);
+  });
+
 });
 
 describe('GOALS contract: app source is generic', () => {
