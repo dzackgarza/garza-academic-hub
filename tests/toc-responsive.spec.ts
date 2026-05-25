@@ -7,10 +7,10 @@ const BASE_URL = process.env.TEST_URL || 'http://localhost/website';
 const testDir = path.dirname(fileURLToPath(import.meta.url));
 const manifest = JSON.parse(
   readFileSync(path.resolve(testDir, '../.generated/site-manifest.json'), 'utf8'),
-) as { routes: Array<{ path: string; title: string }> };
+) as { routes: Array<{ path: string }> };
 
 const blogPosts = manifest.routes
-  .filter((route) => route.path.startsWith('/blog/'))
+  .filter((r) => r.path.startsWith('/blog/'))
   .slice(0, 2);
 
 test.describe('TOC responsive visibility', () => {
@@ -23,6 +23,17 @@ test.describe('TOC responsive visibility', () => {
       const tocAside = page.locator('.post-sidebar');
       await expect(tocAside).toBeAttached();
       await expect(tocAside).toBeVisible();
+
+      // TOC must appear above the article body at narrow widths (legacy behavior)
+      const articleBody = page.locator('.post-content');
+      const tocBox = await tocAside.boundingBox();
+      const articleBox = await articleBody.boundingBox();
+      if (tocBox && articleBox) {
+        expect(
+          tocBox.y,
+          'TOC should be positioned above article body at narrow widths',
+        ).toBeLessThan(articleBox.y);
+      }
     });
 
     test(`"${route.path}" shows TOC as sticky sidebar at >=1024px`, async ({
