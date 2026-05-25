@@ -191,11 +191,16 @@ function writeSiteMetadata() {
     fs.readFileSync(path.join(contentDir, 'databases/profile.toml'), 'utf8'),
   );
 
+  const base = process.env.BASE_URL ?? '';
   const lines = ['site:'];
+  lines.push(`  base: ${yamlScalar(base)}`);
   lines.push('  nav:');
   writeYamlList(lines, '    ', navigation.items ?? [], (item, indentation) => {
     lines.push(`${indentation}label: ${yamlScalar(item.label)}`);
-    lines.push(`${indentation}path: ${yamlScalar(item.path)}`);
+    const pathValue = item.path.startsWith('/') && !item.path.startsWith('//')
+      ? `${base}${item.path}`
+      : item.path;
+    lines.push(`${indentation}path: ${yamlScalar(pathValue)}`);
   });
   lines.push('  profile:');
   for (const key of ['name', 'pronouns', 'affiliation', 'office', 'email', 'avatar_text']) {
@@ -286,7 +291,7 @@ function compileWithDefaults(filePath, template, templates, rawContent) {
     filePath,
     [`--defaults=${defaultsPathFor(filePath, template, templates)}`],
     rawContent,
-    { env: { PANDOC_SITE_DATA_DIR: dataDir } },
+    { env: { PANDOC_SITE_DATA_DIR: dataDir, BASE_URL: process.env.BASE_URL ?? '' } },
   );
 }
 

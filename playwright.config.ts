@@ -8,10 +8,10 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "line",
   use: {
-    baseURL: "http://localhost:8080",
+    baseURL: process.env.TEST_URL || "http://localhost:8080",
     trace: "on-first-retry",
   },
-  webServer: {
+  webServer: process.env.TEST_URL ? undefined : {
     command: "just build && just run",
     url: "http://localhost:8080",
     reuseExistingServer: !process.env.CI,

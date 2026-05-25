@@ -134,9 +134,14 @@ local function render_link_group(el)
       if group.links and #group.links > 0 then
         local items = {}
         for _, link in ipairs(group.links) do
+          local href = tostring(link.href or "")
+          local base_url = os.getenv("BASE_URL") or ""
+          if href:sub(1,1) == "/" and href:sub(2,2) ~= "/" then
+            href = base_url .. href
+          end
           table.insert(
             items,
-            { pandoc.Plain({ pandoc.Link(tostring(link.label or ""), tostring(link.href or "")) }) }
+            { pandoc.Plain({ pandoc.Link(tostring(link.label or ""), href) }) }
           )
         end
         table.insert(blocks, pandoc.BulletList(items))
@@ -194,7 +199,10 @@ local function render_blog_listing()
     fail("PANDOC_SITE_DATA_DIR is required")
   end
   local posts = decode_json(data_dir .. "/posts.json")
-  local json = pandoc.json.encode({ posts = posts })
+  local base_url = os.getenv("BASE_URL") or ""
+  local blog_base = base_url .. "/blog"
+  local data = { posts = posts, basePath = blog_base }
+  local json = pandoc.json.encode(data)
   return pandoc.Div(
     { pandoc.RawBlock("html", "<!-- blog listing placeholder -->") },
     pandoc.Attr("", {}, {

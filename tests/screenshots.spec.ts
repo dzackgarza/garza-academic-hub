@@ -1,15 +1,31 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:8080';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const ROUTES = [
-  { path: '/', name: 'home' },
-  { path: '/teaching', name: 'teaching' },
-  { path: '/activities', name: 'activities' },
-  { path: '/blog', name: 'blog' },
-  { path: '/writing', name: 'writing' },
-  { path: '/gallery', name: 'gallery' },
-];
+const BASE_URL = process.env.TEST_URL || 'http://localhost:8080';
+
+interface ManifestRoute {
+  path: string;
+  type: string;
+}
+
+function getRoutes(): { path: string; name: string }[] {
+  const manifestPath = path.resolve(__dirname, '..', '.generated', 'site-manifest.json');
+  const raw = readFileSync(manifestPath, 'utf8');
+  const manifest = JSON.parse(raw) as { routes: ManifestRoute[] };
+  return manifest.routes
+    .filter((r) => r.type === 'page')
+    .map((r) => ({
+      path: r.path,
+      name: r.path === '/' ? 'home' : r.path.replace(/^\//, ''),
+    }));
+}
+
+const ROUTES = getRoutes();
 
 test.describe('Visual Regression Tests', () => {
   ROUTES.forEach((route) => {

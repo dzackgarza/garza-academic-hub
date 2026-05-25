@@ -1,87 +1,132 @@
-import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { FileText, Clock } from 'lucide-react';
+import SectionHeading from '@/components/SectionHeading';
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
-interface BlogPost {
+interface Post {
   title: string;
+  slug: string;
   date: string;
   tags?: string[];
   excerpt?: string;
-  slug: string;
   readMinutes?: number;
-  categories?: string[];
 }
 
 interface BlogListingProps {
-  posts: BlogPost[];
+  posts: Post[];
+  basePath: string;
 }
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
+const BlogListing = ({ posts, basePath }: BlogListingProps) => {
+  const [activeTag, setActiveTag] = useState<string | null>(() =>
+    new URLSearchParams(window.location.search).get('tag'),
+  );
 
-const BlogListing = ({ posts }: BlogListingProps) => {
-  if (posts.length === 0) {
-    return <p className="text-sm text-muted-foreground">No blog posts found.</p>;
-  }
+  useEffect(() => {
+    const onPopState = () => {
+      setActiveTag(new URLSearchParams(window.location.search).get('tag'));
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  const setTag = (tag: string | null) => {
+    const params = new URLSearchParams(window.location.search);
+    if (tag) {
+      params.set('tag', tag);
+    } else {
+      params.delete('tag');
+    }
+    const qs = params.toString();
+    window.history.pushState(null, '', qs ? `${basePath}?${qs}` : basePath);
+    setActiveTag(tag);
+  };
+
+  const filtered = activeTag
+    ? posts.filter((p) =>
+        p.tags?.some((t) => t.toLowerCase() === activeTag.toLowerCase()),
+      )
+    : posts;
+
+  const byYear = filtered.reduce<Record<number, Post[]>>((acc, p) => {
+    const year = new Date(p.date).getFullYear();
+    (acc[year] ??= []).push(p);
+    return acc;
+  }, {});
+
+  const years = Object.keys(byYear)
+    .map(Number)
+    .sort((a, b) => b - a);
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {posts.map((post) => (
-        <a
-          key={post.slug}
-          href={`/blog/${post.slug}`}
-          className="group rounded-lg border bg-card overflow-hidden transition-shadow hover:shadow-md flex flex-col h-full"
-        >
-          <div className="p-4 flex flex-col gap-2 flex-1">
-            <h3 className="text-sm font-semibold leading-snug group-hover:text-primary transition-colors">
-              {post.title}
-            </h3>
+    <div>
+      {activeTag && (
+        <div className="mb-6 p-3 bg-primary/5 rounded-lg border border-primary/20 flex items-center justify-between text-sm animate-fade-in">
+          <span className="text-foreground">
+            Showing posts tagged with{' '}
+            <span className="font-semibold text-primary">#{activeTag}</span>
+          </span>
+          <button
+            onClick={() => setTag(null)}
+            className="text-xs font-semibold text-primary hover:text-link-hover hover:underline"
+          >
+            Clear Filter
+          </button>
+        </div>
+      )}
 
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              {post.date && (
-                <span className="inline-flex items-center gap-1">
-                  <Calendar className="w-3 h-3" />
-                  {post.date}
-                </span>
-              )}
-              {post.readMinutes && (
-                <span className="inline-flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  {post.readMinutes} min read
-                </span>
-              )}
-            </div>
-
-            {post.excerpt && (
-              <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
-                {post.excerpt}
-              </p>
-            )}
-
-            {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-auto pt-2">
-                {post.tags.slice(0, 4).map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-block rounded-full bg-accent px-2 py-0.5 text-[10px] font-medium text-accent-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <div className="mt-auto pt-2">
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:text-link-hover transition-colors">
-                Read more <ArrowRight className="w-3 h-3" />
-              </span>
-            </div>
+      {filtered.length === 0 ? (
+        <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
+          No posts found matching the selected tag.
+        </div>
+      ) : (
+        years.map((year) => (
+          <div key={year} className="mb-8">
+            <SectionHeading id={`y-${year}`}>{year}</SectionHeading>
+            <ul className="space-y-3">
+              {byYear[year].map((p) => (
+                <li key={p.slug} className="rounded-lg border bg-card p-4 flex gap-3">
+                  <div className="mt-0.5 rounded-md bg-accent p-2 shrink-0">
+                    <FileText className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <a
+                      href={`${basePath}/${p.slug}`}
+                      className="text-sm font-semibold hover:text-link-hover"
+                    >
+                      {p.title}
+                    </a>
+                    <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+                      <Clock className="w-3 h-3" />
+                      <span>{p.readMinutes} min read</span>
+                      {p.tags && p.tags.length > 0 && (
+                        <>
+                          <span>&bull;</span>
+                          <div className="flex gap-1.5 items-center">
+                            {p.tags.map((t) => (
+                              <button
+                                key={t}
+                                onClick={() => setTag(t)}
+                                className="hover:text-primary hover:underline transition-colors"
+                              >
+                                #{t}
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    {p.excerpt && (
+                      <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                        {p.excerpt}
+                      </p>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-        </a>
-      ))}
+        ))
+      )}
     </div>
   );
 };

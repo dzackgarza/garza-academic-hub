@@ -31,9 +31,10 @@ const registry: Record<string, ComponentRenderer> = {
   GalleryGrid: (data) => (
     <GalleryGrid images={data.images ?? []} layout={data.layout as string | undefined} />
   ),
-  BlogListing: (data) => (
-    <BlogListing posts={data.posts ?? []} />
-  ),
+  BlogListing: (data) => {
+    const blogBase: string = data.basePath;
+    return <BlogListing posts={data.posts ?? []} basePath={blogBase} />;
+  },
 };
 
 // ---------------------------------------------------------------------------

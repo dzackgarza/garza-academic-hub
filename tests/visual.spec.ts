@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = process.env.TEST_URL || 'http://localhost:8080';
 const testDir = path.dirname(fileURLToPath(import.meta.url));
 const manifest = JSON.parse(
   readFileSync(path.resolve(testDir, '../.generated/site-manifest.json'), 'utf8'),

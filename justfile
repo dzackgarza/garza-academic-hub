@@ -26,6 +26,14 @@ compile:
 build: compile
     npx vite build
 
+deploy:
+    @echo "Deploying to /var/www/html/website/..."
+    @BASE_URL="/website" node scripts/compile.cjs
+    @npx vite build
+    @mkdir -p /var/www/html/website/
+    @rsync -av --delete dist/ /var/www/html/website/
+    @echo "Deployment complete."
+
 run:
     fuser -k 8080/tcp 2>/dev/null || true; sleep 0.3; npx vite preview --host :: --port 8080 --strictPort
 
@@ -39,6 +47,11 @@ test: compile build
 # Generates golden screenshots first, then asserts against them on subsequent runs
 test-e2e:
     npx playwright test
+
+# Run E2E tests directly against the local Nginx static deployment
+test-staging:
+    @echo "Running E2E tests against Nginx static deployment (http://localhost/website)..."
+    @TEST_URL="http://localhost/website" npx playwright test
 
 # Update golden snapshot baselines for visual regression tests.
 # Requires a milestone or version tag — golden images must not be overwritten
