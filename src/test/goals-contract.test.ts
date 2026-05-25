@@ -686,6 +686,34 @@ describe('GOALS contract: post navigation content', () => {
   });
 });
 
+describe('GOALS contract: post compilation metadata', () => {
+  it('compiles a Table of Contents into blog posts with headings', () => {
+    const postFiles = readdirSync(path.join(generatedDir, 'blog'))
+      .filter((f) => f.endsWith('.html') && f !== 'posts.json')
+      .map((f) => path.join(generatedDir, 'blog', f));
+    if (postFiles.length === 0) return;
+    const violations = [];
+    const tocPattern =
+      /Table of Contents|<div class="toc-card">|<h3 class="toc-title">/;
+    for (const file of postFiles) {
+      const html = readFileSync(file, 'utf8');
+      // Skip posts with fewer than 4 headings (no meaningful TOC needed)
+      const headingCount = (html.match(/<h[2-3][^>]*>/g) || []).length;
+      if (headingCount < 4) continue;
+      if (!tocPattern.test(html)) {
+        violations.push(path.relative(generatedDir, file));
+      }
+    }
+    expect(
+      violations,
+      violations.length > 0
+        ? `Blog posts missing Table of Contents (add --metadata=toc:true to Pandoc invocation):\n` +
+            violations.map((v) => `  ${v}`).join('\n')
+        : undefined,
+    ).toEqual([]);
+  });
+});
+
 describe('GOALS contract: tests derive route coverage from generated artifacts', () => {
   it('does not maintain hardcoded Playwright route inventories', () => {
     const routes = contentRoutes().filter((route) => route !== '/');
