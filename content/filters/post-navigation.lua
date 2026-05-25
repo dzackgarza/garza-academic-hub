@@ -39,14 +39,11 @@ local function make_link(href, label, direction)
 end
 
 local function make_related_card(post, blog_base, base_url)
-  local img_html = ""
-  if post.image then
-    local img_src = post.image
-    if img_src:sub(1,1) == "/" and img_src:sub(2,2) ~= "/" then
-      img_src = base_url .. img_src
-    end
-    img_html = '<div class="archive__item-teaser"><img src="' .. escape_html(img_src) .. '" alt=""></div>'
+  local img_src = post.image or "/assets/images/bigo.png"
+  if img_src:sub(1,1) == "/" and img_src:sub(2,2) ~= "/" then
+    img_src = base_url .. img_src
   end
+  local img_html = '<div class="archive__item-teaser"><img src="' .. escape_html(img_src) .. '" alt=""></div>'
   local read_html = ""
   if post.readMinutes then
     read_html = '<span class="page__meta-readtime">' .. tostring(post.readMinutes) .. ' minute read</span>'
