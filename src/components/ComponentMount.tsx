@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import AcademicCollection from '@/components/AcademicCollection';
+import GalleryGrid from '@/components/GalleryGrid';
+import BlogListing from '@/components/BlogListing';
 import type { CollectionItem } from '@/components/AcademicCollection';
 import type { TypeDef } from '@/components/FilterControls';
 
@@ -25,6 +27,12 @@ const registry: Record<string, ComponentRenderer> = {
       layout={data.layout as 'grid' | 'scroller'}
       filterable={data.filterable as boolean}
     />
+  ),
+  GalleryGrid: (data) => (
+    <GalleryGrid images={data.images ?? []} layout={data.layout as string | undefined} />
+  ),
+  BlogListing: (data) => (
+    <BlogListing posts={data.posts ?? []} />
   ),
 };
 
