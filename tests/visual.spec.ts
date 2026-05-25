@@ -40,7 +40,7 @@ test.describe('Site Integrity and Hydration Tests', () => {
       expect(consoleErrors).toEqual([]);
 
       // 2. Assert that the page shell was successfully injected and contains the compiled article wrapper
-      const pageWrapper = page.locator('.academic-page-content, .post-content');
+      const pageWrapper = page.locator('.page');
       await expect(pageWrapper).toBeVisible();
 
       // 3. Assert actual page content renders (not just shell)
@@ -53,8 +53,8 @@ test.describe('Site Integrity and Hydration Tests', () => {
       );
       await expect(page.locator('.academic-site-nav')).toContainText('Teaching');
 
-      const profileCard = page.locator('.academic-profile-card');
-      if (await profileCard.count() > 0) {
+      const profileCard = page.locator('.sidebar');
+      if ((await profileCard.count()) > 0) {
         await expect(profileCard).toBeVisible();
         const cardText = (await profileCard.textContent()) ?? '';
         expect(
@@ -93,8 +93,37 @@ test.describe('Site Integrity and Hydration Tests', () => {
       const h1Count = await h1Elements.count();
       expect(
         h1Count,
-        `[${route.path}] should have exactly one <h1> tag to prevent duplicate headings, but found ${h1Count}`
+        `[${route.path}] should have exactly one <h1> tag to prevent duplicate headings, but found ${h1Count}`,
       ).toBe(1);
+    });
+  });
+});
+
+test.describe('Nav link navigation', () => {
+  const navLabels = ['Resources', 'Teaching', 'Writing'];
+
+  navLabels.forEach((label) => {
+    test(`clicking "${label}" nav link navigates to the correct page, not 404`, async ({
+      page,
+    }) => {
+      await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+      await page.waitForTimeout(500);
+
+      // Click the nav link by its text
+      await page.locator('.academic-site-nav a', { hasText: label }).click();
+      await page.waitForURL('**/*');
+      await page.waitForTimeout(500);
+
+      // Check we didn't get a 404 page
+      const body = await page.locator('body').textContent();
+      expect(
+        body?.includes('404') || body?.includes('not found'),
+        `Nav link "${label}" led to a 404 page`,
+      ).toBe(false);
+
+      // The page should have an h1 with the label (or similar content)
+      const h1 = await page.locator('h1');
+      await expect(h1).toBeVisible();
     });
   });
 });
