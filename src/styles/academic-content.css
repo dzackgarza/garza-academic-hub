@@ -21,6 +21,15 @@
 .academic-profile-card {
   @apply h-fit rounded-md border border-border bg-card p-5 text-sm text-card-foreground;
 }
+
+@media (min-width: 1024px) {
+  .academic-profile-card {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+  }
+}
 .academic-profile-avatar {
   @apply mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground;
 }
