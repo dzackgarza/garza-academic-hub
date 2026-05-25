@@ -1,28 +1,15 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import CompiledPage from './CompiledPage';
 
-// Mock react-router-dom with all exports used by the component tree
 vi.mock('react-router-dom', () => ({
   useLocation: () => ({ pathname: '/' }),
-  Link: ({ children, to, ...props }: any) => (
-    <a href={to} {...props}>
-      {children}
-    </a>
-  ),
-  useParams: () => ({}),
-  BrowserRouter: ({ children }: any) => <>{children}</>,
-  Routes: ({ children }: any) => <>{children}</>,
-  Route: ({ element }: any) => <>{element}</>,
 }));
 
 describe('CompiledPage', () => {
-  beforeEach(() => {
-    vi.unstubAllGlobals();
-  });
-
-  it('renders a loading indicator while content is loading', () => {
+  it('renders real compiled content for the current manifest route', () => {
     render(<CompiledPage />);
-    expect(screen.getByText(/loading content/i)).toBeInTheDocument();
+    expect(screen.getByText(/2024-2025 academic year/i)).toBeInTheDocument();
+    expect(screen.queryByText(/loading content/i)).not.toBeInTheDocument();
   });
 });

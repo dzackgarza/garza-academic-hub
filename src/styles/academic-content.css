@@ -1,4 +1,44 @@
 /* Academic Page Content — styles for Pandoc-compiled static pages (teaching, activities, home, etc.) */
+
+.academic-site-shell {
+  @apply min-h-screen bg-background text-foreground;
+}
+.academic-site-nav {
+  @apply sticky top-0 z-10 flex items-center justify-between gap-6 border-b border-border bg-background/95 px-5 py-3 backdrop-blur;
+}
+.academic-site-brand {
+  @apply text-sm font-semibold text-foreground no-underline;
+}
+.academic-site-nav-links {
+  @apply flex flex-wrap items-center justify-end gap-4 text-sm;
+}
+.academic-site-nav-links a {
+  @apply text-muted-foreground no-underline hover:text-primary;
+}
+.academic-site-main {
+  @apply mx-auto grid w-full max-w-6xl gap-8 px-5 py-8 md:grid-cols-[16rem_minmax(0,1fr)];
+}
+.academic-profile-card {
+  @apply h-fit rounded-md border border-border bg-card p-5 text-sm text-card-foreground;
+}
+.academic-profile-avatar {
+  @apply mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground;
+}
+.academic-profile-card h2 {
+  @apply mb-1 text-lg font-semibold;
+}
+.academic-profile-card p {
+  @apply my-1 text-muted-foreground;
+}
+.academic-profile-card ul {
+  @apply mt-4 list-none space-y-2 p-0;
+}
+.academic-profile-card a {
+  @apply text-primary no-underline hover:underline;
+}
+.academic-site-footer {
+  @apply border-t border-border px-5 py-6 text-center text-xs text-muted-foreground;
+}
 .academic-page-content h1 {
   @apply text-3xl font-semibold mb-2 mt-0;
 }

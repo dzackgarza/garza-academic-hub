@@ -11,6 +11,11 @@ export default defineConfig({
     baseURL: "http://localhost:8080",
     trace: "on-first-retry",
   },
+  webServer: {
+    command: "just build && just run",
+    url: "http://localhost:8080",
+    reuseExistingServer: !process.env.CI,
+  },
   projects: [
     {
       name: "chromium",

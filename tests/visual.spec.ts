@@ -1,18 +1,18 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const BASE_URL = 'http://localhost:8080';
+const testDir = path.dirname(fileURLToPath(import.meta.url));
+const manifest = JSON.parse(
+  readFileSync(path.resolve(testDir, '../.generated/site-manifest.json'), 'utf8'),
+) as { routes: Array<{ path: string; title: string }> };
 
-const ROUTES = [
-  { path: '/', name: 'home' },
-  { path: '/teaching', name: 'teaching' },
-  { path: '/activities', name: 'activities' },
-  { path: '/blog', name: 'blog' },
-  { path: '/writing', name: 'writing' },
-  { path: '/gallery', name: 'gallery' },
-];
+const routes = manifest.routes;
 
 test.describe('Site Integrity and Hydration Tests', () => {
-  ROUTES.forEach((route) => {
+  routes.forEach((route) => {
     test(`Route "${route.path}" should render without console/runtime errors and hydrations should succeed`, async ({
       page,
     }) => {
@@ -40,28 +40,28 @@ test.describe('Site Integrity and Hydration Tests', () => {
       expect(consoleErrors).toEqual([]);
 
       // 2. Assert that the page shell was successfully injected and contains the compiled article wrapper
-      const pageWrapper = page.locator('.academic-page-content');
+      const pageWrapper = page.locator('.academic-page-content, .post-content');
       await expect(pageWrapper).toBeVisible();
 
       // 3. Assert actual page content renders (not just shell)
-      // Each page has a known unique heading in its compiled markdown
-      const contentHeadings = {
-        '/': '2024-2025 academic year',
-        '/teaching': 'Teaching',
-        '/activities': 'Activities',
-        '/blog': 'Blog',
-        '/writing': 'Writing',
-        '/gallery': 'Gallery',
-      };
-      const expectedHeading =
-        contentHeadings[route.path as keyof typeof contentHeadings];
-      if (expectedHeading) {
-        await expect(pageWrapper).toContainText(expectedHeading);
+      await expect(pageWrapper).toContainText(route.title);
+
+      // 4. Assert template-owned site chrome is present before any island behavior.
+      await expect(page.locator('.academic-site-nav')).toBeVisible();
+      await expect(page.locator('.academic-site-footer')).toContainText(
+        'D. Zack Garza',
+      );
+      await expect(page.locator('.academic-site-nav')).toContainText('Teaching');
+
+      if (route.path === '/') {
+        await expect(page.locator('.academic-profile-card')).toContainText(
+          'Mathematics, University of Georgia',
+        );
       }
 
-      // 4. For the home page, specifically assert that the dynamic card grids are fully hydrated and display academic cards
+      // 5. For the home page, specifically assert content-declared slots were compiled into static cards.
       if (route.path === '/') {
-        const cards = page.locator('[data-component] .academic-card');
+        const cards = page.locator('.academic-card');
         const count = await cards.count();
         expect(count).toBeGreaterThan(0);
       }

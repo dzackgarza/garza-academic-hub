@@ -1,3 +1,8 @@
+---
+title: "Writing"
+template: "page"
+---
+
 # Writing
 
 Lecture notes, course notes, talk transcripts, and expository writing. Filter by type or tag.

@@ -1,0 +1,177 @@
+# Legacy route inventory from ~/website.
+# Each legacy source is either mapped to generated content or explicitly excluded.
+
+[legacy_surface_inventory]
+data_files = ["_data/navigation.yml"]
+includes = [
+  "_includes/feature_row",
+  "_includes/footer",
+  "_includes/footer.html",
+  "_includes/social-share.html",
+  "_includes/xournal",
+]
+layouts = [
+  "_layouts/default.html",
+  "_layouts/single.html",
+  "_layouts/single_condensed_toc.html",
+]
+asset_roots = [
+  "assets/images",
+  "assets/pdfs",
+  "assets/talks",
+  "assets/teaching",
+  "assets/courses",
+  "courses",
+]
+
+[[mapped]]
+legacy_source = "_posts/2015-05-30-setting-up-a-haskell-dev-environment.md"
+new_route = "/blog/haskell-dev-environment"
+
+[[mapped]]
+legacy_source = "_posts/2017-01-08-brief-intro-to-category-theory-1.md"
+new_route = "/blog/brief-intro-to-category-theory"
+
+[[mapped]]
+legacy_source = "_posts/2019-02-12-research-workflow.md"
+new_route = "/blog/research-workflow"
+
+[[mapped]]
+legacy_source = "_posts/2019-09-13-moments-and-center-of-mass.md"
+new_route = "/blog/moments-and-center-of-mass"
+
+[[mapped]]
+legacy_source = "_posts/2020-08-03-latex-handwriting-practice-worksheets.md"
+new_route = "/blog/latex-handwriting-worksheets"
+
+[[mapped]]
+legacy_source = "_posts/2020-10-11-recommendations-graduate-level-texts-and-notes.md"
+new_route = "/blog/grad-recommendations"
+
+[[mapped]]
+legacy_source = "_posts/2020-10-11-recommendations-undergraduate-resources.md"
+new_route = "/resources"
+
+[[mapped]]
+legacy_source = "_posts/2020-10-17-advice-for-undergraduates-in-mathematics.md"
+new_route = "/blog/undergrad-advice"
+
+[[mapped]]
+legacy_source = "_posts/2020-10-24-some-notes-on-benson-farb-s-talk-on-surface-bundles-mapping-class-groups-moduli-spaces-and-cohomology.md"
+new_route = "/blog/benson-farb-surface-bundles"
+
+[[mapped]]
+legacy_source = "_posts/2020-10-24-some-topics-to-learn-for-graduate-school-in-mathematics.md"
+new_route = "/blog/topics-for-grad-school"
+
+[[mapped]]
+legacy_source = "_posts/2020-11-03-precalculus-tips-and-tricks.md"
+new_route = "/blog/precalculus-tips-and-tricks"
+
+[[mapped]]
+legacy_source = "_posts/2020-11-28-introduction-to-infinity-categories.md"
+new_route = "/blog/introduction-to-infinity-categories"
+
+[[mapped]]
+legacy_source = "_posts/2020-12-27-intro-to-derived-algebraic-geometry-1-the-cotangent-complex-and-derived-de-rham-cohomology.md"
+new_route = "/blog/derived-algebraic-geometry-1"
+
+[[mapped]]
+legacy_source = "_posts/2022-12-31-some-notes-on-krantz-s-a-mathematician-s-survival-guide.md"
+new_route = "/blog/krantz-mathematicians-survival-guide"
+
+[[mapped]]
+legacy_source = "_pages/activities.md"
+new_route = "/activities"
+
+[[mapped]]
+legacy_source = "_pages/gallery.md"
+new_route = "/gallery"
+
+[[mapped]]
+legacy_source = "_pages/grad_resources.md"
+new_route = "/resources"
+
+[[mapped]]
+legacy_source = "_pages/teaching.md"
+new_route = "/teaching"
+
+[[mapped]]
+legacy_source = "_pages/Writing.md"
+new_route = "/writing"
+
+[[mapped]]
+legacy_source = "_pages/year-archive.html"
+new_route = "/blog"
+
+[[excluded]]
+excluded_source = "_pages/Classification Semidirect Products Feb 14th.html"
+reason = "exported standalone HTML artifact, not a maintained site page"
+
+[[excluded]]
+excluded_source = "_pages/GOATS_2020.md"
+reason = "legacy event page pending dedicated event migration"
+
+[[excluded]]
+excluded_source = "_pages/GOATS_April_2020.md"
+reason = "legacy event page pending dedicated event migration"
+
+[[excluded]]
+excluded_source = "_pages/GOATS_July_2020.md"
+reason = "legacy event page pending dedicated event migration"
+
+[[excluded]]
+excluded_source = "_pages/GOATS_June_2020.md"
+reason = "legacy event page pending dedicated event migration"
+
+[[excluded]]
+excluded_source = "_pages/GOSS_2021.md"
+reason = "legacy event page pending dedicated event migration"
+
+[[excluded]]
+excluded_source = "_pages/Linux.md"
+reason = "legacy technical notes page outside current academic-site parity scope"
+
+[[excluded]]
+excluded_source = "_pages/MockAMS_2021.md"
+reason = "legacy event page pending dedicated event migration"
+
+[[excluded]]
+excluded_source = "_pages/PQ Classification.html"
+reason = "exported standalone HTML artifact, not a maintained site page"
+
+[[excluded]]
+excluded_source = "_pages/UCSD-Algebraic-Geometry-Conference-2019.html"
+reason = "exported conference notes artifact linked from Activities"
+
+[[excluded]]
+excluded_source = "_pages/UGA_GSS_Sp2022.md"
+reason = "legacy event page pending dedicated event migration"
+
+[[excluded]]
+excluded_source = "_pages/Zotero Report 2019-02-08.html"
+reason = "exported bibliography artifact, not a maintained site page"
+
+[[excluded]]
+excluded_source = "_pages/advice.md"
+reason = "represented by Resources and advice blog routes"
+
+[[excluded]]
+excluded_source = "_pages/category-archive.md"
+reason = "archive index superseded by generated Blog page"
+
+[[excluded]]
+excluded_source = "_pages/tag-archive.html"
+reason = "archive index superseded by generated Blog page"
+
+[[excluded]]
+excluded_source = "_pages/talks.md"
+reason = "talk entries represented in content/databases/items.toml pending full talks page migration"
+
+[[excluded]]
+excluded_source = "_pages/tutoring.md"
+reason = "legacy service page not present in current navigation"
+
+[[excluded]]
+excluded_source = "_pages/world-of-math.md"
+reason = "legacy resource page pending dedicated content migration"

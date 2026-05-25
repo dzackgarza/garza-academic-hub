@@ -1,0 +1,9 @@
+from: markdown
+to: html
+template: content/templates/post-template.html
+metadata-files:
+  - .generated/pandoc-data/site.yaml
+table-of-contents: true
+toc-depth: 3
+html-math-method:
+  method: mathjax

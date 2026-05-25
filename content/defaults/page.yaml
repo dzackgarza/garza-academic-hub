@@ -1,0 +1,9 @@
+from: markdown
+to: html
+template: content/templates/page-template.html
+metadata-files:
+  - .generated/pandoc-data/site.yaml
+filters:
+  - content/filters/components.lua
+html-math-method:
+  method: mathjax

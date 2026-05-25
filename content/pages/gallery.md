@@ -1,3 +1,8 @@
+---
+title: "Gallery"
+template: "page"
+---
+
 # Gallery
 
 Diagrams and images drawn or generated for notes, papers, and talks.

@@ -1,16 +1,41 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import AcademicLayout from '@/components/AcademicLayout';
-import PageShell from '@/components/PageShell';
+import { useComponentMount } from '@/components/ComponentMount';
+import '@/styles/academic-content.css';
+import '@/styles/blog-post-layout.css';
 
-const ROUTE_CONFIG: Record<string, { html: string; sidebar: boolean }> = {
-  '/': { html: 'home', sidebar: true },
-  '/teaching': { html: 'teaching', sidebar: false },
-  '/activities': { html: 'activities', sidebar: false },
-  '/writing': { html: 'writing', sidebar: false },
-  '/gallery': { html: 'gallery', sidebar: false },
-  '/blog': { html: 'blog', sidebar: false },
-};
+import manifest from '../../.generated/site-manifest.json?raw';
+
+interface SiteRoute {
+  path: string;
+  source: string;
+  output: string;
+  type: 'page' | 'post';
+  title: string;
+  template: string;
+  sitemap: boolean;
+  islands: unknown[];
+}
+
+interface SiteManifest {
+  routes: SiteRoute[];
+}
+
+const htmlModules = import.meta.glob('../../.generated/**/*.html', {
+  eager: true,
+  query: 'raw',
+  import: 'default',
+}) as Record<string, string>;
+
+function parseManifest(rawManifest: string): SiteManifest {
+  const parsed = JSON.parse(rawManifest) as SiteManifest;
+  if (!Array.isArray(parsed.routes)) {
+    throw new Error('site manifest must define routes');
+  }
+  return parsed;
+}
+
+const siteManifest = parseManifest(manifest);
 
 export const LoadingSpinner = () => (
   <div className="flex flex-col items-center justify-center py-20 space-y-4">
@@ -25,53 +50,34 @@ export const ErrorMessage = ({ message }: { message: string }) => (
   </div>
 );
 
+export const NotFound = () => (
+  <main className="min-h-screen flex items-center justify-center p-8">
+    <div className="text-center">
+      <h1 className="text-4xl font-bold">404</h1>
+      <p className="mt-3 text-muted-foreground">Page not found</p>
+    </div>
+  </main>
+);
+
 const CompiledPage = () => {
   const { pathname } = useLocation();
-  const config = ROUTE_CONFIG[pathname] ?? ROUTE_CONFIG['/'];
-  const [html, setHtml] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const mountedRef = useRef(true);
+  const route = siteManifest.routes.find((entry) => entry.path === pathname);
+  const moduleKey = route ? `../../${route.output}` : null;
+  const html = moduleKey ? htmlModules[moduleKey] : null;
+  const containerRef = useComponentMount();
 
   useEffect(() => {
-    setIsLoading(true);
-    setError(null);
-    mountedRef.current = true;
+    if (!route || !html) return;
+    document.title = route.title;
+  }, [html, route]);
 
-    import(`../../.generated/pages/${config.html}.html?raw`)
-      .then((mod) => {
-        if (!mountedRef.current) return;
-        setHtml(mod.default);
-        setIsLoading(false);
-      })
-      .catch((err: Error) => {
-        if (!mountedRef.current) return;
-        console.error(
-          `[CompiledPage] Failed to load content for "${config.html}":`,
-          err,
-        );
-        setError(
-          `Failed to load page content. Check that the site has been compiled with \`bun run prebuild\`.`,
-        );
-        setIsLoading(false);
-      });
-
-    return () => {
-      mountedRef.current = false;
-    };
-  }, [config.html]);
-
-  return (
-    <AcademicLayout showSidebar={config.sidebar}>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : error ? (
-        <ErrorMessage message={error} />
-      ) : (
-        <PageShell html={html} />
-      )}
-    </AcademicLayout>
-  );
+  if (!route) return <NotFound />;
+  if (!html) {
+    return (
+      <ErrorMessage message={`Compiled output missing for manifest route ${route.path}`} />
+    );
+  }
+  return <div ref={containerRef} dangerouslySetInnerHTML={{ __html: html }} />;
 };
 
 export default CompiledPage;

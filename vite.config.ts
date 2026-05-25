@@ -1,8 +1,10 @@
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
+import fs from 'fs';
 import { spawnSync } from 'child_process';
 import { componentTagger } from 'lovable-tagger';
+import sitemap from 'vite-plugin-sitemap';
 
 /** Watches content/**\/*.md and re-runs compile.cjs on changes, then full-reloads. */
 function contentWatcher(): Plugin {
@@ -35,6 +37,12 @@ function contentWatcher(): Plugin {
   };
 }
 
+// Discover blog post slugs from content directory for sitemap
+const blogSlugs = fs
+  .readdirSync(path.resolve(__dirname, 'content/blog'))
+  .filter((f) => f.endsWith('.md'))
+  .map((f) => `/blog/${path.basename(f, '.md')}`);
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
@@ -47,6 +55,17 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     contentWatcher(),
+    sitemap({
+      hostname: 'https://dzackgarza.com',
+      dynamicRoutes: [
+        '/teaching',
+        '/activities',
+        '/writing',
+        '/gallery',
+        '/blog',
+        ...blogSlugs,
+      ],
+    }),
     mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {

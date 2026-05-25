@@ -19,7 +19,8 @@ Written for someone who edits content files but does not work on the React app.
 | Change the navbar | `content/databases/navigation.toml` |
 | Update your profile/contact card | `content/databases/profile.toml` |
 
-After editing any file, run the build pipeline to see your changes on the live site.
+After editing any file, run `just compile` to regenerate the site artifacts. Use
+`just preview path/to/file.md` for a single-page Pandoc preview.
 
 * * *
 
@@ -54,29 +55,40 @@ No raw HTML.
 
 ## Pages
 
-Pages are Markdown files in `content/pages/` with optional **component slots** — special
-fenced divs that load interactive React components.
+Pages are Markdown files in `content/pages/` with optional **Pandoc component
+declarations**. Each page requires frontmatter:
 
-The site's build pipeline compiles the Markdown to HTML, then the React app reads the
-compiled HTML and mounts component slots where it finds them.
+```yaml
+---
+title: "Page Title"
+template: "page"
+---
+```
 
-### Component Slot Syntax
+`content/pages/home.md` becomes `/`. Other page filenames become matching slug routes
+unless `route` is explicitly set in frontmatter.
 
-Component slots use Pandoc fenced divs with a `.component` class:
+The site pipeline compiles Markdown to generated HTML with Pandoc defaults, templates,
+metadata files, and Lua filters. The React app only loads the generated route manifest
+and generated HTML.
+
+### Component Declaration Syntax
+
+Component declarations use Pandoc fenced divs with a `.component` class:
 
 ```markdown
 :::{.component type="collection" source="databases/items.toml" layout="grid" filter="type=paper" columns="2"}
 :::
 ```
 
-Everything after `:::{.component` is an HTML attribute that controls the slot:
+Everything after `:::{.component` is an attribute validated during compile:
 
 | Attribute | Required | Purpose |
 | --- | --- | --- |
-| `type` | yes | Which component to render (see below) |
+| `type` | yes | Which Pandoc component filter renderer to use |
 | `source` | depends | TOML data source file in `content/databases/` |
 | `layout` | no | `"grid"` or `"scroller"` |
-| `filterable` | no | `"true"` to show filter tabs |
+| `filterable` | no | Reserved for runtime islands; ignored by static renderers |
 | `filter` | no | Pre-filter items (e.g. `"type=paper"`) |
 | `columns` | no | Number of grid columns |
 | `rows` | no | Number of rows per scroller page |
@@ -86,11 +98,12 @@ Everything after `:::{.component` is an HTML attribute that controls the slot:
 | `type` | Data source | Purpose |
 | --- | --- | --- |
 | `collection` | `items.toml` | Academic items (papers, talks, notes) with filtering |
-| `card-grid` | `items.toml` | (Legacy) Grid of academic cards |
-| `scroll-gallery` | `items.toml` | (Legacy) Horizontal scroller |
 | `blog-listing` | (none) | Self-contained blog archive |
 | `gallery-grid` | `galleries.toml` | Image gallery or YouTube section (by `gallery-id`) |
 | `link-group` | `links.toml` | External link group (by `group-id`) |
+
+Unknown component types, missing data sources, and missing group/gallery IDs fail the
+compile. Do not add raw HTML to content files to work around a missing renderer.
 
 * * *
 
