@@ -34,11 +34,37 @@ end
 
 local function make_link(href, label, direction)
   local arrow = direction == "prev" and "&larr;" or "&rarr;"
-  local cls = direction == "prev" and "post-nav-prev" or "post-nav-next"
-  return '<a href="' .. escape_html(href) .. '" class="' .. cls .. '">'
-    .. '<span class="post-nav-direction">' .. arrow .. ' ' .. (direction == "prev" and "Previous" or "Next") .. '</span>'
-    .. '<span class="post-nav-title">' .. escape_html(label) .. '</span>'
-    .. '</a>'
+  local cls = "pagination--pager"
+  if direction == "prev" then
+    return '<a href="' .. escape_html(href) .. '" class="' .. cls .. '">'
+      .. arrow .. ' ' .. escape_html(label) .. '</a>'
+  else
+    return '<a href="' .. escape_html(href) .. '" class="' .. cls .. '">'
+      .. escape_html(label) .. ' ' .. arrow .. '</a>'
+  end
+end
+
+local function make_related_card(post, blog_base)
+  local img_html = ""
+  if post.image then
+    img_html = '<div class="archive__item-teaser"><img src="' .. escape_html(post.image) .. '" alt=""></div>'
+  end
+  local read_html = ""
+  if post.readMinutes then
+    read_html = '<span class="page__meta-readtime">' .. tostring(post.readMinutes) .. ' minute read</span>'
+  end
+  local excerpt_html = ""
+  if post.excerpt then
+    excerpt_html = '<p class="archive__item-excerpt">' .. escape_html(post.excerpt) .. '</p>'
+  end
+  return [[
+<div class="grid__item">
+  <article class="archive__item">]] .. img_html .. [[
+    <h2 class="archive__item-title no_toc"><a href="]] .. blog_base .. "/" .. post.slug .. '">' .. escape_html(post.title) .. [[</a></h2>
+    <p class="page__meta">]] .. read_html .. [[</p>
+    ]] .. excerpt_html .. [[
+  </article>
+</div>]]
 end
 
 function Pandoc(doc)
@@ -117,18 +143,17 @@ function Pandoc(doc)
   end)
 
   local related_html = {}
-  for i = 1, math.min(3, #related) do
+  for i = 1, math.min(4, #related) do
     local r = related[i]
-    table.insert(related_html, '<li><a href="' .. blog_base .. "/" .. r.post.slug .. '">'
-      .. escape_html(r.post.title) .. '</a></li>')
+    table.insert(related_html, make_related_card(r.post, blog_base))
   end
 
   if #related_html > 0 then
     table.insert(html_parts, [[
-<nav class="post-nav-related" aria-label="Related posts">
-  <h3 class="post-nav-related-title">You might also like</h3>
-  <ul>]] .. table.concat(related_html, "\n") .. [[</ul>
-</nav>]])
+<div class="page__related">
+  <h4 class="page__related-title">You May Also Enjoy</h4>
+  <div class="grid__wrapper">]] .. table.concat(related_html, "\n") .. [[</div>
+</div>]])
   end
 
   if #html_parts == 0 then

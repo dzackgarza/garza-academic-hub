@@ -159,7 +159,7 @@
   @apply block text-xs text-muted-foreground hover:text-primary transition-colors py-1 pl-2 border-l border-transparent hover:border-primary font-medium no-underline hover:no-underline;
 }
 
-/* Post navigation: previous/next + related */
+/* Post navigation: previous/next pagination + related cards */
 .post-nav-wrapper {
   @apply mt-12 mb-8;
 }
@@ -167,50 +167,61 @@
 .post-nav {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   gap: 1rem;
 }
 
-.post-nav-prev,
-.post-nav-next {
-  @apply flex-1 min-w-[12rem] rounded-lg border border-border p-4 text-sm no-underline hover:border-primary transition-colors;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+.pagination--pager {
+  @apply flex-1 min-w-[10rem] rounded-md border border-border px-5 py-3 text-sm font-medium text-foreground no-underline hover:border-primary hover:text-primary transition-colors;
 }
 
-.post-nav-next {
-  text-align: right;
+/* Related posts grid — mirrors legacy Minimal Mistakes style */
+.page__related {
+  @apply w-full mt-8 pt-6 border-t border-border;
 }
 
-.post-nav-direction {
-  @apply text-xs font-medium text-muted-foreground uppercase tracking-wide;
+.page__related-title {
+  @apply text-sm font-semibold mb-4;
 }
 
-.post-nav-title {
-  @apply text-sm font-medium text-foreground;
+.grid__wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 1.25rem;
 }
 
-.post-nav-prev:hover .post-nav-title,
-.post-nav-next:hover .post-nav-title {
-  @apply text-primary;
+.grid__item {
+  @apply border border-border rounded-lg overflow-hidden;
 }
 
-.post-nav-related {
-  @apply w-full mt-6 pt-6 border-t border-border;
+.archive__item {
+  @apply p-4;
 }
 
-.post-nav-related-title {
-  @apply text-sm font-semibold mb-3;
+.archive__item-teaser {
+  @apply -mx-4 -mt-4 mb-3 overflow-hidden;
 }
 
-.post-nav-related ul {
-  @apply list-none p-0 m-0 flex flex-wrap gap-x-8 gap-y-2;
+.archive__item-teaser img {
+  @apply w-full h-32 object-cover;
 }
 
-.post-nav-related li {
-  @apply text-sm;
+.archive__item-title {
+  @apply text-sm font-semibold leading-snug mb-2;
 }
 
-.post-nav-related li a {
-  @apply text-primary no-underline hover:underline;
+.archive__item-title a {
+  @apply text-foreground no-underline hover:text-primary transition-colors;
+}
+
+.archive__item-excerpt {
+  @apply text-xs text-muted-foreground leading-relaxed mt-2;
+}
+
+.page__meta {
+  @apply text-xs text-muted-foreground;
+}
+
+.page__meta-readtime {
+  @apply inline-block;
 }
