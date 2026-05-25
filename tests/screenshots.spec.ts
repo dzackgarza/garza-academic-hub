@@ -14,15 +14,18 @@ interface ManifestRoute {
 }
 
 function getRoutes(): { path: string; name: string }[] {
-  const manifestPath = path.resolve(__dirname, '..', '.generated', 'site-manifest.json');
+  const manifestPath = path.resolve(
+    __dirname,
+    '..',
+    '.generated',
+    'site-manifest.json',
+  );
   const raw = readFileSync(manifestPath, 'utf8');
   const manifest = JSON.parse(raw) as { routes: ManifestRoute[] };
-  return manifest.routes
-    .filter((r) => r.type === 'page')
-    .map((r) => ({
-      path: r.path,
-      name: r.path === '/' ? 'home' : r.path.replace(/^\//, ''),
-    }));
+  return manifest.routes.map((r) => ({
+    path: r.path,
+    name: r.path === '/' ? 'home' : r.path.replace(/^\//, ''),
+  }));
 }
 
 const ROUTES = getRoutes();
