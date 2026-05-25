@@ -40,7 +40,7 @@ test.describe('Site Integrity and Hydration Tests', () => {
       expect(consoleErrors).toEqual([]);
 
       // 2. Assert that the page shell was successfully injected and contains the compiled article wrapper
-      const pageWrapper = page.locator('.academic-page-content, .post-content');
+      const pageWrapper = page.locator('.page');
       await expect(pageWrapper).toBeVisible();
 
       // 3. Assert actual page content renders (not just shell)

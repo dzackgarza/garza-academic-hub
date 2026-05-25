@@ -15,20 +15,46 @@ const blogPosts = manifest.routes
 
 test.describe('Responsive layout: sidebar sticky', () => {
   blogPosts.forEach((route) => {
-    test(`"${route.path}" profile card is sticky at >=1024px viewport`, async ({
-      page,
-    }) => {
+    test(`"${route.path}" sidebar is sticky at >=1024px viewport`, async ({ page }) => {
       await page.setViewportSize({ width: 1200, height: 600 });
       await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
-      const card = page.locator('.academic-profile-card');
+      const card = page.locator('.sidebar');
       await expect(card).toBeVisible();
 
       const position = await card.evaluate(
         (el) => window.getComputedStyle(el).position,
       );
-      expect(position, 'profile card should be sticky at >=1024px').toBe('sticky');
+      expect(position, 'sidebar should be sticky at >=1024px').toBe('sticky');
+    });
+  });
+});
+
+test.describe('Responsive layout: sidebar floats alongside content', () => {
+  blogPosts.forEach((route) => {
+    test(`"${route.path}" sidebar and page content side by side at >=1024px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 1200, height: 900 });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+      await page.waitForTimeout(500);
+
+      const sidebar = page.locator('.sidebar');
+      const content = page.locator('.page');
+
+      const sb = await sidebar.boundingBox();
+      const cb = await content.boundingBox();
+
+      expect(sb).toBeTruthy();
+      expect(cb).toBeTruthy();
+
+      if (sb && cb) {
+        expect(
+          sb.x + sb.width,
+          'sidebar should end before content starts (side by side)',
+        ).toBeLessThanOrEqual(cb.x + 20);
+      }
     });
   });
 });

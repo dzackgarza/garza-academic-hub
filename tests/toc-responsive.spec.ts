@@ -20,19 +20,21 @@ test.describe('TOC responsive visibility', () => {
       await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
-      const tocAside = page.locator('.post-sidebar');
+      const tocAside = page.locator('.sidebar__right');
       await expect(tocAside).toBeAttached();
       await expect(tocAside).toBeVisible();
 
-      // TOC must appear above the article body at narrow widths (legacy behavior)
-      const articleBody = page.locator('.post-content');
+      // TOC should be positioned between header and body
+      const headerEl = page.locator('.page__title');
+      const firstBody = page
+        .locator('.page__content > p, .page__content > h2, .page__content > h3')
+        .first();
       const tocBox = await tocAside.boundingBox();
-      const articleBox = await articleBody.boundingBox();
-      if (tocBox && articleBox) {
-        expect(
-          tocBox.y,
-          'TOC should be positioned above article body at narrow widths',
-        ).toBeLessThan(articleBox.y);
+      const headerBox = await headerEl.boundingBox();
+      const bodyBox = await firstBody.boundingBox();
+      if (tocBox && headerBox && bodyBox) {
+        expect(tocBox.y).toBeGreaterThanOrEqual(headerBox.y + headerBox.height);
+        expect(tocBox.y + tocBox.height).toBeLessThanOrEqual(bodyBox.y);
       }
     });
 
@@ -43,7 +45,7 @@ test.describe('TOC responsive visibility', () => {
       await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
-      const tocAside = page.locator('.post-sidebar');
+      const tocAside = page.locator('.sidebar__right');
       await expect(tocAside).toBeVisible();
 
       const position = await tocAside.evaluate(
