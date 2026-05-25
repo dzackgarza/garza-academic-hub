@@ -161,61 +161,53 @@
 
 /* Post navigation: previous/next pagination + related cards */
 .post-nav-wrapper {
-  @apply mt-12 mb-8;
+  @apply mt-10 mb-6;
 }
 
 .post-nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .pagination--pager {
-  @apply flex-1 min-w-[10rem] rounded-md border border-border px-5 py-3 text-sm font-medium text-foreground no-underline hover:border-primary hover:text-primary transition-colors;
+  @apply flex-1 min-w-[8rem] rounded border border-border px-4 py-2.5 text-xs font-semibold tracking-wide text-foreground no-underline uppercase hover:border-primary hover:text-primary transition-colors;
 }
 
 /* Related posts grid — mirrors legacy Minimal Mistakes style */
 .page__related {
-  @apply w-full mt-8 pt-6 border-t border-border;
+  @apply w-full mt-6 pt-4 border-t border-border;
 }
 
 .page__related-title {
-  @apply text-sm font-semibold mb-4;
+  @apply text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3;
 }
 
 .grid__wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-  gap: 1.25rem;
-}
-
-.grid__item {
-  @apply border border-border rounded-lg overflow-hidden;
-}
-
-.archive__item {
-  @apply p-4;
-}
-
-.archive__item-teaser {
-  @apply -mx-4 -mt-4 mb-3 overflow-hidden;
-}
-
-.archive__item-teaser img {
-  @apply w-full h-32 object-cover;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 1rem;
 }
 
 .archive__item-title {
-  @apply text-sm font-semibold leading-snug mb-2;
+  @apply text-sm font-semibold leading-snug mb-1;
 }
 
 .archive__item-title a {
   @apply text-foreground no-underline hover:text-primary transition-colors;
 }
 
+.archive__item-teaser {
+  @apply mb-2 overflow-hidden rounded;
+}
+
+.archive__item-teaser img {
+  @apply w-full h-24 object-cover;
+}
+
 .archive__item-excerpt {
-  @apply text-xs text-muted-foreground leading-relaxed mt-2;
+  @apply text-xs text-muted-foreground leading-relaxed mt-1;
 }
 
 .page__meta {

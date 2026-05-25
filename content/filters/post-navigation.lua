@@ -33,21 +33,19 @@ local function escape_html(str)
 end
 
 local function make_link(href, label, direction)
-  local arrow = direction == "prev" and "&larr;" or "&rarr;"
-  local cls = "pagination--pager"
-  if direction == "prev" then
-    return '<a href="' .. escape_html(href) .. '" class="' .. cls .. '">'
-      .. arrow .. ' ' .. escape_html(label) .. '</a>'
-  else
-    return '<a href="' .. escape_html(href) .. '" class="' .. cls .. '">'
-      .. escape_html(label) .. ' ' .. arrow .. '</a>'
-  end
+  local text = direction == "prev" and "Previous" or "Next"
+  return '<a href="' .. escape_html(href) .. '" class="pagination--pager" title="' .. escape_html(label) .. '">'
+    .. text .. '</a>'
 end
 
-local function make_related_card(post, blog_base)
+local function make_related_card(post, blog_base, base_url)
   local img_html = ""
   if post.image then
-    img_html = '<div class="archive__item-teaser"><img src="' .. escape_html(post.image) .. '" alt=""></div>'
+    local img_src = post.image
+    if img_src:sub(1,1) == "/" and img_src:sub(2,2) ~= "/" then
+      img_src = base_url .. img_src
+    end
+    img_html = '<div class="archive__item-teaser"><img src="' .. escape_html(img_src) .. '" alt=""></div>'
   end
   local read_html = ""
   if post.readMinutes then
@@ -145,7 +143,7 @@ function Pandoc(doc)
   local related_html = {}
   for i = 1, math.min(4, #related) do
     local r = related[i]
-    table.insert(related_html, make_related_card(r.post, blog_base))
+    table.insert(related_html, make_related_card(r.post, blog_base, base_url))
   end
 
   if #related_html > 0 then
