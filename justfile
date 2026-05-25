@@ -32,8 +32,6 @@ build:
     @rsync -av --delete dist/ /var/www/html/website/
     @echo "Build and deployment complete."
 
-deploy: build
-
 
 # ─── Tests ─────────────────────────────────────────────────────────────────────
 
