@@ -59,11 +59,29 @@ test.describe('Site Integrity and Hydration Tests', () => {
         );
       }
 
-      // 5. For the home page, specifically assert content-declared slots were compiled into static cards.
+      // 5. Assert every data-component placeholder has been hydrated with real content.
+      //    (Checks that the React component tree mounted and rendered — catches missing
+      //     registry entries and silently-failing components.)
+      const componentPlaceholders = page.locator('[data-component]');
+      const count = await componentPlaceholders.count();
+      for (let i = 0; i < count; i++) {
+        const el = componentPlaceholders.nth(i);
+        // The component name (e.g. "GalleryGrid", "AcademicCollection")
+        const name = await el.getAttribute('data-component');
+        // The inner HTML after React mounts. If the component never mounted,
+        // the element still contains the placeholder comment from compile.
+        const innerHtml = await el.innerHTML();
+        expect(
+          innerHtml.trim(),
+          `[${route.path}] data-component="${name}" placeholder did not hydrate (inner HTML looks like empty placeholder)`,
+        ).not.toMatch(/<!--\s*.*placeholder\s*-->/i);
+      }
+
+      // 6. For the home page, specifically assert content-declared slots were compiled into static cards.
       if (route.path === '/') {
         const cards = page.locator('.academic-card');
-        const count = await cards.count();
-        expect(count).toBeGreaterThan(0);
+        const cardCount = await cards.count();
+        expect(cardCount).toBeGreaterThan(0);
       }
     });
   });
