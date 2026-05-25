@@ -92,7 +92,8 @@
 }
 
 .post-sidebar {
-  display: none;
+  display: block;
+  margin-bottom: 2rem;
 }
 
 @media (min-width: 1024px) {
@@ -104,7 +105,6 @@
   }
 
   .post-layout-grid:has(.post-sidebar) .post-sidebar {
-    display: block;
     position: sticky;
     top: 5rem;
     max-height: calc(100vh - 8rem);

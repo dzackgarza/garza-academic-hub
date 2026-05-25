@@ -1,37 +1,35 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const BASE_URL = process.env.TEST_URL || 'http://localhost/website';
+const testDir = path.dirname(fileURLToPath(import.meta.url));
+const manifest = JSON.parse(
+  readFileSync(path.resolve(testDir, '../.generated/site-manifest.json'), 'utf8'),
+) as { routes: Array<{ path: string; title: string }> };
+
+const blogPosts = manifest.routes
+  .filter((route) => route.path.startsWith('/blog/'))
+  .slice(0, 2);
 
 test.describe('TOC responsive visibility', () => {
-  const blogPosts = [
-    '/blog/topics-for-grad-school',
-    '/blog/precalculus-tips-and-tricks',
-  ];
-
-  blogPosts.forEach((path) => {
-    test(`"${path}" shows TOC inline below 1024px`, async ({ page }) => {
-      // Narrow viewport: legacy site shows TOC inline above content
-      // Current bug: TOC is display:none below 1024px
+  blogPosts.forEach((route) => {
+    test(`"${route.path}" shows TOC inline below 1024px`, async ({ page }) => {
       await page.setViewportSize({ width: 800, height: 900 });
-      await page.goto(`${BASE_URL}${path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
       const tocAside = page.locator('.post-sidebar');
       await expect(tocAside).toBeAttached();
-
-      const display = await tocAside.evaluate(
-        (el) => window.getComputedStyle(el).display,
-      );
-      console.log(`${path} 800px: .post-sidebar display = ${display}`);
-
-      // The TOC must be visible at all widths — inline below 1024px, sidebar above
       await expect(tocAside).toBeVisible();
     });
 
-    test(`"${path}" shows TOC as sticky sidebar at >=1024px`, async ({ page }) => {
-      // Wide viewport: TOC should be visible as sticky sidebar column
+    test(`"${route.path}" shows TOC as sticky sidebar at >=1024px`, async ({
+      page,
+    }) => {
       await page.setViewportSize({ width: 1200, height: 900 });
-      await page.goto(`${BASE_URL}${path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
       const tocAside = page.locator('.post-sidebar');
