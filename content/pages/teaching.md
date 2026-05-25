@@ -2,9 +2,6 @@
 title: "Teaching"
 template: "page"
 ---
-
-# Teaching
-
 Courses taught at the University of Georgia. Each course site has the syllabus, lecture notes, and worked examples.
 
 ## Current Courses

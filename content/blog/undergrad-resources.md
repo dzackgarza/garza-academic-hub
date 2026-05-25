@@ -9,11 +9,11 @@ categories: ["Advice"]
 legacyUrl: "https://dzackgarza.com/resources/"
 ---
 
-# What To Do as an Undergraduate
+## What To Do as an Undergraduate
 
 I defer to this excellent page from the math department at UC Irvine: [https://www.math.uci.edu/math-majors/math-grad-school-resources/](https://www.math.uci.edu/math-majors/math-grad-school-resources/)
 
-# General Notes/Remarks
+## General Notes/Remarks
 
 * Anything lower-division: [Khan Academy](https://www.khanacademy.org/). Just be sure to work the problems!
 * On Youtube videos: *many* lectures and talks are being posted online these days, and these can vary in quality. This is slightly mitigated by the fact that you can watch them at 2x speed.
@@ -31,7 +31,7 @@ I defer to this excellent page from the math department at UC Irvine: [https://w
 
 ***
 
-# Preparing for Graduate School
+## Preparing for Graduate School
 
 * 📺 [Introduction to Higher Mathematics](https://www.youtube.com/playlist?list=PLZzHxk_TPOStgPtqRZ6KzmkUQBQ8TSWVX)
 
@@ -41,7 +41,7 @@ I defer to this excellent page from the math department at UC Irvine: [https://w
 
   If you’re thinking about grad school at all, read this! Even if you’re not, it’s a pretty good collection of mathematics that it’s good to at least be familiar with. You can also use this to get an idea of some of the major theorems and results in a variety of subfields.
 
-# Resources by Subject
+## Resources by Subject
 
 Below are resources for specific courses/subjects; I’ve tried to roughly organize these by increasing complexity with respect to a typical undergraduate Math degree.
 
@@ -56,9 +56,9 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
 * *Details* – Expand these sections for notes on the mathematical content or subject-specific advice.
 
-## Lower Division
+### Lower Division
 
-### Single Variable Calculus
+#### Single Variable Calculus
 
 * 📖 *James Stewart*, **Calculus: Early Transcendentals**
 
@@ -80,7 +80,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   Follows the standard curriculum very closely, offering clear, comprehensive explanations with many step-by-step examples.
 
-### Multivariable & Vector Calculus
+#### Multivariable & Vector Calculus
 
 * 📖 ⭐ *H. M. Schey*, **Div, Grad, Curl, and All That: An Informal Text on Vector Calculus**
 
@@ -94,7 +94,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   More fantastic, reliable reference notes from Paul focusing on 3D coordinates, vectors, and triple integration.
 
-### Ordinary Differential Equations
+#### Ordinary Differential Equations
 
 * 📖 ⭐ *Stephen W. Goode and Scott A. Annin*, **Differential Equations and Linear Algebra**
 
@@ -104,7 +104,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   A physics-motivated approach to differential equations, focusing heavily on Fourier series, mechanical systems, and linear operations.
 
-### Linear Algebra
+#### Linear Algebra
 
 * 📖 ⭐ *Sheldon Axler*, **Linear Algebra Done Right**
 
@@ -130,7 +130,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   An exceptionally useful shortcut for finding the nullspace basis directly from a matrix's reduced row-echelon form without solving systems by hand.
 
-### Discrete Mathematics & Proofs
+#### Discrete Mathematics & Proofs
 
 * 📖 *Kenneth H. Rosen*, **Discrete Mathematics and Its Applications**
 
@@ -156,9 +156,9 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   Covers logic, binomial coefficients, generating functions, asymptotics, and discrete structures in beautiful Knuthian detail.
 
-## Upper Division
+### Upper Division
 
-### Combinatorics
+#### Combinatorics
 
 * 📖 ⭐ *Herbert S. Wilf*, [**Generatingfunctionology**](https://www.math.upenn.edu/~wilf/DownldGF.html)
 
@@ -168,7 +168,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   A highly readable, engaging, and comprehensive introduction to counting, graph theory, and algorithms.
 
-### Abstract Algebra
+#### Abstract Algebra
 
 * 📖 ⭐ *David S. Dummit and Richard M. Foote*, **Abstract Algebra**
 
@@ -186,19 +186,19 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   Rigorous and crystal clear lectures from Harvard's classic abstract algebra course.
 
-### Category Theory
+#### Category Theory
 
 * 📺 *Tom LaGatta*, [**What is Category Theory?**](https://www.youtube.com/watch?v=o6L6XeNdd_k)
 
   A wonderful introductory talk explaining universal properties, functors, and natural transformations. Look up Steve Awodey or Bartosz Milewski's playlists for deep-dives.
 
-### Galois Theory
+#### Galois Theory
 
 * 📺 ⭐ *Matthew Salomone*, [**Galois Theory Lectures**](https://www.youtube.com/playlist?list=PLL0ATV5XYF8DTGAPKRPtYa4E8rOLcw88y)
 
   A modular portion of his algebra lectures. Brilliant pacing, showing the deep link between field extensions and group theory, leading up to the insolvability of the quintic.
 
-### Real Analysis
+#### Real Analysis
 
 * 📖 *Walter Rudin*, **Principles of Mathematical Analysis (Baby Rudin)**
 
@@ -212,7 +212,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   Su's recorded lectures from Harvey Mudd are legendary. Incredibly clear, warm, and highly motivated geometric insights.
 
-### Complex Analysis
+#### Complex Analysis
 
 * 📖 *James Ward Brown and Ruel V. Churchill*, **Complex Variables and Applications**
 
@@ -222,13 +222,13 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   A work of absolute genius. Needham replaces dry calculations with breathtaking geometric explanations using Möbius transformations and vector fields.
 
-### Numerical Analysis
+#### Numerical Analysis
 
 * 📖 *Richard L. Burden and J. Douglas Faires*, **Numerical Analysis**
 
   Excellent coverage of root-finding, fixed point theory, spline interpolation, and numerical differentiation/integration.
 
-### Point-Set Topology
+#### Point-Set Topology
 
 * 📖 ⭐ *James R. Munkres*, **Topology**
 
@@ -238,7 +238,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   Has a magnificent, highly-compressed appendix that reviews all the necessary point-set topology definitions and properties.
 
-### Algebraic Topology
+#### Algebraic Topology
 
 * 📖 ⭐ *Allen Hatcher*, **Algebraic Topology**
 
@@ -248,7 +248,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   A wonderful undergraduate introduction to homology, triangulation, and fundamental groups.
 
-### Differential Geometry & Manifolds
+#### Differential Geometry & Manifolds
 
 * 📖 *Michael Spivak*, **Calculus on Manifolds**
 
@@ -258,13 +258,13 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   An absolute masterpiece. Schuller delivers the most rigorous, clean, and beautifully explained lectures on differential geometry and topology available online.
 
-### Number Theory
+#### Number Theory
 
 * 📖 *William J. LeVeque*, **Fundamentals of Number Theory**
 
   Very concise, classic introduction covering prime distributions, quadratic reciprocity, and Diophantine equations.
 
-### Algebraic Geometry
+#### Algebraic Geometry
 
 * 📖 ⭐ *Miles Reid*, **Undergraduate Algebraic Geometry**
 
@@ -278,7 +278,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   A slightly more advanced follow-up focusing on algorithms, local rings, and projective geometries.
 
-### Probability and Statistics
+#### Probability and Statistics
 
 * 📖 *Sheldon Ross*, **A First Course in Probability**
 
@@ -288,7 +288,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   Perfect for mathematically mature students. Covers a huge amount of modern statistics and machine learning concepts concisely.
 
-### Dynamics & Chaos
+#### Dynamics & Chaos
 
 * 📖 *John Milnor*, **Dynamics in One Complex Variable**
 
@@ -306,7 +306,7 @@ Below are resources for specific courses/subjects; I’ve tried to roughly organ
 
   A very thorough, highly geometric and computational approach to differential equations and bifurcations.
 
-### Computer Science
+#### Computer Science
 
 * 📖 *Cormen, Leiserson, Rivest, and Stein*, **Introduction to Algorithms (CLRS)**
 

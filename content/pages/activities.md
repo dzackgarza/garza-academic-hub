@@ -2,9 +2,6 @@
 title: "Activities"
 template: "page"
 ---
-
-# Activities
-
 Conferences, workshops, service, and graduate coursework.
 
 ## Conferences & Workshops
