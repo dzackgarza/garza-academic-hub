@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useComponentMount } from '@/components/ComponentMount';
 import '@/styles/academic-content.css';
-import '@/styles/blog-post-layout.css';
 
 import manifest from '../../.generated/site-manifest.json?raw';
 
@@ -74,7 +73,9 @@ const CompiledPage = () => {
   if (!route) return <NotFound />;
   if (!html) {
     return (
-      <ErrorMessage message={`Compiled output missing for manifest route ${route.path}`} />
+      <ErrorMessage
+        message={`Compiled output missing for manifest route ${route.path}`}
+      />
     );
   }
   return <div ref={containerRef} dangerouslySetInnerHTML={{ __html: html }} />;
