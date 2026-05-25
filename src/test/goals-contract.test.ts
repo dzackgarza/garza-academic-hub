@@ -483,9 +483,7 @@ describe('GOALS contract: legacy parity inventory', () => {
   });
 
   it('populates every legacy asset root in public/ with migrated files', () => {
-    const inventory = TOML.parse(
-      readFileSync(legacyRoutesPath, 'utf8'),
-    ) as {
+    const inventory = TOML.parse(readFileSync(legacyRoutesPath, 'utf8')) as {
       legacy_surface_inventory: { asset_roots: string[] };
     };
     const publicDir = path.join(repoRoot, 'public');
@@ -493,14 +491,15 @@ describe('GOALS contract: legacy parity inventory', () => {
       existsSync(dir)
         ? readdirSync(dir, { recursive: true, withFileTypes: true })
             .filter((entry) => entry.isFile())
-            .map((entry) => path.relative(dir, path.join(entry.parentPath ?? dir, entry.name)))
+            .map((entry) =>
+              path.relative(dir, path.join(entry.parentPath ?? dir, entry.name)),
+            )
         : [];
     const emptyRoots = inventory.legacy_surface_inventory.asset_roots.filter(
       (root) => walkDir(path.join(publicDir, root)).length === 0,
     );
     expect(emptyRoots).toEqual([]);
   });
-
 });
 
 describe('GOALS contract: app source is generic', () => {
@@ -577,16 +576,51 @@ describe('GOALS contract: app source is generic', () => {
     const pageRef = extract(readFileSync(pageFiles[0], 'utf8'));
     for (const file of pageFiles) {
       const { nav, footer } = extract(readFileSync(file, 'utf8'));
-      expect(nav, `${path.relative(generatedDir, file)}: nav mismatch`).toBe(pageRef.nav);
-      expect(footer, `${path.relative(generatedDir, file)}: footer mismatch`).toBe(pageRef.footer);
+      expect(nav, `${path.relative(generatedDir, file)}: nav mismatch`).toBe(
+        pageRef.nav,
+      );
+      expect(footer, `${path.relative(generatedDir, file)}: footer mismatch`).toBe(
+        pageRef.footer,
+      );
     }
     for (const file of postFiles) {
       const { nav, footer } = extract(readFileSync(file, 'utf8'));
-      expect(nav, `${path.relative(generatedDir, file)}: nav mismatch`).toBe(pageRef.nav);
-      expect(footer, `${path.relative(generatedDir, file)}: footer mismatch`).toBe(pageRef.footer);
+      expect(nav, `${path.relative(generatedDir, file)}: nav mismatch`).toBe(
+        pageRef.nav,
+      );
+      expect(footer, `${path.relative(generatedDir, file)}: footer mismatch`).toBe(
+        pageRef.footer,
+      );
     }
   });
+});
 
+describe('GOALS contract: post navigation content', () => {
+  it('renders teaser images in the related posts section of compiled blog output', () => {
+    const postFiles = readdirSync(path.join(generatedDir, 'blog'))
+      .filter((f) => f.endsWith('.html') && f !== 'posts.json')
+      .map((f) => path.join(generatedDir, 'blog', f));
+    if (postFiles.length === 0) return;
+    const violations = [];
+    const teaserPattern = /<div class="archive__item-teaser">\s*<img[^>]*>\s*<\/div>/;
+    for (const file of postFiles) {
+      const html = readFileSync(file, 'utf8');
+      if (!html.includes('class="page__related"')) continue;
+      const relatedStart = html.indexOf('<div class="page__related">');
+      const sectionEnd = html.indexOf(
+        '<div class="post-nav-wrapper">',
+        relatedStart + 50,
+      );
+      const section =
+        sectionEnd === -1
+          ? html.slice(relatedStart)
+          : html.slice(relatedStart, sectionEnd);
+      if (!teaserPattern.test(section)) {
+        violations.push(path.relative(generatedDir, file));
+      }
+    }
+    expect(violations).toEqual([]);
+  });
 });
 
 describe('GOALS contract: tests derive route coverage from generated artifacts', () => {
