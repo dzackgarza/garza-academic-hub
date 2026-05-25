@@ -469,6 +469,7 @@ for (const file of blogFiles) {
       blogEntry.filePath,
       [
         `--defaults=${defaultsPathFor(blogEntry.filePath, blogEntry.template, postTemplates)}`,
+        `--metadata=toc:true`,
         `--metadata=pg_slug:${blogEntry.slug}`,
         `--metadata=pg_title:${blogEntry.entry.title.replace(/"/g, '\\"')}`,
       ],
