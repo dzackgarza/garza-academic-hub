@@ -67,4 +67,14 @@ export default defineConfig({
       '@content': path.resolve(__dirname, './content'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Static site — no cache busting needed. Clean filenames prevent
+        // manual rename steps between Vite output and Pandoc template refs.
+        assetFileNames: 'assets/[name].[ext]',
+        entryFileNames: 'assets/[name].js',
+      },
+    },
+  },
 });

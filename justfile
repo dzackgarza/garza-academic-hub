@@ -27,9 +27,7 @@ test: generate-macros
     @BASE_URL="/website" node scripts/compile.cjs
     @npx vite build
     @mkdir -p /var/www/html/website/assets
-    @cp dist/assets/index-*.css /var/www/html/website/assets/index.css 2>/dev/null || true
-    @cp dist/assets/index-*.js /var/www/html/website/assets/index.js 2>/dev/null || true
-    @cp public/assets/mathjax-macros.js /var/www/html/website/assets/mathjax-macros.js
+    @rsync -av dist/assets/ /var/www/html/website/assets/
     @rsync -av .generated/pages/ /var/www/html/website/
     @rsync -av --delete .generated/blog/ /var/www/html/website/blog/
     @cp /var/www/html/website/home.html /var/www/html/website/index.html
@@ -43,9 +41,7 @@ test-release: generate-macros
     @BASE_URL="/website" node scripts/compile.cjs
     @npx vite build
     @mkdir -p /var/www/html/website/assets
-    @cp dist/assets/index-*.css /var/www/html/website/assets/index.css 2>/dev/null || true
-    @cp dist/assets/index-*.js /var/www/html/website/assets/index.js 2>/dev/null || true
-    @cp public/assets/mathjax-macros.js /var/www/html/website/assets/mathjax-macros.js
+    @rsync -av dist/assets/ /var/www/html/website/assets/
     @rsync -av .generated/pages/ /var/www/html/website/
     @rsync -av --delete .generated/blog/ /var/www/html/website/blog/
     @cp /var/www/html/website/home.html /var/www/html/website/index.html
