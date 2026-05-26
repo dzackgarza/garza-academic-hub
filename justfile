@@ -17,32 +17,43 @@ preview-open file:
     echo "Preview: $$tmpfile" && \
     $${BROWSER:-xdg-open} "$$tmpfile" 2>/dev/null || true
 
-# ─── Build ─────────────────────────────────────────────────────────────────────
-# Run the full compile pipeline (blog posts + pages)
+# ─── Quality Gate ──────────────────────────────────────────────────────────────
 
-compile:
+# Single canonical gate: typechecks, validates content, compiles, builds,
+# runs unit tests, and verifies MathJax rendering. Always run this before pushing.
+test:
+    @npx tsc --noEmit
     @node scripts/compile.cjs
+    @npx vite build
+    @npx vitest --run --pool=threads
+    @npx playwright test tests/math-alignment.spec.ts tests/math-macros.spec.ts tests/tikzcd-center.spec.ts
 
-# Build the project and deploy it statically to /var/www/html/website/
-build:
+# Full pre-release validation: `test` + Playwright visual regression and
+# hydration tests. Run this before tagging a milestone or release.
+test-release: test
+    npx playwright test
+
+# Generate MathJax macros from canonical source
+generate-macros:
+    python3 ~/.pandoc/bin/generate-mathjax-config.py --json /tmp/mathjax-macros.json
+    @echo "window.MathJax = window.MathJax || {}; window.MathJax.tex = window.MathJax.tex || {}; window.MathJax.tex.macros = " > public/assets/mathjax-macros.js
+    cat /tmp/mathjax-macros.json >> public/assets/mathjax-macros.js
+    echo ";" >> public/assets/mathjax-macros.js
+    @echo "Generated mathjax-macros.js"
+
+# Build and deploy — depends on `test` succeeding first.
+build: test generate-macros
     @echo "Building and deploying to /var/www/html/website/..."
     @BASE_URL="/website" node scripts/compile.cjs
     @npx vite build
-    @mkdir -p /var/www/html/website/
-    @rsync -av --delete dist/ /var/www/html/website/
+    @mkdir -p /var/www/html/website/assets
+    @cp dist/assets/index-*.css /var/www/html/website/assets/index.css 2>/dev/null || true
+    @cp dist/assets/index-*.js /var/www/html/website/assets/index.js 2>/dev/null || true
+    @cp public/assets/mathjax-macros.js /var/www/html/website/assets/mathjax-macros.js
+    @rsync -av .generated/pages/ /var/www/html/website/
+    @rsync -av --delete .generated/blog/ /var/www/html/website/blog/
+    @cp /var/www/html/website/home.html /var/www/html/website/index.html
     @echo "Build and deployment complete."
-
-
-# ─── Tests ─────────────────────────────────────────────────────────────────────
-
-# Standard test suite: unit tests + visual regression (requires build)
-test: compile build
-    npx vitest --run --pool=threads && npx playwright test
-
-# End-to-end visual regression tests (Playwright)
-# Generates golden screenshots first, then asserts against them on subsequent runs
-test-e2e:
-    npx playwright test
 
 # Run E2E tests directly against the local Nginx static deployment
 test-staging:
@@ -58,13 +69,6 @@ update-snapshots milestone:
     @test -n "{{milestone}}" || { echo 'ERROR: milestone/version required.'; echo 'Usage: just update-snapshots MILESTONE=<version-or-description>'; exit 1; }
     @echo 'Updating golden snapshots for: {{milestone}}'
     @npx playwright test --update-snapshots
-
-# Typecheck only (no emit)
-typecheck:
-    npx tsc --noEmit
-
-# Full check: unit tests + typecheck + visual regression + build
-check: test typecheck
 
 # ─── Utilities ─────────────────────────────────────────────────────────────────
 # Show available content files
