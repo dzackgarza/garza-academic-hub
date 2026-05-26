@@ -5,6 +5,26 @@ import path from 'path';
 const repoRoot = path.resolve(__dirname, '../..');
 const scriptsDir = path.join(repoRoot, 'scripts');
 
+describe('align-math filter invariant', () => {
+  it('all display math in generated HTML is wrapped in align*', () => {
+    const blogDir = path.join(repoRoot, '.generated/blog');
+    const files = fs.readdirSync(blogDir).filter((f) => f.endsWith('.html'));
+
+    for (const file of files) {
+      const html = fs.readFileSync(path.join(blogDir, file), 'utf8');
+      const displayMathRegex = /<span class="math display">\\\[\s*\\begin\{align\*\}/g;
+      const displayMathCount = (html.match(/<span class="math display">/g) || [])
+        .length;
+      const alignWrappedCount = (html.match(displayMathRegex) || []).length;
+
+      expect(
+        alignWrappedCount,
+        `${file}: expected all ${displayMathCount} display math blocks to start with \\begin{align*}, found ${alignWrappedCount}`,
+      ).toBe(displayMathCount);
+    }
+  });
+});
+
 describe('build pipeline', () => {
   it('compile script exists as .cjs (not .js)', () => {
     const hasCjs = fs.existsSync(path.join(scriptsDir, 'compile.cjs'));
