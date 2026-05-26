@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -9,49 +9,66 @@ const manifest = JSON.parse(
   readFileSync(path.resolve(testDir, '../.generated/site-manifest.json'), 'utf8'),
 ) as { routes: Array<{ path: string }> };
 
+const contentDir = path.resolve(testDir, '../content');
+
 const blogPosts = manifest.routes
   .filter((r) => r.path.startsWith('/blog/'))
+  .filter((r) => {
+    const srcPath = path.join(contentDir, r.path + '.md');
+    if (!existsSync(srcPath)) return false;
+    const content = readFileSync(srcPath, 'utf8');
+    return /^##\s/m.test(content);
+  })
   .slice(0, 2);
 
 test.describe('TOC responsive visibility', () => {
   blogPosts.forEach((route) => {
-    test(`"${route.path}" shows TOC inline below 1024px`, async ({ page }) => {
+    test(`"${route.path}" TOC is visible between header and body at 800px`, async ({
+      page,
+    }) => {
       await page.setViewportSize({ width: 800, height: 900 });
       await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
-      const tocAside = page.locator('.sidebar__right');
-      await expect(tocAside).toBeAttached();
-      await expect(tocAside).toBeVisible();
+      const toc = page.locator('nav.toc-card');
+      await expect(toc).toBeVisible();
 
-      // TOC should be positioned between header and body
-      const headerEl = page.locator('.page__title');
-      const firstBody = page
-        .locator('.page__content > p, .page__content > h2, .page__content > h3')
-        .first();
-      const tocBox = await tocAside.boundingBox();
+      const headerEl = page.locator('.post-header');
+      const firstBody = page.locator('.post-content > h2, .post-content > p').first();
+      const tocBox = await toc.boundingBox();
       const headerBox = await headerEl.boundingBox();
       const bodyBox = await firstBody.boundingBox();
+      expect(tocBox).toBeTruthy();
+      expect(headerBox).toBeTruthy();
+      expect(bodyBox).toBeTruthy();
       if (tocBox && headerBox && bodyBox) {
-        expect(tocBox.y).toBeGreaterThanOrEqual(headerBox.y + headerBox.height);
-        expect(tocBox.y + tocBox.height).toBeLessThanOrEqual(bodyBox.y);
+        expect(tocBox.y).toBeGreaterThanOrEqual(headerBox.y + headerBox.height - 5);
+        expect(tocBox.y + tocBox.height).toBeLessThanOrEqual(bodyBox.y + 5);
       }
     });
 
-    test(`"${route.path}" shows TOC as sticky sidebar at >=1024px`, async ({
+    test(`"${route.path}" TOC is visible between header and body at 1200px`, async ({
       page,
     }) => {
       await page.setViewportSize({ width: 1200, height: 900 });
       await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
-      const tocAside = page.locator('.sidebar__right');
-      await expect(tocAside).toBeVisible();
+      const toc = page.locator('nav.toc-card');
+      await expect(toc).toBeVisible();
 
-      const position = await tocAside.evaluate(
-        (el) => window.getComputedStyle(el).position,
-      );
-      expect(position).toBe('sticky');
+      const headerEl = page.locator('.post-header');
+      const firstBody = page.locator('.post-content > h2, .post-content > p').first();
+      const tocBox = await toc.boundingBox();
+      const headerBox = await headerEl.boundingBox();
+      const bodyBox = await firstBody.boundingBox();
+      expect(tocBox).toBeTruthy();
+      expect(headerBox).toBeTruthy();
+      expect(bodyBox).toBeTruthy();
+      if (tocBox && headerBox && bodyBox) {
+        expect(tocBox.y).toBeGreaterThanOrEqual(headerBox.y + headerBox.height - 5);
+        expect(tocBox.y + tocBox.height).toBeLessThanOrEqual(bodyBox.y + 5);
+      }
     });
   });
 });

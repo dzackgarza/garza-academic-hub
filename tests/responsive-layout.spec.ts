@@ -20,7 +20,7 @@ test.describe('Responsive layout: sidebar sticky', () => {
       await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
-      const card = page.locator('.sidebar');
+      const card = page.locator('.academic-profile-card');
       await expect(card).toBeVisible();
 
       const position = await card.evaluate(
@@ -40,8 +40,8 @@ test.describe('Responsive layout: sidebar floats alongside content', () => {
       await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
       await page.waitForTimeout(500);
 
-      const sidebar = page.locator('.sidebar');
-      const content = page.locator('.page');
+      const sidebar = page.locator('.academic-profile-card');
+      const content = page.locator('.post-content, .academic-page-content');
 
       const sb = await sidebar.boundingBox();
       const cb = await content.boundingBox();
