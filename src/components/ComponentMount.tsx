@@ -44,6 +44,8 @@ const registry: Record<string, ComponentRenderer> = {
 // Mount / unmount all data-component placeholders inside a container
 // ---------------------------------------------------------------------------
 
+const mountedRoots = new WeakMap<HTMLElement, Root>();
+
 export function mountComponents(container: HTMLElement): () => void {
   const roots: Root[] = [];
 
@@ -56,7 +58,13 @@ export function mountComponents(container: HTMLElement): () => void {
 
     try {
       const data = JSON.parse(jsonStr) as ComponentData;
-      const root = createRoot(el);
+      // Reuse existing root if already mounted (handles React 18 StrictMode
+      // double-mounting: after unmount, createRoot on the same element fails).
+      let root = mountedRoots.get(el);
+      if (!root) {
+        root = createRoot(el);
+        mountedRoots.set(el, root);
+      }
       root.render(registry[componentName](data));
       roots.push(root);
     } catch (e) {
