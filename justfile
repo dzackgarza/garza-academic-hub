@@ -30,7 +30,10 @@ test: generate-macros
     @rsync -av dist/assets/ /var/www/html/website/assets/
     @rsync -av .generated/pages/ /var/www/html/website/
     @rsync -av --delete .generated/blog/ /var/www/html/website/blog/
-    @cp /var/www/html/website/home.html /var/www/html/website/index.html
+    @cp dist/index.html /var/www/html/website/index.html
+    @cp dist/index.html /var/www/html/website/blog.html
+    @cp dist/index.html /var/www/html/website/gallery.html
+    @cp dist/index.html /var/www/html/website/writing.html
     @npx vitest --run --pool=threads
     @TEST_URL="http://localhost/website" npx playwright test tests/integrity.spec.ts tests/math-alignment.spec.ts tests/math-macros.spec.ts tests/tikzcd-center.spec.ts
 
@@ -44,7 +47,10 @@ test-release: generate-macros
     @rsync -av dist/assets/ /var/www/html/website/assets/
     @rsync -av .generated/pages/ /var/www/html/website/
     @rsync -av --delete .generated/blog/ /var/www/html/website/blog/
-    @cp /var/www/html/website/home.html /var/www/html/website/index.html
+    @cp dist/index.html /var/www/html/website/index.html
+    @cp dist/index.html /var/www/html/website/blog.html
+    @cp dist/index.html /var/www/html/website/gallery.html
+    @cp dist/index.html /var/www/html/website/writing.html
     @npx vitest --run --pool=threads
     @TEST_URL="http://localhost/website" npx playwright test
 
