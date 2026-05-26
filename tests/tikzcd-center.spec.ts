@@ -1,36 +1,37 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const BASE_URL = process.env.TEST_URL || 'http://localhost/website';
+const testDir = path.dirname(fileURLToPath(import.meta.url));
+const manifest = JSON.parse(
+  readFileSync(path.resolve(testDir, '../.generated/site-manifest.json'), 'utf8'),
+) as { routes: Array<{ path: string; type: string }> };
 
-const tikzcdPostSlugs = [
-  '/blog/derived-algebraic-geometry-1',
-  '/blog/benson-farb-surface-bundles',
-];
+const blogRoutes = manifest.routes.filter((r) => r.type === 'post');
 
 test.describe('tikzcd SVG centering', () => {
-  for (const slug of tikzcdPostSlugs) {
-    test(`tikzcd SVGs are horizontally centered on ${slug}`, async ({ page }) => {
-      await page.goto(`${BASE_URL}${slug}`, {
+  for (const route of blogRoutes) {
+    test(`tikzcd SVGs are horizontally centered on ${route.path}`, async ({ page }) => {
+      await page.goto(`${BASE_URL}${route.path}`, {
         waitUntil: 'networkidle',
       });
       await page.waitForTimeout(2000);
 
-      // Find all span.tikzcd elements that contain SVGs
       const containers = page.locator('span.tikzcd');
       const count = await containers.count();
-      expect(
-        count,
-        `${slug}: expected at least one tikzcd diagram`,
-      ).toBeGreaterThanOrEqual(1);
 
-      // Get the post content container bounding box
+      // Not every post has tikzcd; skip those without.
+      if (count === 0) {
+        return;
+      }
+
       const postContent = page.locator('.post-content');
       const contentBox = await postContent.boundingBox();
       expect(contentBox).not.toBeNull();
       const contentCenterX = contentBox!.x + contentBox!.width / 2;
 
-      // For each tikzcd SVG, assert its horizontal center matches the
-      // content container's center within 1px tolerance.
       for (let i = 0; i < count; i++) {
         const container = containers.nth(i);
         const svg = container.locator('svg').first();

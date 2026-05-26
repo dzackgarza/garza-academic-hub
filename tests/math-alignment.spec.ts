@@ -1,30 +1,20 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const BASE_URL = process.env.TEST_URL || 'http://localhost/website';
+const testDir = path.dirname(fileURLToPath(import.meta.url));
+const manifest = JSON.parse(
+  readFileSync(path.resolve(testDir, '../.generated/site-manifest.json'), 'utf8'),
+) as { routes: Array<{ path: string; type: string }> };
 
-// All published blog posts — every route must survive compilation
-// and serve without MathJax errors.
-const postSlugs = [
-  '/blog/derived-algebraic-geometry-1',
-  '/blog/precalculus-tips-and-tricks',
-  '/blog/brief-intro-to-category-theory',
-  '/blog/benson-farb-surface-bundles',
-  '/blog/introduction-to-infinity-categories',
-  '/blog/undergrad-resources',
-  '/blog/undergrad-advice',
-  '/blog/research-workflow',
-  '/blog/topics-for-grad-school',
-  '/blog/grad-recommendations',
-  '/blog/moments-and-center-of-mass',
-  '/blog/haskell-dev-environment',
-  '/blog/krantz-mathematicians-survival-guide',
-  '/blog/latex-handwriting-worksheets',
-];
+const blogRoutes = manifest.routes.filter((r) => r.type === 'post');
 
 test.describe('display math alignment', () => {
-  for (const slug of postSlugs) {
-    test(`no MathJax errors on ${slug}`, async ({ page }) => {
-      await page.goto(`${BASE_URL}${slug}`, {
+  for (const route of blogRoutes) {
+    test(`no MathJax errors on ${route.path}`, async ({ page }) => {
+      await page.goto(`${BASE_URL}${route.path}`, {
         waitUntil: 'networkidle',
       });
       // Wait for MathJax to finish typesetting

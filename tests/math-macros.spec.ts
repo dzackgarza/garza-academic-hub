@@ -1,43 +1,36 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const BASE_URL = process.env.TEST_URL || 'http://localhost/website';
+const testDir = path.dirname(fileURLToPath(import.meta.url));
+const manifest = JSON.parse(
+  readFileSync(path.resolve(testDir, '../.generated/site-manifest.json'), 'utf8'),
+) as { routes: Array<{ path: string; type: string }> };
 
-// Posts and macros known to appear in each.
-const postSlugs = [
-  {
-    slug: '/blog/derived-algebraic-geometry-1',
-    macros: ['PP', 'ZZ', 'RR', 'CC', 'QQ'],
-  },
-  { slug: '/blog/benson-farb-surface-bundles', macros: ['ZZ', 'RR', 'CC'] },
-  { slug: '/blog/brief-intro-to-category-theory', macros: ['ZZ'] },
-  { slug: '/blog/topics-for-grad-school', macros: ['ZZ', 'RR'] },
-  { slug: '/blog/undergrad-resources', macros: ['ZZ'] },
-];
+const blogRoutes = manifest.routes.filter((r) => r.type === 'post');
+
+// Tier-1 macros that appear in blog content (defined as \mathbf, \mathbb, etc.).
+// An undefined macro renders as <mjx-merror data-mjx-error="...">.
+const macros = ['PP', 'ZZ', 'RR', 'CC', 'NN', 'QQ', 'FF', 'GL'];
 
 test.describe('MathJax macro definitions', () => {
-  for (const { slug, macros } of postSlugs) {
-    for (const macro of macros) {
-      const macroTeX = `\\${macro}`;
-      test(`\\${macro} renders correctly on ${slug}`, async ({ page }) => {
-        await page.goto(`${BASE_URL}${slug}`, {
-          waitUntil: 'networkidle',
-        });
-        // Wait for MathJax to finish typesetting
-        await page.waitForFunction(() => (window as any).MathJax !== undefined);
-        await page.evaluate(() => (window as any).MathJax.startup.promise);
-
-        // If the macro is undefined, MathJax renders an <mjx-merror>
-        // with data-mjx-error containing the bare name (e.g. "PP").
-        const errors = await page.evaluate(() => {
-          const merrors = document.querySelectorAll('mjx-merror');
-          return Array.from(merrors).map((e) => e.getAttribute('data-mjx-error') || '');
-        });
-        const macroErrors = errors.filter((e) => e.includes(macro));
-        expect(
-          macroErrors,
-          `${slug}: \\${macro} should not appear in any mjx-merror`,
-        ).toEqual([]);
+  for (const route of blogRoutes) {
+    test(`no undefined macros on ${route.path}`, async ({ page }) => {
+      await page.goto(`${BASE_URL}${route.path}`, {
+        waitUntil: 'networkidle',
       });
-    }
+      await page.waitForFunction(() => (window as any).MathJax !== undefined);
+      await page.evaluate(() => (window as any).MathJax.startup.promise);
+
+      const errors: string[] = await page.evaluate(() => {
+        const merrors = document.querySelectorAll('mjx-merror');
+        return Array.from(merrors).map((e) => e.getAttribute('data-mjx-error') || '');
+      });
+
+      const macroErrors = errors.filter((e) => macros.some((m) => e.includes(m)));
+      expect(macroErrors).toEqual([]);
+    });
   }
 });
