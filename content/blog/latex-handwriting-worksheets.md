@@ -16,22 +16,28 @@ date: 2020-08-03 18:27 -0700
 categories:
   - Advice and Resources
 ---
+Having never quite been able to write $\zeta$ or $\xi$ correctly, I cobbled together
+some code to generate worksheets to help practice my handwriting.
+Since a few people have expressed interest in them, I thought I'd share the documents
+and code here!
 
-Having never quite been able to write $\zeta$ or $\xi$ correctly, I cobbled together some code to generate worksheets to help practice my handwriting.
-Since a few people have expressed interest in them, I thought I'd share the documents and code here!
-
-The idea is fairly simple: you toss in a bunch of symbols you want to practice writing, and it generates a grade-school-style worksheet with the symbols sketched out in dotted lines:
+The idea is fairly simple: you toss in a bunch of symbols you want to practice writing,
+and it generates a grade-school-style worksheet with the symbols sketched out in dotted
+lines:
 
 ![image-20200803211425525](/assets/images/image-20200803211425525.png)
 
-You can then either print this out and write over the symbols with any real-life writing implement, or just import them into your favorite PDF annotation software and practice using a stylus.
+You can then either print this out and write over the symbols with any real-life writing
+implement, or just import them into your favorite PDF annotation software and practice
+using a stylus.
 
-If you just want to take a direct look, [here is a sample PDF](https://dzackgarza.com/assets/pdfs/handwriting.pdf) and [here is raw tex code](https://dzackgarza.com/assets/pdfs/handwriting.tex).
+If you just want to take a direct look,
+[here is a sample PDF](https://dzackgarza.com/assets/pdfs/handwriting.pdf) and
+[here is raw tex code](https://dzackgarza.com/assets/pdfs/handwriting.tex).
 
 The code is fairly simple:
 
-{% highlight latex %}
-{% raw %}
+```latex
 \documentclass{article}
 \usepackage{graphicx}
 \usepackage{dashrule}
@@ -71,12 +77,16 @@ The code is fairly simple:
 }
 
 \end{document}
-{% endraw %}
-{% endhighlight %}
+```
 
-You can swap out anything appearing in the `foreach` section for whatever symbols you’d like to practice. So far, it has seemed to work with just about everything I’ve thrown at it, so give it a try!
+You can swap out anything appearing in the `foreach` section for whatever symbols you’d
+like to practice.
+So far, it has seemed to work with just about everything I’ve thrown at
+it, so give it a try!
 
-If you have any ideas for improvements or generate cool worksheets, let me know and I’d be more than happy to link and share them here!
+If you have any ideas for improvements or generate cool worksheets, let me know and I’d
+be more than happy to link and share them here!
 
-> Note that there is a slight caveat: each symbol is printed with a wide interior region, which can make tracing with fine-tipped pens difficult.
+> Note that there is a slight caveat: each symbol is printed with a wide interior
+> region, which can make tracing with fine-tipped pens difficult.
 > I don't currently know a way around this.
