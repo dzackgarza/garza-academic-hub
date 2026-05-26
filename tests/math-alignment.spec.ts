@@ -10,7 +10,8 @@ test.describe('display math alignment', () => {
       waitUntil: 'networkidle',
     });
     // Wait for MathJax to finish typesetting
-    await page.waitForTimeout(10000);
+    await page.waitForFunction(() => (window as any).MathJax !== undefined);
+    await page.evaluate(() => (window as any).MathJax.startup.promise);
 
     const errors = await page.evaluate(() => {
       const result: string[] = [];

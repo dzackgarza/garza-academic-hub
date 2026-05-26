@@ -19,31 +19,11 @@ preview-open file:
 
 # ─── Quality Gate ──────────────────────────────────────────────────────────────
 
-# Single canonical gate: typechecks, validates content, compiles, builds,
-# runs unit tests, and verifies MathJax rendering. Always run this before pushing.
-test:
+# Single canonical gate: generates macros, typechecks, compiles, builds, syncs
+# to the Nginx static root, runs unit tests, and verifies MathJax rendering
+# against freshly deployed output. Always run this before pushing.
+test: generate-macros
     @npx tsc --noEmit
-    @node scripts/compile.cjs
-    @npx vite build
-    @npx vitest --run --pool=threads
-    @npx playwright test tests/math-alignment.spec.ts tests/math-macros.spec.ts tests/tikzcd-center.spec.ts
-
-# Full pre-release validation: `test` + Playwright visual regression and
-# hydration tests. Run this before tagging a milestone or release.
-test-release: test
-    npx playwright test
-
-# Generate MathJax macros from canonical source
-generate-macros:
-    python3 ~/.pandoc/bin/generate-mathjax-config.py --json /tmp/mathjax-macros.json
-    @echo "window.MathJax = window.MathJax || {}; window.MathJax.tex = window.MathJax.tex || {}; window.MathJax.tex.macros = " > public/assets/mathjax-macros.js
-    cat /tmp/mathjax-macros.json >> public/assets/mathjax-macros.js
-    echo ";" >> public/assets/mathjax-macros.js
-    @echo "Generated mathjax-macros.js"
-
-# Build and deploy — depends on `test` succeeding first.
-build: test generate-macros
-    @echo "Building and deploying to /var/www/html/website/..."
     @BASE_URL="/website" node scripts/compile.cjs
     @npx vite build
     @mkdir -p /var/www/html/website/assets
@@ -53,7 +33,36 @@ build: test generate-macros
     @rsync -av .generated/pages/ /var/www/html/website/
     @rsync -av --delete .generated/blog/ /var/www/html/website/blog/
     @cp /var/www/html/website/home.html /var/www/html/website/index.html
-    @echo "Build and deployment complete."
+    @npx vitest --run --pool=threads
+    @TEST_URL="http://localhost/website" npx playwright test tests/math-alignment.spec.ts tests/math-macros.spec.ts tests/tikzcd-center.spec.ts
+
+# Full pre-release validation: `test` + all remaining Playwright tests
+# (visual regression, hydration, layout, TOC, etc.).
+test-release: generate-macros
+    @npx tsc --noEmit
+    @BASE_URL="/website" node scripts/compile.cjs
+    @npx vite build
+    @mkdir -p /var/www/html/website/assets
+    @cp dist/assets/index-*.css /var/www/html/website/assets/index.css 2>/dev/null || true
+    @cp dist/assets/index-*.js /var/www/html/website/assets/index.js 2>/dev/null || true
+    @cp public/assets/mathjax-macros.js /var/www/html/website/assets/mathjax-macros.js
+    @rsync -av .generated/pages/ /var/www/html/website/
+    @rsync -av --delete .generated/blog/ /var/www/html/website/blog/
+    @cp /var/www/html/website/home.html /var/www/html/website/index.html
+    @npx vitest --run --pool=threads
+    @TEST_URL="http://localhost/website" npx playwright test
+
+# Generate MathJax macros from canonical source
+generate-macros:
+    python3 ~/.pandoc/bin/generate-mathjax-config.py --json /tmp/mathjax-macros.json
+    @echo "window.MathJax = window.MathJax || {}; window.MathJax.tex = window.MathJax.tex || {}; window.MathJax.tex.macros = " > public/assets/mathjax-macros.js
+    cat /tmp/mathjax-macros.json >> public/assets/mathjax-macros.js
+    echo ";" >> public/assets/mathjax-macros.js
+    @echo "Generated mathjax-macros.js"
+
+# Build and deploy — `test` already compiles, builds, syncs, and verifies.
+build: test
+    @echo "Build complete (synced to /var/www/html/website/ by the test gate)."
 
 # Run E2E tests directly against the local Nginx static deployment
 test-staging:

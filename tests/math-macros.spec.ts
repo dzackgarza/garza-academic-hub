@@ -7,7 +7,9 @@ test.describe('MathJax macro definitions', () => {
     await page.goto(`${BASE_URL}/blog/derived-algebraic-geometry-1`, {
       waitUntil: 'networkidle',
     });
-    await page.waitForTimeout(10000);
+    // Wait for MathJax to finish typesetting
+    await page.waitForFunction(() => (window as any).MathJax !== undefined);
+    await page.evaluate(() => (window as any).MathJax.startup.promise);
 
     // \PP appears in inline math in the note: e.g. $\PP^n$.
     // \PP is defined in the canonical tier1 macros as \mathbf{P}.
