@@ -11,24 +11,20 @@ header:
   overlay_color: "#333"
 toc: false
 ---
+At UGA, graduate students in Mathematics are put into teaching roles by our second year,
+so the department provides training courses for us in our first year.
+As a part of this training course, we chose various topics from Multivariable Calculus
+to present, so we could receive feedback on our lecturing styles.
 
-At UGA, graduate students in Mathematics are put into teaching roles by our second year, so the department provides training courses for us in our first year.
-As a part of this training course, we chose various topics from Multivariable Calculus to present, so we could receive feedback on our lecturing styles.
-
-This write-up is a quick refinement of the talk I gave, which was on computing moments and centers of mass of solid bodies.
-I found the treatment in most Calculus texts to be unmotivated -- it's a travesty that it's often divorced from the notion of moments from probability theory, which recover familiar concepts such as the expected value and variance.
+This write-up is a quick refinement of the talk I gave, which was on computing moments
+and centers of mass of solid bodies.
+I found the treatment in most Calculus texts to be unmotivated -- it's a travesty that
+it's often divorced from the notion of moments from probability theory, which recover
+familiar concepts such as the expected value and variance.
 
 With that in mind, I tried to approach it in a slightly different way.
 
-<div class="xournal">
-{% include xournal/Moments.html %}
-</div>
+![Handwritten notes on moments and center of mass](/assets/images/xournal/Moments.svg)
 
-<!--<object data="/assets/pdfs/expository/Moments.pdf" type='application/pdf' style='min-height: 400px'>-->
-<!--<p>PDF available <a href="/assets/pdfs/expository/Moments.pdf">here</a>. </p>-->
-<!--<embed src="/assets/pdfs/expository/Moments.pdf" type='application/pdf' />-->
-<!--</object>-->
-
-
-
-Hope you all enjoy the read! Feel free to let me know if you have ideas for improvements or any feedback.
+Hope you all enjoy the read!
+Feel free to let me know if you have ideas for improvements or any feedback.
