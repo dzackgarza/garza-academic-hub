@@ -4,6 +4,7 @@ template: content/templates/site-template.html
 metadata-files:
   - .generated/pandoc-data/site.yaml
 filters:
+  - content/filters/youtube.lua
   - content/filters/post-navigation.lua
 table-of-contents: true
 toc-depth: 3
