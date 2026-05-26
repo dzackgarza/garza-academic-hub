@@ -1,11 +1,34 @@
 ---
-title: "Moments and Center of Mass"
-date: "November 15, 2019"
-readMinutes: 1
-excerpt: "A short writeup from UGA's teaching training course covering a multivariable calculus topic."
-tags: ["Teaching"]
-categories: ["Teaching"]
-image: "/assets/images/moments.png"
+layout: 'single'
+title: Moments and Center of Mass
+tags:
+  - Calculus
+  - Mathematics
+description: 'A quick writeup on computing moments, a concept from Multivariable Calculus.'
+excerpt: 'As part of our teaching training course at UGA, we wrote up and presented a small talk on various topics from Multivariable Calculus. I described an approach to the concept of "moments", which measure the tendency of a solid body to rotate about an axis or plane.'
+header:
+  teaser: assets/images/moments.png
+  overlay_color: "#333"
+toc: false
 ---
 
-This post is currently a stub. The full mathematical content, equations, explanations, and diagrams reside on the legacy academic site.
+At UGA, graduate students in Mathematics are put into teaching roles by our second year, so the department provides training courses for us in our first year.
+As a part of this training course, we chose various topics from Multivariable Calculus to present, so we could receive feedback on our lecturing styles.
+
+This write-up is a quick refinement of the talk I gave, which was on computing moments and centers of mass of solid bodies.
+I found the treatment in most Calculus texts to be unmotivated -- it's a travesty that it's often divorced from the notion of moments from probability theory, which recover familiar concepts such as the expected value and variance.
+
+With that in mind, I tried to approach it in a slightly different way.
+
+<div class="xournal">
+{% include xournal/Moments.html %}
+</div>
+
+<!--<object data="/assets/pdfs/expository/Moments.pdf" type='application/pdf' style='min-height: 400px'>-->
+<!--<p>PDF available <a href="/assets/pdfs/expository/Moments.pdf">here</a>. </p>-->
+<!--<embed src="/assets/pdfs/expository/Moments.pdf" type='application/pdf' />-->
+<!--</object>-->
+
+
+
+Hope you all enjoy the read! Feel free to let me know if you have ideas for improvements or any feedback.

@@ -1,12 +1,29 @@
 ---
-title: "Intro to Derived Algebraic Geometry 1: The Cotangent Complex and Derived de Rham Cohomology"
-date: "April 5, 2020"
-readMinutes: 20
-excerpt: "Introductory notes from an MSRI workshop series."
-tags: ["Algebraic Geometry","Research Notes"]
-categories: ["Mathematics","Research"]
-legacyUrl: "https://dzackgarza.com/intro-to-derived-algebraic-geometry-1-the-cotangent-complex-and-derived-de-rham-cohomology/"
-image: "/assets/images/bigo.png"
+layout: single
+permalink: /intro-to-derived-algebraic-geometry-1-the-cotangent-complex-and-derived-de-rham-cohomology/
+title: 'Intro to Derived Algebraic Geometry 1: The Cotangent Complex and Derived de
+  Rham Cohomology'
+date: 2020-12-27 16:37 -0800
+header:
+  overlay_image: assets/images/bigo.png
+  overlay_filter: 0.5
+excerpt: 'Some introductory notes on derived algebraic geometry from an MSRI workshop series.'
+description: ''
+tags:
+  - Mathematics
+  - Algebraic Geometry
+  - Derived Algebraic Geometry
+categories:
+  - Introductory Notes
+  - Mathematics Research
+author_profile: true
+classes: wide
+toc: false
+read_time: false
 ---
 
-This post is currently a stub. The full mathematical content, equations, explanations, and diagrams reside on the legacy academic site.
+{% include video id="zRPa-VAvl6Q" provider="youtube" %}
+
+<div class="pandoc">
+<iframe src="/pandoc/2020-12-27.html" style="width:100%; min-height:800px;">
+</div>

@@ -1,11 +1,22 @@
 ---
-title: "Introduction to Infinity Categories"
-date: "March 20, 2020"
-readMinutes: 12
-excerpt: "Notes on a short introductory video covering foundational aspects of ∞-categories."
-tags: ["Category Theory"]
-categories: ["Mathematics"]
-legacyUrl: "https://dzackgarza.com/introductory%20notes/mathematics%20research/introduction-to-infinity-categories/"
+title: Introduction to Infinity Categories
+date: 2020-11-28 22:33 -0800
+layout: single
+read_time: false
+header:
+  overlay_color: "#333"
+tags:
+  - Mathematics
+  - Category Theory
+categories:
+  - Introductory Notes
+  - Mathematics Research
+description: Some notes on a short introductory video on some foundational aspects of infinity categories.
+excerpt: Some notes on a short introductory video on some foundational aspects of infinity categories.
 ---
 
-This post is currently a stub. The full mathematical content, equations, explanations, and diagrams reside on the legacy academic site.
+{% include video id="3IjAy0gHRyY" provider="youtube" %}
+
+<div class="pandoc">
+<iframe src="/pandoc/2020-11-28.html" style="width:100%; min-height:800px;">
+</div>
