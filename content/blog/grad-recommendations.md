@@ -7,10 +7,11 @@ tags:
 categories:
   - Advice and Resources
 ---
-
 Inspired by the following Twitter thread:
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Yo math tweeps, what is an absolutely standard textbook in your field that&#39;d be accessible to advanced undergrads and/or newbie grad students?</p>&mdash; D. Zack Garza (∂² ⋘ 0) (@dzackgarza) <a href="https://twitter.com/dzackgarza/status/1315352700779933699?ref_src=twsrc%5Etfw">October 11, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+> The tweet linked below was deleted from Twitter.
+> The thread asked for standard textbook recommendations accessible to advanced
+> undergraduates and new graduate students across mathematical fields.
 
 # Multiple Areas
 
@@ -24,29 +25,34 @@ Inspired by the following Twitter thread:
 
 - [PDF Notes for a variety of Cambridge courses](http://dec41.user.srcf.net/notes/)
 
-- Qiaochu Yuan has some [reading recommendations](https://qchu.wordpress.com/reading-recommendations/)
+- Qiaochu Yuan has some
+  [reading recommendations](https://qchu.wordpress.com/reading-recommendations/)
 
-- This blog also has a [large list of recommendations, sorted by topic](https://mathblog.com/mathematics-books/)
+- This blog also has a
+  [large list of recommendations, sorted by topic](https://mathblog.com/mathematics-books/)
 
 - As does [this one](http://hbpms.blogspot.com/)
 
-- There is a similar [community wiki on MSE](https://math.stackexchange.com/questions/302023/best-sets-of-lecture-notes-and-articles?lq=1)
+- There is a similar
+  [community wiki on MSE](https://math.stackexchange.com/questions/302023/best-sets-of-lecture-notes-and-articles?lq=1)
 
-- You can find ranked recommendations [on this question on MO](https://mathoverflow.net/questions/761/undergraduate-level-math-books)
+- You can find ranked recommendations
+  [on this question on MO](https://mathoverflow.net/questions/761/undergraduate-level-math-books)
 
-- UC Berkeley has [a bibliography](https://math.berkeley.edu/courses/archives/announcements/fall-2011-textbooks) of books used by class.
+- UC Berkeley has
+  [a bibliography](https://math.berkeley.edu/courses/archives/announcements/fall-2011-textbooks)
+  of books used by class.
 
-
----------------------------------------------------------------------------------------------------------------------------------
+* * *
 
 # Analysis
 
 ## Real Analysis
 
-
 ### Gerald B. Folland, Real Analysis: Modern Techniques and Applications
 
-- Links to some [homeworks and solutions at UCSD](http://www.math.ucsd.edu/~bli/teaching/math240Cs20/)
+- Links to some
+  [homeworks and solutions at UCSD](http://www.math.ucsd.edu/~bli/teaching/math240Cs20/)
 
 ### Walter Rudin, Real and Complex Analysis
 
@@ -97,14 +103,13 @@ Inspired by the following Twitter thread:
 
 ### S. Ross, A First Course in Probability (Prentice-Hall)
 
-### Shiryayev, Probability. 
+### Shiryayev, Probability.
 
-### Feller, An Introduction To Probability Theory And Its Applications 
+### Feller, An Introduction To Probability Theory And Its Applications
 
 ### Durrett, Probability: Theory And Examples
 
----------------------------------------------------------------------------------------------------------------------------------
-
+* * *
 
 # Algebra
 
@@ -128,12 +133,14 @@ Inspired by the following Twitter thread:
 
 <https://www.mi.fu-berlin.de/en/math/groups/arithmetic_geometry/teaching/exercises/Altman_-Kleiman---A-term-of-commutative-algebra-_2017_.pdf>
 
-###  Atiyah and MacDonald, Introduction to Commutative Algebra
+### Atiyah and MacDonald, Introduction to Commutative Algebra
 
 ## Representation Theory
 
-- Gaitsgory, [Course Notes on Geometric Representation Theory](http://people.math.harvard.edu/~gaitsgde/267y/index.html)
-- Mcgerty, [Notes on Lie Groups/Algebras](https://courses.maths.ox.ac.uk/node/view_material/42444)
+- Gaitsgory,
+  [Course Notes on Geometric Representation Theory](http://people.math.harvard.edu/~gaitsgde/267y/index.html)
+- Mcgerty,
+  [Notes on Lie Groups/Algebras](https://courses.maths.ox.ac.uk/node/view_material/42444)
 - Shoshany, [Notes on Lie Groups](http://baraksh.com/BarakShoshanyLieGroupReview.pdf)
   - From a physicist's perspective
 
@@ -143,19 +150,19 @@ Inspired by the following Twitter thread:
 
 ### Pramod Achar, Unreleased Geometric Representation Theory Text
 
-
 ### Nicolas Libedinsky, Gentle Introduction to Soergel Bimodules
 
-- Notes: [Gentle introduction to Soergel bimodules I: The basics](https://arxiv.org/abs/1702.00039)
+- Notes:
+  [Gentle introduction to Soergel bimodules I: The basics](https://arxiv.org/abs/1702.00039)
 
 ### Hall, Lie Groups, Lie Algebras, and Representations
 
 ### Kirillov, Introduction to Lie Groups and Lie Algebras
 
-- Recommended by Daniel Litt, [link to notes](https://www.math.stonybrook.edu/~kirillov/mat552/liegroups.pdf)
+- Recommended by Daniel Litt,
+  [link to notes](https://www.math.stonybrook.edu/~kirillov/mat552/liegroups.pdf)
 
-## Homological 
-
+## Homological
 
 ### Peter J. Hilton and Urs Stammbach, A Course in Homological Algebra
 
@@ -165,43 +172,40 @@ Inspired by the following Twitter thread:
 
 - Recommended by Daniel Litt
 
-
----------------------------------------------------------------------------------------------------------------------------------
-
+* * *
 
 # Algebraic Geometry
 
-
 - Gathmann, [Notes](https://www.mathematik.uni-kl.de/~gathmann/de/alggeom.php)
-- Vakil, [Rising Sea Notes](http://math.stanford.edu/~vakil/216blog/FOAGnov1817public.pdf)
+- Vakil,
+  [Rising Sea Notes](http://math.stanford.edu/~vakil/216blog/FOAGnov1817public.pdf)
 
 ## Robin Hartshorne, Algebraic Geometry
 
-
 ## Eisenbud and Harris, The Geometry of Schemes
 
-- Standard! Notes here: [The Geometry of Schemes](https://www.maths.ed.ac.uk/~v1ranick/papers/eisenbudharris.pdf)
-
+- Standard! Notes here:
+  [The Geometry of Schemes](https://www.maths.ed.ac.uk/~v1ranick/papers/eisenbudharris.pdf)
 
 ## Mumford, The Red Book of Varieties and Schemes
 
-
----------------------------------------------------------------------------------------------------------------------------------
+* * *
 
 # Number Theory
-
 
 ### Algebraic Number Theory
 
 #### J. Neukirch, Algebraic Number Theory
 
-- Large number of exercises [here](http://www.math.ucsd.edu/~csorense/teaching/math204B_W20/204B_W20_EXC.pdf)
+- Large number of exercises
+  [here](http://www.math.ucsd.edu/~csorense/teaching/math204B_W20/204B_W20_EXC.pdf)
 
 #### Cassels and Fröhlich, Algebraic Number Theory
 
 #### J. Milne, Algebraic Number Theory
 
-- Not a textbook: actually [notes](http://www.math.ucsd.edu/~csorense/teaching/math204B_W19/Milne_ANT.pdf)
+- Not a textbook: actually
+  [notes](http://www.math.ucsd.edu/~csorense/teaching/math204B_W19/Milne_ANT.pdf)
 
 ### Uncategorized
 
@@ -219,7 +223,8 @@ Inspired by the following Twitter thread:
 
 #### J. Milne, Class Field Theory
 
-- Not a textbook: actually [notes](http://www.math.ucsd.edu/~csorense/teaching/math204B_W19/Milne_CFT.pdf)
+- Not a textbook: actually
+  [notes](http://www.math.ucsd.edu/~csorense/teaching/math204B_W19/Milne_CFT.pdf)
 
 #### Weil, Basic Number Theory
 
@@ -229,7 +234,7 @@ Inspired by the following Twitter thread:
 
 #### Valenza, Fourier Analysis on Number Fields
 
----------------------------------------------------------------------------------------------------------------------------------
+* * *
 
 # Topology
 
@@ -246,7 +251,8 @@ Inspired by the following Twitter thread:
 
 ### Dodson and Parker, A User's Guide to Algebraic Topology
 
-- Covers more advanced topics than a usual course: some sheaf theory, bundles, characteristic classes, obstruction theory
+- Covers more advanced topics than a usual course: some sheaf theory, bundles,
+  characteristic classes, obstruction theory
 - Appendices on algebra, topology, manifolds/bundles, and tables of homotopy groups
 
 ### Glen Bredon, Topology and Geometry
@@ -262,7 +268,6 @@ Inspired by the following Twitter thread:
 - Classic reference.
 
 ### Massey, A Basic Course in Algebraic Topology
-
 
 ## Homotopy Theory
 
@@ -288,9 +293,7 @@ Inspired by the following Twitter thread:
 
 ### Guillemin and Pollack, Differential Topology
 
-
 ### John M. Lee, Introduction to Smooth Manifolds
-
 
 ### Milnor, Morse Theory
 
@@ -302,7 +305,6 @@ Inspired by the following Twitter thread:
 
 ### Guillemin, Stable Mappings and Their Singularities
 
-
 ## Symplectic Geometry/Topology
 
 ### Dusa McDuff, Introduction to Symplectic Topology
@@ -311,7 +313,8 @@ Inspired by the following Twitter thread:
 
 ### Cannas da Silva, Lectures on Symplectic Geometry
 
-- Notes: [Lectures on Symplectic Geometry](https://people.math.ethz.ch/~acannas/Papers/lsg.pdf)
+- Notes:
+  [Lectures on Symplectic Geometry](https://people.math.ethz.ch/~acannas/Papers/lsg.pdf)
   - Skip chapters 4, 5, 25, 26, 30
 
 ## Complex Geometry
@@ -322,20 +325,21 @@ Inspired by the following Twitter thread:
 
 ### Griffiths-Harris, Principles of Algebraic Geometry
 
-###  Carlson, Period Mappings and Period Domains
+### Carlson, Period Mappings and Period Domains
 
 ### Rick Miranda, Algebraic Curves and Riemann Surfaces
 
 ### F. Kirwan, Complex Algebraic Curves
 
-
 ### Voison, Hodge Theory and Complex Algebraic Geometry I
 
-- Notes: [Period Mappings and Period Domains](https://www-fourier.ujf-grenoble.fr/~peters/Books/PeriodBook.f/SecondEdition/PerBook.pdf)
+- Notes:
+  [Period Mappings and Period Domains](https://www-fourier.ujf-grenoble.fr/~peters/Books/PeriodBook.f/SecondEdition/PerBook.pdf)
 
 ## Knot Theory
 
-- Justin Roberts, [Knots Knotes](http://math.ucsd.edu/~justin/Roberts-Knotes-Jan2015.pdf)
+- Justin Roberts,
+  [Knots Knotes](http://math.ucsd.edu/~justin/Roberts-Knotes-Jan2015.pdf)
 
 ### Rolfsen, Knots and Links
 
@@ -353,25 +357,32 @@ Inspired by the following Twitter thread:
 
 ### J. Kock, Frobenius algebras and 2D TQFTs
 
-
 ### Osvath and Szabo, [Grid Homology for Knots and Links](https://web.math.princeton.edu/~petero/GridHomologyBook.pdf)
 
 ## Geometric Group Theory
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Here are 4 books that all my grad students read:<br>1. Brown&#39;s &quot;Cohomology of groups&quot;<br>2. Serre&#39;s &quot;Trees&quot; (followed up w/ Scott&#39;s article &quot;Topological methods in group theory&quot;)<br>3. Witte-Morris&#39;s &quot;Introduction to arithmetic groups&quot;<br>4. Farb-Margalit&#39;s &quot;Primer on mapping class groups&quot;</p>&mdash; Andrew Putman (@AndyPutmanMath) <a href="https://twitter.com/AndyPutmanMath/status/1315390718492512256?ref_src=twsrc%5Etfw">October 11, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Here are 4 books that all my
+grad students read:<br>1. Brown&#39;s &quot;Cohomology of groups&quot;<br>2. Serre&#39;s
+&quot;Trees&quot; (followed up w/ Scott&#39;s article &quot;Topological methods in group
+theory&quot;)<br>3. Witte-Morris&#39;s &quot;Introduction to arithmetic
+groups&quot;<br>4. Farb-Margalit&#39;s &quot;Primer on mapping class
+groups&quot;</p>&mdash; Andrew Putman (@AndyPutmanMath)
+<a href="https://twitter.com/AndyPutmanMath/status/1315390718492512256?ref_src=twsrc%5Etfw">October
+11, 2020</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ### Mosher-Tangora, Cohomology Operations and Applications in Homotopy Theory
 
 ### Serre, Trees
 
-- Recommendation from Andrew Putman: follow up with Scott's [Topological Methods in Group Theory](http://math.hunter.cuny.edu/olgak/scott_wall.pdf)
+- Recommendation from Andrew Putman: follow up with Scott's
+  [Topological Methods in Group Theory](http://math.hunter.cuny.edu/olgak/scott_wall.pdf)
 
 ### Witte-Morris, Introduction to Arithmetic Groups
 
 ### Farb-Margalit, Primer on mapping class groups
 
----------------------------------------------------------------------------------------------------------------------------------
-
+* * *
 
 # Physics
 
@@ -379,13 +390,13 @@ Inspired by the following Twitter thread:
 
 ### Mark Srednicki, Quantum Field Theory
 
-### Pierre Deligne, Quantum Fields and Strings: A Course for Mathematicians 
+### Pierre Deligne, Quantum Fields and Strings: A Course for Mathematicians
 
 ### Howard Georgi, Lie Algebras in Particle Physics
 
-### Kusse, Mathematical Physics 
+### Kusse, Mathematical Physics
 
----------------------------------------------------------------------------------------------------------------------------------
+* * *
 
 # Combinatorics
 
@@ -393,15 +404,13 @@ Inspired by the following Twitter thread:
 
 ### Stanley, Enumerative Combinatorics Vol 1
 
-### Bruce Sagan - Springer, The Symmetric Group 
+### Bruce Sagan - Springer, The Symmetric Group
 
 ### Doug West, Introduction to Graph Theory
 
-
----------------------------------------------------------------------------------------------------------------------------------
+* * *
 
 # Logic
-
 
 ## Set Theory
 
@@ -411,7 +420,7 @@ Inspired by the following Twitter thread:
 
 ### Tent and Ziegler, A Course in Model Theory
 
----------------------------------------------------------------------------------------------------------------------------------
+* * *
 
 # Unsorted Recommendations
 
@@ -419,4 +428,5 @@ Inspired by the following Twitter thread:
 
 ### Murray, Mathematical Biology
 
-###  Mac Lane-Moerdijk, Sheaves in Geometry and Logic: A First Introduction to Topos Theory
+### Mac Lane-Moerdijk, Sheaves in Geometry and Logic: A First Introduction to Topos Theory
+
