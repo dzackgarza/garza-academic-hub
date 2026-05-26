@@ -34,7 +34,7 @@ have because it included groups in the “unstable” range.[^stable_homotopy] G
 and finding that specific document, however, wound up taking much longer than I’d
 expected.
 
-![A wild collection of finite groups appear!](/assets/images/1549961056228.png)
+![A wild collection of finite groups appear!](/website/assets/images/1549961056228.png)
 
 As a result, I decided that I needed to set up some kind of system for how I read and
 parse papers, textbooks, and other random documents, with the express purpose of making
@@ -106,7 +106,7 @@ which lights up any time you are reading a PDF document.
 When clicked, it can send the page directly to a collection of your choice, where it
 will create a bibliography entry for it and automatically download the PDF:
 
-![Reading a PDF in-browser, then saving it directly into Zotero using the browser extension.](/assets/images/1549958253593.png)
+![Reading a PDF in-browser, then saving it directly into Zotero using the browser extension.](/website/assets/images/1549958253593.png)
 
 Since it has a “Watch Folder” feature, it is a relatively simple matter to set it to
 watch the *Books* folder for new downloads.
@@ -130,7 +130,7 @@ Moreover, it has decent internal organizational capabilities using hierarchical
 “collections”, which allow aliasing items in many separate places that all reference a
 single, canonical source reference and file.
 
-![Zotero's GUI. On the left are a number of collections and subcollections which can be made on the fly; the middle displays associated items; the right displays info about the selected item.](/assets/images/1549958676705.png)
+![Zotero's GUI. On the left are a number of collections and subcollections which can be made on the fly; the middle displays associated items; the right displays info about the selected item.](/website/assets/images/1549958676705.png)
 
 Zotero does not seem to have any “watch folder” features available, and thus requires
 either importing via the browser extension manually dragging and dropping files into the
@@ -172,12 +172,12 @@ To this end, I’ve settled on two programs that do the job for now:
 ![Okular's default view, with a table of contents on the left.
 It supports popup annotations (blue) and highlighting text (yellow), as well as freehand
 annotations with a stylus via the toolbar near the
-middle.](/assets/images/1549958963489.png)
+middle.](/website/assets/images/1549958963489.png)
 
 ![Moon+ Reader in landscape view.
 Annotations made in Okular show up here and vice-versa.
 Great for reading, as phones are quite portable, and includes a bluelight filter to
-reduce eyestrain.](/assets/images/moonreader.jpg)
+reduce eyestrain.](/website/assets/images/moonreader.jpg)
 
 Both have the required annotation capabilities, and additionally, save your view
 settings position within a document after it is closed.
@@ -207,15 +207,15 @@ which open the associated PDF jump **directly** to the page of that annotation!
 tool. Popup annotations are extracted perfectly; highlighted annotation extraction
 depends on OCR quality.
 Blue links are clickable and directly open PDF to listed
-page.](/assets/images/1549959541696.png)
+page.](/website/assets/images/1549959541696.png)
 
 If desired, you can also select a number of documents and create a joint report, which
 combines all of the individual reports into a single page.
 This can be opened in a local browser window, where the hyperlinks will continue to open
 PDFs directly to the referenced page.
 You can see an example of what such a report looks like
-[here.](/assets/examples/ZoteroReport.html)[^zotero_note] A full description of how to
-extract annotations can be found
+[here.](/website/assets/examples/ZoteroReport.html)[^zotero_note] A full description of
+how to extract annotations can be found
 [here](https://remembereverything.org/manage-pdf-highlights-annotations/).
 
 I can not overstate how useful this is -– if you are diligent about annotating and

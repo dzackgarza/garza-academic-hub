@@ -21,7 +21,7 @@ familiar concepts such as the expected value and variance.
 
 With that in mind, I tried to approach it in a slightly different way.
 
-![Handwritten notes on moments and center of mass](/assets/images/xournal/Moments.svg)
+![Handwritten notes on moments and center of mass](/website/assets/images/xournal/Moments.svg)
 
 Hope you all enjoy the read!
 Feel free to let me know if you have ideas for improvements or any feedback.

@@ -19,7 +19,7 @@ The idea is fairly simple: you toss in a bunch of symbols you want to practice w
 and it generates a grade-school-style worksheet with the symbols sketched out in dotted
 lines:
 
-![image-20200803211425525](/assets/images/image-20200803211425525.png)
+![image-20200803211425525](/website/assets/images/image-20200803211425525.png)
 
 You can then either print this out and write over the symbols with any real-life writing
 implement, or just import them into your favorite PDF annotation software and practice
