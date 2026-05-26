@@ -7,18 +7,7 @@ tags:
 - Mathematics
 - Category Theory
 - Introductory
-description: ''
 excerpt: A relatively short introduction to Category Theory, including some concrete examples.
-header:
-  overlay_color: "#333"
-  teaser: assets/images/category_theory.png
-toc: true
-toc_sticky: true
-toc_label: "Table of Contents"
-toc_icon: "cog"
-author_profile: true
-layout: single_condensed_toc
-classes: single 
 ---
 
 # Disclaimer

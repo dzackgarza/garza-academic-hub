@@ -46,7 +46,7 @@ local function process_str(text, result)
         in_comment = false
         local after = rest:sub(close + 2)
         if after ~= "" then
-          return process_str(after, result)
+          process_str(after, result)
         end
       end
       return true
@@ -74,7 +74,9 @@ local function process_str(text, result)
       end
       local after = content:sub(close + 2)
       if after ~= "" then
-        return process_str(after, result)
+        if not process_str(after, result) then
+          table.insert(result, pandoc.Str(after))
+        end
       end
       return true
     else
@@ -94,10 +96,32 @@ local function process_str(text, result)
     local close = text:find("]]")
     if close then
       local before = text:sub(1, close - 1)
-      table.insert(wiki_buffer, before)
+      -- If pipe not yet found, scan buffer for one (pipe in later segment)
+      if not wiki_has_pipe then
+        for i, segment in ipairs(wiki_buffer) do
+          local p = segment:find("|")
+          if p then
+            wiki_has_pipe = true
+            wiki_pipe_text = segment:sub(p + 1)
+            -- Remaining segments after the pipe are part of the display text
+            for j = i + 1, #wiki_buffer do
+              if wiki_buffer[j] ~= "" then
+                wiki_pipe_text = wiki_pipe_text .. " " .. wiki_buffer[j]
+              end
+            end
+            break
+          end
+        end
+      end
       if wiki_has_pipe then
+        -- Append the closing segment to the display text
+        if wiki_pipe_text ~= "" then
+          wiki_pipe_text = wiki_pipe_text .. " "
+        end
+        wiki_pipe_text = wiki_pipe_text .. before
         table.insert(result, pandoc.Str(wiki_pipe_text))
       else
+        table.insert(wiki_buffer, before)
         table.insert(result, pandoc.Str(table.concat(wiki_buffer, " ")))
       end
       wiki_mode = false
@@ -105,11 +129,17 @@ local function process_str(text, result)
       wiki_buffer = {}
       local after = text:sub(close + 2)
       if after ~= "" then
-        return process_str(after, result)
+        if not process_str(after, result) then
+          table.insert(result, pandoc.Str(after))
+        end
       end
       return true
     else
-      table.insert(wiki_buffer, text)
+      if wiki_has_pipe then
+        wiki_pipe_text = wiki_pipe_text .. " " .. text
+      else
+        table.insert(wiki_buffer, text)
+      end
       return true
     end
   end
@@ -173,6 +203,38 @@ function Para(el)
   if starts_with(text, "Refs:") then return {} end
   if text:match("^#[%w/]+") then return {} end
 
+  el.content = process_inlines(el.content)
+  return el
+end
+
+-- Strip markdown links whose targets are Obsidian page references (not URLs).
+-- Converts [display text](page name) to plain "display text".
+-- Obsidian page refs are either bare page names or file paths inside the vault.
+local OBSIDIAN_VAULT_PREFIX = os.getenv("HOME") .. "/notes/"
+local function is_obsidian_page_ref(target)
+  -- Real URLs have a scheme
+  if target:match("://") then return false end
+  -- Mailto links
+  if target:match("^mailto:") then return false end
+  -- Anchor-only links
+  if target:match("^#") then return false end
+  -- Absolute paths under the Obsidian vault are resolved page refs
+  if target:match("^" .. OBSIDIAN_VAULT_PREFIX) then return true end
+  -- Relative paths with no extension and no scheme: Obsidian page refs
+  if not target:match("://") and not target:match("%.[a-zA-Z]+$") and target:match("^[%w%s%%%-_]+$") then
+    return true
+  end
+  return false
+end
+
+function Link(el)
+  if is_obsidian_page_ref(el.target) then
+    return el.content
+  end
+  return nil
+end
+
+function Header(el)
   el.content = process_inlines(el.content)
   return el
 end

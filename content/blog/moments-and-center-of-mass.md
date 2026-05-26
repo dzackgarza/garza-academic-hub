@@ -1,15 +1,12 @@
 ---
-layout: 'single'
 title: Moments and Center of Mass
+date: 2019-09-13
 tags:
   - Calculus
   - Mathematics
-description: 'A quick writeup on computing moments, a concept from Multivariable Calculus.'
+categories:
+  - Mathematics Research
 excerpt: 'As part of our teaching training course at UGA, we wrote up and presented a small talk on various topics from Multivariable Calculus. I described an approach to the concept of "moments", which measure the tendency of a solid body to rotate about an axis or plane.'
-header:
-  teaser: assets/images/moments.png
-  overlay_color: "#333"
-toc: false
 ---
 At UGA, graduate students in Mathematics are put into teaching roles by our second year,
 so the department provides training courses for us in our first year.

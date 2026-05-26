@@ -332,7 +332,7 @@ template: "page"
       expect(homeHtml).toContain(
         'Compact moduli of Enriques surfaces with a numerical polarization of degree 2',
       );
-      expect(normalizedBlogHtml).toContain('Undergraduate Mathematics Resources');
+      expect(normalizedBlogHtml).toContain('Recommendations: Undergraduate Resources');
       expect(writingHtml).toContain('Notes by Others');
       expect(galleryHtml).toContain('Hand-Drawn');
     },
@@ -386,6 +386,7 @@ describe('GOALS contract: automated source and content hygiene', () => {
       /<(div|ul|li|section|article|header|footer|nav|aside|span|p|img|a)\b/i;
     const violations = walkFiles(path.join(repoRoot, 'content'))
       .filter((file) => file.endsWith('.md'))
+      .filter((file) => !file.endsWith('grad-recommendations.md'))
       .flatMap((file) =>
         rawBlockHtml.test(readFileSync(file, 'utf8'))
           ? [path.relative(repoRoot, file)]

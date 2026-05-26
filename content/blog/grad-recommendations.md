@@ -1,26 +1,12 @@
 ---
 title: 'Recommendations: Graduate Level Texts and Notes'
 date: 2020-10-11 12:27 -0700
-permalink: /grad_recommendations/
-toc: true
-toc_sticky: true
-toc_label: "Table of Contents"
-toc_icon: "cog"
-author_profile: true
-layout: single_condensed_toc
-classes: single
 tags:
   - Mathematics
   - Reference
 categories:
   - Advice and Resources
 ---
-
-<style>
-h3 {
-  font-weight: normal;
-}
-</style>
 
 Inspired by the following Twitter thread:
 

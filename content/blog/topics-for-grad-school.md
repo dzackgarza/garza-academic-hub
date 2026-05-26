@@ -5,13 +5,6 @@ tags:
   - Reference
   - Mathematics
 excerpt: "Some notes on topics to learn to help prepare for grad school." 
-toc: true
-toc_sticky: true
-toc_label: "Table of Contents"
-toc_icon: "cog"
-author_profile: true
-layout: single_condensed_toc
-classes: single 
 categories:
   - Advice and Resources
 ---

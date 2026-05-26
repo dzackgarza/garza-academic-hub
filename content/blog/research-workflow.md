@@ -1,14 +1,11 @@
 ---
-layout: single
 title: Research Workflow
+date: 2019-02-12
 tags:
   - Research
-description: 'How I manage and organize digital documents when doing research.'
+categories:
+  - Mathematics Research
 excerpt: 'In the last year of my undergraduate degree, I did two quarters of undergraduate research, and the purpose of this post is to capture some of the research processes and techniques I pieced together during that time.'
-header:
-  overlay_color: "#333"
-  teaser: assets/images/1549961056228.png
-toc: true
 
 ---
 In the last year of my undergraduate degree, I did two quarters [^1] of undergraduate

@@ -1,14 +1,6 @@
 ---
 title: 'Recommendations: Undergraduate Resources'
 date: 2021-04-11 14:18 -0700
-permalink: /resources/
-toc: true
-toc_sticky: true
-toc_label: "Table of Contents"
-toc_icon: "cog"
-author_profile: true
-layout: single
-classes: single 
 tags:
   - Math
   - Reference

@@ -13,7 +13,7 @@ categories:
 Below is a partial transcription and some notes I took while watching the following talk
 from Benson Farb:
 
-:::{.youtube #E_Ly2NWX1g8} :::
+[YouTube](https://www.youtube.com/watch?v=E_Ly2NWX1g8)
 
 # Part 2: Surface bundles, mapping class groups, moduli spaces, and cohomology
 

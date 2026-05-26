@@ -11,8 +11,8 @@ categories:
   - Mathematics Research
 excerpt: 'Some introductory notes on derived algebraic geometry from an MSRI workshop series.'
 ---
-:::{.youtube #zRPa-VAvl6Q} :::
+[YouTube](https://www.youtube.com/watch?v=zRPa-VAvl6Q)
 
-<div class="pandoc">
-<iframe src="/assets/pandoc/2020-12-27.html" style="width:100%; min-height:800px;">
-</div>
+``` {.include shift-heading-level-by=1 format="markdown+tex_math_single_backslash"}
+/home/dzack/notes/Obsidian/Concepts/Notes - The cotangent complex and derived de Rham cohomology.md
+```

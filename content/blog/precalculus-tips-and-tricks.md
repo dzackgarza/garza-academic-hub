@@ -1,13 +1,6 @@
 ---
 title: "How to do well in (my) Precalculus class"
 date: 2020-11-03 15:50 -0800
-toc: true
-toc_sticky: true
-toc_label: "Table of Contents"
-toc_icon: "cog"
-author_profile: true
-layout: single_condensed_toc
-classes: single 
 tags:
   - Advice
   - Mathematics

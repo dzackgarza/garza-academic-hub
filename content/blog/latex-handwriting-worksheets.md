@@ -1,17 +1,11 @@
 ---
-layout: single
 title: LaTeX Handwriting Practice Worksheets
 tags:
   - Latex
   - Tablets
   - Handwriting
   - Mathematics
-description: Latex code to generate custom handwriting worksheets.
 excerpt: Ever had trouble writing ξ? Yeah, me too, so I made these practice worksheets. Enjoy!
-header:
-  overlay_color: "#333"
-  teaser: assets/images/LatexHandwriting.png
-toc: false
 date: 2020-08-03 18:27 -0700
 categories:
   - Advice and Resources

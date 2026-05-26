@@ -1,66 +1,104 @@
-<div class="academic-site-shell">
-  <nav class="academic-site-nav" aria-label="Main navigation">
-    <a class="academic-site-brand" href="$site.base$/">$site.profile.name$</a>
-    <div class="academic-site-nav-links">
-      $for(site.nav)$
-      <a href="$site.nav.path$">$site.nav.label$</a>
-      $endfor$
-    </div>
-  </nav>
-
-  <main class="academic-site-main">
-    <aside class="academic-profile-card" aria-label="Profile">
-      <div class="academic-profile-avatar">$site.profile.avatar_text$</div>
-      <h2>$site.profile.name$</h2>
-      <p>$site.profile.pronouns$</p>
-      <p>$site.profile.affiliation$</p>
-      <p>$site.profile.office$</p>
-      <p><a href="mailto:$site.profile.email$">$site.profile.email$</a></p>
-      <ul>
-        $for(site.profile.links)$
-        <li>
-          $if(site.profile.links.href)$
-          <a href="$site.profile.links.href$">$site.profile.links.label$</a>
-          $else$ $site.profile.links.label$ $endif$
-        </li>
-        $endfor$
-      </ul>
-    </aside>
-
-    $if(date)$
-    <article class="post-content prose dark:prose-invert max-w-none">
-      $if(title)$
-      <header class="post-header">
-        <h1>$title$</h1>
-        $if(date)$
-        <p class="post-date">$date$</p>
-        $endif$ $if(updatedDate)$
-        <p class="post-date">Updated: $updatedDate$</p>
-        $endif$ $if(tags)$
-        <ul class="post-tags">
-          $for(tags)$
-          <li>$tags$</li>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>$if(title)$$title$ — $endif$$site.profile.name$</title>
+    <link rel="stylesheet" href="$site.base$/assets/index.css" />
+    <style>
+      figure {
+        text-align: center;
+      }
+      figure img {
+        display: inline;
+      }
+      .tikzcd {
+        text-align: center;
+      }
+      .tikzcd svg {
+        display: inline;
+      }
+    </style>
+    <script>
+      MathJax = {
+        tex: {
+          macros: {},
+        },
+      };
+    </script>
+    <script src="$site.base$/assets/mathjax-macros.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+      async
+    ></script>
+  </head>
+  <body>
+    <div class="academic-site-shell">
+      <nav class="academic-site-nav" aria-label="Main navigation">
+        <a class="academic-site-brand" href="$site.base$/">$site.profile.name$</a>
+        <div class="academic-site-nav-links">
+          $for(site.nav)$
+          <a href="$site.nav.path$">$site.nav.label$</a>
           $endfor$
-        </ul>
-        $endif$
-      </header>
-      $endif$ $if(toc)$
-      <nav class="toc-card" aria-label="Table of Contents">
-        <h3 class="toc-title">Table of Contents</h3>
-        $toc$
+        </div>
       </nav>
-      $endif$ $body$
-    </article>
-    $else$
-    <article class="academic-page-content prose dark:prose-invert max-w-none">
-      $if(title)$
-      <h1>$title$</h1>
-      $endif$ $body$
-    </article>
-    $endif$
-  </main>
 
-  <footer class="academic-site-footer">
-    <p>$site.profile.name$</p>
-  </footer>
-</div>
+      <main class="academic-site-main">
+        <aside class="academic-profile-card" aria-label="Profile">
+          <div class="academic-profile-avatar">$site.profile.avatar_text$</div>
+          <h2>$site.profile.name$</h2>
+          <p>$site.profile.pronouns$</p>
+          <p>$site.profile.affiliation$</p>
+          <p>$site.profile.office$</p>
+          <p><a href="mailto:$site.profile.email$">$site.profile.email$</a></p>
+          <ul>
+            $for(site.profile.links)$
+            <li>
+              $if(site.profile.links.href)$
+              <a href="$site.profile.links.href$">$site.profile.links.label$</a>
+              $else$ $site.profile.links.label$ $endif$
+            </li>
+            $endfor$
+          </ul>
+        </aside>
+
+        $if(date)$
+        <article class="post-content prose dark:prose-invert max-w-none">
+          $if(title)$
+          <header class="post-header">
+            <h1>$title$</h1>
+            $if(date)$
+            <p class="post-date">$date$</p>
+            $endif$ $if(updatedDate)$
+            <p class="post-date">Updated: $updatedDate$</p>
+            $endif$ $if(tags)$
+            <ul class="post-tags">
+              $for(tags)$
+              <li>$tags$</li>
+              $endfor$
+            </ul>
+            $endif$
+          </header>
+          $endif$ $if(toc)$
+          <nav class="toc-card" aria-label="Table of Contents">
+            <h3 class="toc-title">Table of Contents</h3>
+            $toc$
+          </nav>
+          $endif$ $body$
+        </article>
+        $else$
+        <article class="academic-page-content prose dark:prose-invert max-w-none">
+          $if(title)$
+          <h1>$title$</h1>
+          $endif$ $body$
+        </article>
+        $endif$
+      </main>
+
+      <footer class="academic-site-footer">
+        <p>$site.profile.name$</p>
+      </footer>
+    </div>
+    <script src="$site.base$/assets/index.js"></script>
+  </body>
+</html>

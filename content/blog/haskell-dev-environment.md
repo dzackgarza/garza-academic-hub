@@ -7,12 +7,7 @@ tags:
   - Haskell
   - Programming
   - Linux 
-layout: single
-description: ''
 excerpt: Notes on some nifty packages and tools for Haskell development.
-header:
-  overlay_color: "#333"
-  teaser: assets/images/haskell.png
 ---
 Since the second week of this year's GSOC is drawing to a close, I figured I'd take a
 minute to write a bit about my experience diving into Haskell development.
