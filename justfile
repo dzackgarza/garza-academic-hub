@@ -34,7 +34,7 @@ test: generate-macros
     @rsync -av --delete .generated/blog/ /var/www/html/website/blog/
     @cp /var/www/html/website/home.html /var/www/html/website/index.html
     @npx vitest --run --pool=threads
-    @TEST_URL="http://localhost/website" npx playwright test tests/math-alignment.spec.ts tests/math-macros.spec.ts tests/tikzcd-center.spec.ts
+    @TEST_URL="http://localhost/website" npx playwright test tests/integrity.spec.ts tests/math-alignment.spec.ts tests/math-macros.spec.ts tests/tikzcd-center.spec.ts
 
 # Full pre-release validation: `test` + all remaining Playwright tests
 # (visual regression, hydration, layout, TOC, etc.).
