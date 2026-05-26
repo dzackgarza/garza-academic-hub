@@ -29,7 +29,10 @@ const registry: Record<string, ComponentRenderer> = {
     />
   ),
   GalleryGrid: (data) => (
-    <GalleryGrid images={data.images ?? []} layout={data.layout as string | undefined} />
+    <GalleryGrid
+      images={data.images ?? []}
+      layout={data.layout as string | undefined}
+    />
   ),
   BlogListing: (data) => {
     const blogBase: string = data.basePath;
@@ -80,7 +83,7 @@ export function useComponentMount(): React.RefObject<HTMLDivElement | null> {
     if (!el) return;
     const cleanup = mountComponents(el);
     return cleanup;
-  });
+  }, []);
 
   return containerRef;
 }
