@@ -58,9 +58,9 @@ export function mountComponents(container: HTMLElement): () => void {
 
     try {
       const data = JSON.parse(jsonStr) as ComponentData;
-      // Reuse existing root if already mounted (handles React 18 StrictMode
-      // double-mounting: after unmount, createRoot on the same element fails).
       let root = mountedRoots.get(el);
+      // React 18 StrictMode double-mounts: if the cleanup unmounted a root,
+      // it also deletes the WeakMap entry so the next mount creates a fresh root.
       if (!root) {
         root = createRoot(el);
         mountedRoots.set(el, root);
@@ -75,6 +75,9 @@ export function mountComponents(container: HTMLElement): () => void {
   return () => {
     for (const root of roots) {
       root.unmount();
+    }
+    for (const el of container.querySelectorAll<HTMLElement>('[data-component]')) {
+      mountedRoots.delete(el);
     }
   };
 }
