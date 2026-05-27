@@ -1,5 +1,10 @@
 window.MathJax = window.MathJax || {}; window.MathJax.tex = window.MathJax.tex || {}; window.MathJax.tex.macros = 
 {
+  "coloneqq": "\\mathrel{\\vcenter{:}}=",
+  "qty": [
+    "\\left( {#1} \\right)",
+    1
+  ],
   "AA": "{\\mathbf{A}}",
   "CC": "{\\mathbf{C}}",
   "DD": "\\mathbb{D}",
