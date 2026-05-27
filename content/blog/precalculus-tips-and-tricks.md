@@ -82,14 +82,12 @@ categories:
 
   - For example,
 
-    $$
     \begin{align*}
     &&6x + 2 &= 5x + 1 \\
     \implies&&  6x + 2 - 5x &= 1 \\
     \implies&& x + 2 &= 1\\
     \implies&& x &= -1.
     \end{align*}
-    $$
 
   - Notice that each line is a **statement** that two things are equal. 
 
@@ -156,24 +154,20 @@ categories:
 
     and write
 
-    $$
     \begin{align*}
     6x+2 &&=&& 5x+1 \\
     -5x && && -5x \\ \\
     x+2 && = && 1.
     \end{align*}
-    $$
 
     This is totally fine in scratch work, but tends to allow errors to creep in and generally makes the “bookkeeping” in your solution hard to track as you modify the same thing multiple times. 
 
     Instead, an alternative is just *not* including that $-5x$ step in your writeup at all, or explaining off to the side how you got from one step to the next. For example,
 
-    $$
     \begin{align*}
     6x+2 &= 5x+1 \\
     \implies x+2 &= 1 && \text{subtracting $5x$ from both sides} 
     \end{align*}
-    $$
     
 
   - Note that this also applies to dividing both sides of an equation by a number, exponentiating both sides, taking a log of both sides, applying $\sin$ or $\cos$, etc. It's more clear to just write the result of the operation and explain in words what you did. 

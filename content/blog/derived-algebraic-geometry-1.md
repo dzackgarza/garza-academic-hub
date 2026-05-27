@@ -11,6 +11,7 @@ categories:
   - Mathematics Research
 excerpt: 'Some introductory notes on derived algebraic geometry from an MSRI workshop series.'
 ---
+
 [YouTube](https://www.youtube.com/watch?v=zRPa-VAvl6Q)
 
 ``` {.include shift-heading-level-by=1 format="markdown+tex_math_single_backslash"}

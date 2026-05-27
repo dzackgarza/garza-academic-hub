@@ -5,10 +5,10 @@ metadata-files:
   - .generated/pandoc-data/site.yaml
 filters:
   - /home/dzack/.pandoc/filters/include.lua
-  - content/filters/align-math.lua
-  - content/filters/obsidian.lua
-  - content/filters/youtube.lua
-  - content/filters/post-navigation.lua
+  - /home/dzack/.pandoc/filters/convert_math_delimiters.lua
+  - /home/dzack/.pandoc/filters/obsidian.lua
+  - /home/dzack/.pandoc/filters/youtube.lua
+  - /home/dzack/.pandoc/filters/post-navigation.lua
   - /home/dzack/.pandoc/filters/tikzcd.lua
 table-of-contents: true
 toc-depth: 3

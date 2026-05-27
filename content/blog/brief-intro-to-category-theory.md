@@ -70,10 +70,10 @@ After quotienting out by an equivalence under these reductions, we produce somet
 
 Then, there is something called a "forgetful functor" $\mathcal{F}$ from $\mathbf{Group}$ into $\mathbf{Set}$ that takes a group and gives you only the underlying set, "forgetting" everything about its structure as a group. For example, if one took that group $(\mathbb{Z}_2 = \theset{0,1}$ with the group operation 
 
-$$\begin{align*}
+\begin{align*}
 0+1 &= 1+0 = 1 \\ 
 0+0 &= 1+1 = 0
-\end{align*}$$ 
+\end{align*}
 
 (i.e., the $XOR$ operation), then applying $\mathcal{F}$ to $(\mathbb{Z}_2, XOR)$ just gives you a two element set $\theset{a_0. a_1}$.
 
@@ -108,10 +108,10 @@ Along with a binary operation $\circ$ which composes morphisms:
 - $\forall X,Y,Z \in Ob(C)$ where $f: X \rightarrow Y$ and $g: Y \rightarrow Z$, there exists the **composition** $h$ of $f$ and $g$, denoted $h = g \circ f$, where $h: X \rightarrow Z$.
 - Using types, this operation might be expressed in the following way: 
 
-$$\begin{align*}  
+\begin{align*}  
 \circ: Hom_C(X,Y) \times Hom_C(Y,Z) &\to Hom_C(X,Z) \\ 
 (f, g) &\mapsto g \circ f
-.\end{align*}$$
+.\end{align*}
 
 Which satisfies two axioms:
 
@@ -193,14 +193,12 @@ Also, note that it didn't matter that $n$ was finite here --  this construction 
 - Objects: $\theset{a, b} \cup \theset{c}$ (A "minimally interesting" extension of $\mathbf{2}$)
 
 - Morphisms: 
-  $$
   \begin{align*}
   \theset{ \bigstar: a \mapsto b,  \id_a: a \mapsto a, \id_b: b \mapsto b}
   \cup \theset{\id_c: c\mapsto c}
   \cup \theset{\clubsuit: b \mapsto c}
   \cup \theset{\sharp: a\mapsto c \text{ where } \sharp(a) = (\clubsuit \circ \bigstar)(a)}
   \end{align*}
-  $$
   
 - Isomorphisms: None (There is no map from $b$ to $a$, $c$ to $a$, or $b$ to $c$.)
 

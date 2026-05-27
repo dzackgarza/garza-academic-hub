@@ -129,10 +129,11 @@ groups (classical theorem).
 
 **Question**: when does the representation lift?
 
-$$ \begin{tikzcd} & & \operatorname{Diff}^+ \Sigma_g \arrow[dd] \\
+\begin{tikzcd} 
+& & \operatorname{Diff}^+ \Sigma_g \arrow[dd] \\
 & & \\
 \pi_1 B \arrow[rr] \arrow[rruu, "?" description, dotted] & & \operatorname{Mod} \Sigma_g
-\end{tikzcd} $$
+\end{tikzcd}
 
 Equivalently, **is every bundle flat?** No, but this is an open question when the base
 is a surface (i.e. for all we know, every representation could lift).
@@ -226,9 +227,11 @@ $$ \Sigma_g \to E \xrightarrow{\pi} B \iff c(E \xrightarrow{\pi} B) \in H^i(B) $
 
 that is natural with respect to pullbacks; i.e. take
 
-$$ \begin{tikzcd} E' \arrow[rr, "\tilde f"] \arrow[dd, "\pi'"] & & E \arrow[dd, "\pi"] \\
+\begin{tikzcd} 
+E' \arrow[rr, "\tilde f"] \arrow[dd, "\pi'"] & & E \arrow[dd, "\pi"] \\
 & & \\
-B' \arrow[rr, "f" description] & & B \end{tikzcd} $$
+B' \arrow[rr, "f" description] & & B 
+\end{tikzcd}
 
 and require that
 
@@ -253,12 +256,14 @@ What do we know?
 Any 2-cycle (for any space) will be homologous to the image of a map $f$ of a surface
 into that space. Given blah, pull back the bundle over $\operatorname{BDiff}$:
 
-$$ \begin{tikzcd} & & \Sigma_g \arrow[rr] & & T \arrow[dd] \\
+\begin{tikzcd} 
+& & \Sigma_g \arrow[rr] & & T \arrow[dd] \\
 & & & & \\
 \Sigma_g \arrow[rr] \arrow[rruu, dotted] & & M^4 \arrow[dd] \arrow[rruu, dotted] & &
 \operatorname{BDiff}^+ \Sigma_g \\
 & & & & \\
-& & \Sigma_h \arrow[rruu, "f" description] & & \end{tikzcd} $$
+& & \Sigma_h \arrow[rruu, "f" description] & & 
+\end{tikzcd}
 
 Take the signature of $M_4$ (where you use the intersection pairing on $H_2$, take the
 signature of that quadratic form).

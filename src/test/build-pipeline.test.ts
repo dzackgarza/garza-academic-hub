@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
+import { JSDOM } from 'jsdom';
 
 const repoRoot = path.resolve(__dirname, '../..');
 const scriptsDir = path.join(repoRoot, 'scripts');
@@ -12,10 +13,18 @@ describe('align-math filter invariant', () => {
 
     for (const file of files) {
       const html = fs.readFileSync(path.join(blogDir, file), 'utf8');
-      const displayMathRegex = /<span class="math display">\\\[\s*\\begin\{align\*\}/g;
-      const displayMathCount = (html.match(/<span class="math display">/g) || [])
-        .length;
-      const alignWrappedCount = (html.match(displayMathRegex) || []).length;
+      const dom = new JSDOM(html);
+      const doc = dom.window.document;
+
+      const mathSpans = doc.querySelectorAll('span.math.display');
+      const displayMathCount = mathSpans.length;
+
+      const alignWrappedCount = Array.from(mathSpans).filter((span) => {
+        const text = span.textContent?.trimStart() ?? '';
+        return (
+          text.startsWith('\\begin{align*') || text.startsWith('\\[\\begin{align*')
+        );
+      }).length;
 
       expect(
         alignWrappedCount,
