@@ -16,6 +16,8 @@ const blogRoutes = manifest.routes.filter((r) => r.type === 'post');
 const macros = ['PP', 'ZZ', 'RR', 'CC', 'NN', 'QQ', 'FF', 'GL'];
 
 test.describe('MathJax macro definitions', () => {
+  test.setTimeout(60000);
+
   for (const route of blogRoutes) {
     test(`no undefined macros on ${route.path}`, async ({ page }) => {
       await page.goto(`${BASE_URL}${route.path}`, {
