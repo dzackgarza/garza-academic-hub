@@ -4,7 +4,7 @@ import path from 'path';
 import { JSDOM } from 'jsdom';
 
 const repoRoot = path.resolve(__dirname, '../..');
-const scriptsDir = path.join(repoRoot, 'src/scripts');
+const scriptsDir = path.join(repoRoot, 'src');
 
 describe('align-math filter invariant', () => {
   it('all display math in generated HTML is wrapped in align*', () => {

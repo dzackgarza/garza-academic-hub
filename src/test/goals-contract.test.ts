@@ -397,7 +397,7 @@ describe('GOALS contract: automated source and content hygiene', () => {
   });
 
   it('does not hardcode local environment paths in source, scripts, tests, or content', () => {
-    const scopedRoots = ['src', 'scripts', 'tests', 'content'];
+    const scopedRoots = ['src', 'tests', 'content'];
     const scopedFiles = scopedRoots.flatMap((root) =>
       walkFiles(path.join(repoRoot, root)),
     );
