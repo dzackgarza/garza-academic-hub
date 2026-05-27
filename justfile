@@ -8,12 +8,12 @@ default:
 #   just preview content/blog/undergrad-resources.md
 
 preview file:
-    @node scripts/compile.cjs --preview "{{file}}"
+    @node src/compile.cjs --preview "{{file}}"
 
 # Preview a page and write to a temp file, then open in browser
 preview-open file:
     @tmpfile="/tmp/garza-preview-$(basename "{{file}}" .md).html" && \
-    node scripts/compile.cjs --preview "{{file}}" > "$$tmpfile" && \
+    node src/compile.cjs --preview "{{file}}" > "$$tmpfile" && \
     echo "Preview: $$tmpfile" && \
     $${BROWSER:-xdg-open} "$$tmpfile" 2>/dev/null || true
 
@@ -24,7 +24,7 @@ preview-open file:
 # against freshly deployed output. Always run this before pushing.
 test: generate-macros
     @npx tsc --noEmit
-    @BASE_URL="/website" node scripts/compile.cjs
+    @BASE_URL="/website" node src/compile.cjs
     @npx vite build
     @mkdir -p /var/www/html/website/assets
     @rsync -av dist/assets/ /var/www/html/website/assets/
@@ -41,7 +41,7 @@ test: generate-macros
 # (visual regression, hydration, layout, TOC, etc.).
 test-release: generate-macros
     @npx tsc --noEmit
-    @BASE_URL="/website" node scripts/compile.cjs
+    @BASE_URL="/website" node src/compile.cjs
     @npx vite build
     @mkdir -p /var/www/html/website/assets
     @rsync -av dist/assets/ /var/www/html/website/assets/
@@ -57,9 +57,9 @@ test-release: generate-macros
 # Generate MathJax macros from canonical source
 generate-macros:
     python3 ~/.pandoc/bin/generate-mathjax-config.py --json /tmp/mathjax-macros.json
-    @echo "window.MathJax = window.MathJax || {}; window.MathJax.tex = window.MathJax.tex || {}; window.MathJax.tex.macros = " > public/assets/mathjax-macros.js
-    cat /tmp/mathjax-macros.json >> public/assets/mathjax-macros.js
-    echo ";" >> public/assets/mathjax-macros.js
+    @echo "window.MathJax = window.MathJax || {}; window.MathJax.tex = window.MathJax.tex || {}; window.MathJax.tex.macros = " > content/public/assets/mathjax-macros.js
+    cat /tmp/mathjax-macros.json >> content/public/assets/mathjax-macros.js
+    echo ";" >> content/public/assets/mathjax-macros.js
     @echo "Generated mathjax-macros.js"
 
 # Build and deploy — `test` already compiles, builds, syncs, and verifies.

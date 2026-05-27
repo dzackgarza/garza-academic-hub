@@ -1,33 +1,29 @@
-# Logs
-logs
+# Build and generated outputs
+/build/
+/.generated/
+dist/
+.vercel/
+.next/
+
+# Package manager
+package-lock.json
+
+# Cache and logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+.cache/
 
-node_modules
-dist
-dist-ssr
-*.local
-*.png
-# Track Playwright visual regression golden snapshots
-!tests/*.spec.ts-snapshots/*.png
-!tests/**/__snapshots__/*.png
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# IDE and OS
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+.vscode/
+.idea/
+
+# Playwright and test artifacts
 test-results/
-.generated/
-.worktrees/
+tmp_*.png
 *.orig
-*.bak
+
+# Environment and secrets
+.env
+.env.local
+.worktrees/
+node_modules/

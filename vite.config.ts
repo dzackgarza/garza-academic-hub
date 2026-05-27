@@ -21,7 +21,7 @@ function contentWatcher(): Plugin {
           `[content-watcher] ${path.relative(__dirname, file)} changed — recompiling...`,
         );
 
-        const result = spawnSync('bun', ['scripts/compile.cjs'], {
+        const result = spawnSync('bun', ['src/compile.cjs'], {
           cwd: __dirname,
           stdio: 'inherit',
         });
@@ -53,6 +53,7 @@ const sitemapRoutes: string[] = fs.existsSync(manifestPath)
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/website/',
+  publicDir: path.resolve(__dirname, 'content/public'),
   plugins: [
     react(),
     contentWatcher(),

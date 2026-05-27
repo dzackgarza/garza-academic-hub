@@ -6,7 +6,7 @@ import { JSDOM } from 'jsdom';
 
 const repoRoot = path.resolve(__dirname, '../..');
 const blogDir = path.join(repoRoot, 'content/blog');
-const compileScript = path.join(repoRoot, 'scripts/compile.cjs');
+const compileScript = path.join(repoRoot, 'src/compile.cjs');
 const tempFile = path.join(blogDir, '_obsidian-test.md');
 
 function compileSnippet(markdownBody: string): string {

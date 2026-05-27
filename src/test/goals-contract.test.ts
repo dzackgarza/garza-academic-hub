@@ -54,7 +54,7 @@ const invalidComponentPage = {
 };
 
 function runCompile() {
-  return spawnSync('node', ['scripts/compile.cjs'], {
+  return spawnSync('node', ['src/compile.cjs'], {
     cwd: repoRoot,
     encoding: 'utf8',
   });
@@ -487,7 +487,7 @@ describe('GOALS contract: legacy parity inventory', () => {
     const inventory = TOML.parse(readFileSync(legacyRoutesPath, 'utf8')) as {
       legacy_surface_inventory: { asset_roots: string[] };
     };
-    const publicDir = path.join(repoRoot, 'public');
+    const publicDir = path.join(repoRoot, 'content/public');
     const walkDir = (dir: string): string[] =>
       existsSync(dir)
         ? readdirSync(dir, { recursive: true, withFileTypes: true })
@@ -598,7 +598,7 @@ describe('GOALS contract: app source is generic', () => {
 
 describe('GOALS contract: asset integrity', () => {
   it('validates all static asset images have valid image headers (not LFS pointers, not corrupt)', () => {
-    const publicDir = path.join(repoRoot, 'public');
+    const publicDir = path.join(repoRoot, 'content/public');
     const imageExtensions = new Set([
       '.png',
       '.jpg',
@@ -650,7 +650,7 @@ describe('GOALS contract: asset integrity', () => {
     expect(
       violations,
       violations.length > 0
-        ? `Found ${violations.length} invalid image file(s) in public/assets/:\n` +
+        ? `Found ${violations.length} invalid image file(s) in content/public/assets/:\n` +
             violations
               .map((v) => `  ${v.file}: ${v.detected} (header: ${v.header})`)
               .join('\n')
