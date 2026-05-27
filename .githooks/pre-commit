@@ -1,10 +1,18 @@
 #!/bin/sh
-# Pre-commit hook — golden snapshot guard
+# Pre-commit hook — quality gate + golden snapshot guard
 #
-# Rejects commits that contain modified Playwright snapshot images
-# unless the commit message references a milestone or version bump.
+# 1. Runs the full test suite (just test)
+# 2. Rejects commits that modify Playwright snapshots without a milestone ref
 #
 # Bypass with: git commit --no-verify  (not recommended)
+
+set -e
+
+echo "=== Running pre-commit quality gate (just test) ==="
+just test
+
+echo ""
+echo "=== Checking golden snapshot commit policy ==="
 
 SNAPSHOT_PATTERN='^tests/.*\.spec\.ts-snapshots/.*\.png$'
 
