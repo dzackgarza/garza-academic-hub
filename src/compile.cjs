@@ -391,15 +391,54 @@ const blogFiles = fs.readdirSync(blogPostsDir).filter((file) => file.endsWith('.
 const postsMetadata = [];
 const pageFiles = fs.readdirSync(staticPagesDir).filter((file) => file.endsWith('.md'));
 
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const cleaned = dateStr.trim().split(/\s+/)[0];
+  const date = new Date(cleaned);
+  if (isNaN(date.getTime())) return dateStr;
+  
+  const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+  return date.toLocaleDateString('en-US', options);
+}
+
 function prepareBlogEntry(file) {
   const slug = path.basename(file, '.md');
   const filePath = path.join(blogPostsDir, file);
   const rawContent = fs.readFileSync(filePath, 'utf8');
   const document = readPandocDocument(filePath, rawContent);
+  const baseMetadata = metadataFromPandocDocument(filePath, document, true);
+
+  // Dynamic reading time (200 words per minute)
+  if (baseMetadata.readMinutes === undefined || baseMetadata.readMinutes === null) {
+    const wordCount = rawContent.split(/\s+/).filter(Boolean).length;
+    baseMetadata.readMinutes = Math.max(1, Math.round(wordCount / 200));
+  }
+
+  // Dynamic clean excerpt from body
+  if (!baseMetadata.excerpt || baseMetadata.excerpt.trim() === '') {
+    let cleanText = rawContent;
+    if (rawContent.startsWith('---')) {
+      const parts = rawContent.split('---');
+      if (parts.length >= 3) {
+        cleanText = parts.slice(2).join('---');
+      }
+    }
+    const bodyText = cleanText
+      .replace(/```[\s\S]*?```/g, '')
+      .replace(/`[^`]+`/g, '')
+      .replace(/#+\s+.+/g, '')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/<[^>]+>/g, '')
+      .replace(/[>*_-]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    baseMetadata.excerpt = bodyText.slice(0, 160).trim() + (bodyText.length > 160 ? '...' : '');
+  }
+
   const metadata = validateMetadata(
     blogMetadataSchema,
     filePath,
-    metadataFromPandocDocument(filePath, document, true),
+    baseMetadata,
   );
   const template = metadata.template ?? 'post';
   const output = path.join(compiledBlogDir, `${slug}.html`);
@@ -412,7 +451,7 @@ function prepareBlogEntry(file) {
     template,
   );
   postsMetadata.push({ ...metadata, slug });
-  return { slug, filePath, rawContent, output, template, entry };
+  return { slug, filePath, rawContent, output, template, entry, metadata };
 }
 
 function preparePageEntry(file) {
@@ -465,6 +504,8 @@ for (const file of blogFiles) {
 
   try {
     console.log(`- Compiling blog post ${blogEntry.slug} using pandoc...`);
+    const formattedDate = formatDate(blogEntry.metadata.date);
+    const formattedUpdatedDate = blogEntry.metadata.updatedDate ? formatDate(blogEntry.metadata.updatedDate) : '';
     const html = runPandoc(
       blogEntry.filePath,
       [
@@ -472,6 +513,8 @@ for (const file of blogFiles) {
         `--toc`,
         `--metadata=pg_slug:${blogEntry.slug}`,
         `--metadata=pg_title:${blogEntry.entry.title.replace(/"/g, '\\"')}`,
+        `--metadata=formattedDate:${formattedDate}`,
+        `--metadata=formattedUpdatedDate:${formattedUpdatedDate}`,
       ],
       blogEntry.rawContent,
       { env: { PANDOC_SITE_DATA_DIR: dataDir, BASE_URL: process.env.BASE_URL ?? '' } },

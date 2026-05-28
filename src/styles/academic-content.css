@@ -157,6 +157,7 @@
 /* Table of Contents */
 .toc-card {
   @apply rounded-xl border bg-card text-card-foreground p-5 shadow-sm space-y-4;
+  margin-bottom: 2.5em;
 }
 
 .toc-title {
@@ -173,6 +174,75 @@
 
 .toc-card nav[role='doc-toc'] ul li a {
   @apply block text-xs text-muted-foreground hover:text-primary transition-colors py-1 pl-2 border-l border-transparent hover:border-primary font-medium no-underline hover:no-underline;
+}
+
+/* Post Metadata Header Layout Badge Styling */
+.post-metadata {
+  margin-top: 0.8em;
+  margin-bottom: 2em;
+  font-size: 0.8em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  border-bottom: 1px solid hsl(var(--border));
+  padding-bottom: 1.2em;
+}
+
+.post-meta-item {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.meta-label {
+  font-weight: 700;
+  color: hsl(var(--muted-foreground));
+  min-width: 85px;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.meta-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+
+.meta-badge {
+  display: inline-block;
+  padding: 0.15em 0.6em;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tag-badge {
+  background: hsl(var(--secondary) / 0.7);
+  color: hsl(var(--secondary-foreground));
+  border-color: hsl(var(--border));
+}
+
+.tag-badge:hover {
+  background: hsl(var(--secondary));
+}
+
+.category-badge {
+  background: hsl(var(--primary) / 0.08);
+  color: hsl(var(--primary));
+  border-color: hsl(var(--primary) / 0.15);
+}
+
+.category-badge:hover {
+  background: hsl(var(--primary) / 0.15);
+}
+
+.meta-value {
+  color: hsl(var(--foreground));
+  font-weight: 500;
 }
 
 /* Post navigation: previous/next pagination + related (legacy Minimal Mistakes style) */
@@ -198,13 +268,14 @@
   float: left;
   width: calc(50% - 0.5em);
   padding: 1em 1.5em;
-  font-size: 0.875rem;
-  font-weight: 600;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
   text-align: center;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
   text-decoration: none;
   color: hsl(var(--muted-foreground));
-  border: 1px solid hsl(var(--border));
-  border-radius: 4px;
 }
 
 .pagination--pager:hover {
@@ -235,66 +306,33 @@
   display: table;
 }
 
-.page__related::after {
-  clear: both;
-  content: '';
-  display: table;
-}
-
 .page__related-title {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-size: 0.75em;
+  font-weight: 700;
   text-transform: uppercase;
   color: hsl(var(--muted-foreground));
+  letter-spacing: 0.05em;
 }
 
-/* Related posts grid — float-based (legacy Minimal Mistakes style) */
+/* Related posts grid — Modern CSS Grid Layout */
 .grid__wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5em;
   width: 100%;
-}
-
-.grid__wrapper::after {
-  clear: both;
-  content: '';
-  display: table;
-}
-
-.grid__item {
-  float: left;
-  width: 48.9795918367%;
   margin-bottom: 1.5em;
 }
 
-.grid__item:nth-child(2n + 1) {
-  clear: both;
-  margin-left: 0;
+.grid__item {
+  margin: 0;
+  width: 100%;
 }
 
-.grid__item:nth-child(2n + 2) {
-  clear: none;
-  margin-left: 2.0408163265%;
-}
-
-@media (min-width: 1024px) {
-  .grid__item {
-    margin-left: 0;
-    margin-right: 0;
-    width: 23.7288135593%;
-  }
-
-  .grid__item:nth-child(2n + 1) {
-    clear: none;
-  }
-
-  .grid__item:nth-child(4n + 1) {
-    clear: both;
-  }
-
-  .grid__item:nth-child(4n + 2),
-  .grid__item:nth-child(4n + 3),
-  .grid__item:nth-child(4n + 4) {
-    clear: none;
-    margin-left: 1.6949152542%;
+@media (min-width: 600px) {
+  .grid__wrapper {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25em;
   }
 }
 

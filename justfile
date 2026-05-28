@@ -35,7 +35,7 @@ test: check-hygiene generate-macros
     @cp dist/index.html /var/www/html/website/gallery.html
     @cp dist/index.html /var/www/html/website/writing.html
     @npx vitest --run --pool=threads
-    @TEST_URL="http://localhost/website" npx playwright test tests/integrity.spec.ts tests/math-alignment.spec.ts tests/math-macros.spec.ts tests/tikzcd-center.spec.ts
+    @TEST_URL="http://localhost/website" npx playwright test tests/integrity.spec.ts tests/math-alignment.spec.ts tests/math-macros.spec.ts tests/tikzcd-center.spec.ts tests/spot-checks.spec.ts
 
 # Full pre-release validation: `test` + all remaining Playwright tests
 # (visual regression, hydration, layout, TOC, etc.).
