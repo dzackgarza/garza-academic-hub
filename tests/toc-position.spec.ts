@@ -26,7 +26,7 @@ test.describe('TOC position on blog posts', () => {
   blogPosts.forEach((route) => {
     test(`"${route.path}" TOC is below title+tags, above body`, async ({ page }) => {
       await page.setViewportSize({ width: 1024, height: 900 });
-      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(1000);
 
       const header = page.locator('.post-header');

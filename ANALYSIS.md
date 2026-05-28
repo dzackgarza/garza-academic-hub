@@ -1,438 +1,327 @@
-# Architectural / Design Analysis — garza-academic-hub
+# Architectural / Design Analysis
+
+Date: 2026-05-27
+
+Basis: live repository inspection, `GOALS.md`, `AGENTS.md`, `README.md`,
+`content/CONTENT-GUIDE.md`, the current source/test tree, and one run of `just test`.
+
+## Verdict
+
+The core design is still maintainable: `content/` owns content, Pandoc owns document
+structure, `src/compile.cjs` owns manifest generation, and React is mostly a static
+HTML injector plus island hydrator. The bespoke Pandoc-first architecture is justified
+because the repo depends on Pandoc defaults, templates, Lua filters, math, TikZ, and
+Obsidian-style content normalization in ways that Hugo/Jekyll/Astro would not preserve
+without a rewrite.
 
-This document records a top-to-bottom review of the repository as of the milestone
-candidate. The objective is to determine whether the current design is maintainable and
-refinable, what is or is not acceptable architecture, and where owned surface can be
-reduced.
+The repo is not yet minimal or fully refinable. The main risk is not one giant
+monkey-patch; it is residue from iterative agent work: SPA routing in a non-SPA,
+dependency inventory from the original template, weak tests mixed with real browser
+proofs, and local machine paths in content/pandoc defaults despite a rule forbidding
+them.
 
-*Date:* 2026-05-27 *Basis:* live code inspection, `GOALS.md` tier assessment, test-suite
-audit, and comparison against off-the-shelf static-site tooling.
+## Findings
 
-* * *
+### Browser tests used the wrong page-readiness signal
+
+Pattern: the repository has a good unified gate, but its browser tests were waiting for
+global network quiescence rather than repository-owned rendered state.
 
-## Executive Summary
+Concrete evidence:
 
-The repository **is** a small, coherent design that largely satisfies its stated tier
-architecture (`GOALS.md`). The core owned logic (compile pipeline, manifest contract,
-island hydration) is well-bounded and reasonable for a bespoke Pandoc + Vite static site
-system.
-However, there are **three material problems** that prevent the architecture from
-being genuinely minimal and elegant:
+- `README.md` defines `just test` as the canonical proof loop.
+- `justfile:25-38` compiles, builds, syncs to Nginx, runs Vitest, then runs the selected
+  Playwright tests against `http://localhost/website`.
+- A live `just test` run on 2026-05-27 initially failed with 62/63 Playwright tests
+  passing and one timeout in `tests/math-alignment.spec.ts:16`.
+- The failure was `page.goto(..., waitUntil: 'networkidle')` timing out on a rendered
+  page with an embedded YouTube iframe.
+- The same `networkidle` pattern appeared in the rest of the Playwright suite, including
+  `tests/integrity.spec.ts`, `tests/visual.spec.ts`, `tests/tikzcd-center.spec.ts`,
+  `tests/toc-position.spec.ts`, `tests/toc-responsive.spec.ts`,
+  `tests/responsive-layout.spec.ts`, `tests/screenshots.spec.ts`, and
+  `tests/utils/assert_toc_links.js`.
+- The tests now use `domcontentloaded`; MathJax tests additionally wait for
+  `article.post-content` and `MathJax.startup.promise`.
 
-1. **Dead-weight UI component inventory** — 48 shadcn/ui components were scaffolded by a
-   template generator, but only ~6 are actually used by the application shell.
-   This is the single largest source of owned noise.
+Why this matters:
 
-2. **Over-broad test surface with some tautological / structural checks** — a minority
-   of unit tests assert file-existence and string-matching trivia rather than nontrivial
-   behavioral contracts.
+The gate is real, but `networkidle` is structurally wrong for pages with embedded
+third-party media. The test should wait for page-owned readiness and then assert the
+owned contract: no console errors, no unhydrated island placeholders, no MathJax errors,
+and stable rendered geometry.
 
-3. **Runtime bundle includes React Router**, even though the site has no client-side
-   routing. The SPA router is a dependency burden and a conceptual mismatch with the
-   architecture.
+Failure mode: broken proof-loop inversion / external-state bypass.
+
+### Non-SPA architecture still carries SPA routing
 
-These are fixable without architectural surgery.
-The underlying pipeline (Pandoc → manifest → static HTML → island hydration) is sound
-and, with the above cleanup, the owned surface would shrink from ~2,300 LOC of UI
-scaffolding and unused imports to a few hundred LOC of actual shell logic.
+Pattern: runtime architecture and dependency choices contradict the documented static
+file model.
 
-* * *
+Concrete evidence:
+
+- `AGENTS.md` says every URL is a literal file served by Nginx and there is no
+  client-side routing.
+- `src/App.tsx:2` imports `BrowserRouter`, `Route`, and `Routes`.
+- `src/App.tsx:15-18` wraps the whole app in `BrowserRouter basename="/website"` with a
+  catch-all route.
+- `src/pages/CompiledPage.tsx:2` imports `useLocation` only to read the pathname at
+  `src/pages/CompiledPage.tsx:62`.
+- `src/pages/NotFound.tsx:1-5` and `src/components/NavLink.tsx:1-14` are still
+  React-Router compatibility code.
+- `package.json:58` still depends on `react-router-dom`.
 
-## 1. Architecture Assessment
+Why this matters:
 
-### 1.1 The Pipeline — Sound
+This does not break the site by itself, but it teaches future readers and agents the
+wrong model. A static Nginx/Pandoc site should not need a SPA router to identify
+`window.location.pathname`. Removing it reduces conceptual surface and removes a
+dependency whose presence invites future client-side route logic.
 
-```
-content/ (Markdown + TOML databases + templates + defaults)
-   ↓
-Pandoc (Lua filters + templates)  ←  compile.cjs orchestrates this
-   ↓
-.generated/ (static HTML + site-manifest.json)
-   ↓
-Vite (bundles React shell + imports HTML as raw strings)
-   ↓
-Nginx (try_files $uri $uri.html)
-```
+Failure mode: no design principles / myopic goal-seeking.
 
-The compile script (`src/compile.cjs`, ~520 LOC) owns the only nontrivial orchestration
-logic in the repository.
-It:
+### Dependency inventory is still template-shaped
 
-- discovers content from `content/pages/` and `content/blog/`
+Pattern: the source tree has been partially cleaned, but `package.json` still preserves
+the scaffold-era dependency universe.
 
-- validates YAML frontmatter with Zod schemas
+Concrete evidence:
 
-- invokes Pandoc per-file with `--defaults` files
+- `find src/components/ui -type f -name '*.tsx' | wc -l` reports 9 UI primitive files,
+  not the 48 described in the stale earlier audit.
+- Live import search found only Radix tooltip, toast, slot, scroll-area, popover, and
+  checkbox imported from source.
+- `package.json:17-64` still lists many unused scaffold dependencies, including Radix
+  accordion, alert-dialog, aspect-ratio, avatar, collapsible, context-menu, dialog,
+  dropdown-menu, hover-card, label, menubar, navigation-menu, progress, radio-group,
+  select, separator, slider, switch, tabs, toggle, toggle-group, plus `cmdk`,
+  `date-fns`, `embla-carousel-react`, `input-otp`, `react-day-picker`,
+  `react-hook-form`, `react-resizable-panels`, `recharts`, and `vaul`.
+- The live `just test` build transformed 1,749 modules and emitted
+  `dist/assets/index.js` at 1,076.27 kB, 267.54 kB gzip, with Vite warning that a chunk
+  exceeded 500 kB.
 
-- asserts that no raw `.component` divs survive to output
+Why this matters:
 
-- writes a single `site-manifest.json` consumed by Vite config, app code, and tests
+The owned UI source has shrunk, but dependency ownership has not followed. This keeps
+audit surface, update churn, and bundle pressure from components the app does not use.
+The maintainable direction is dependency deletion, not more local wrappers.
 
-- generates a sitemap from the same manifest
+Failure mode: slop accretion / dependency residue.
 
-This is **not** an ugly hack.
-It is a disciplined, minimal static-site compiler.
-The manifest-as-contract pattern is the correct abstraction: every downstream consumer
-(app routes, sitemap, Playwright tests) derives its world from one generated artifact.
+### Local machine paths violate the repository contract
 
-Evidence:
+Pattern: content/Pandoc configuration still contains machine-specific absolute paths,
+and one content file contains an absolute note path.
 
-- `compile.cjs` line 1–524: all compilation logic is in one file.
+Concrete evidence:
 
-- `vite.config.ts` lines 27–37: sitemap routes are read from manifest, not hardcoded.
+- `content/defaults/page.yaml:7` points to
+  `/home/dzack/.pandoc/filters/components.lua`.
+- `content/defaults/post.yaml:7-12` points to six filters under
+  `/home/dzack/.pandoc/filters/`.
+- `content/blog/derived-algebraic-geometry-1.md:18` contains an absolute
+  `/home/dzack/notes/...` path.
+- `rg -n '/home/dzack' src scripts tests content package.json justfile vite.config.ts
+  playwright.config.ts` found those entries.
 
-- `src/pages/CompiledPage.tsx` lines 29–65: app matches `pathname` against manifest,
-  then imports the corresponding `.generated/*.html` module via `import.meta.glob`.
+Why this matters:
 
-- `tests/integrity.spec.ts` lines 14–21: test route list is read from manifest.
+`AGENTS.md` forbids hardcoded `/home/dzack/...` paths in scripts and configuration.
+For this repo, the deeper problem is source-of-truth split: the Pandoc defaults claim to
+be reproducible project inputs, but the filters actually live outside the repo. Either
+the repo should explicitly declare the external Pandoc filter dependency as a local
+contract, or it should vendor/link those filters into a project-owned path and route
+defaults through that.
 
-### 1.2 The React Shell — Mostly a Shell, but Not Quite
+Failure mode: hard-coding as split truth.
 
-`CompiledPage.tsx` is a thin wrapper: it looks up the current route in the manifest,
-finds the matching raw HTML string, and injects it with `dangerouslySetInnerHTML`. Then
-`useComponentMount` walks the injected DOM for `[data-component]` placeholders and
-mounts React islands into them.
+### The compiler is coherent, but validation is split across JavaScript and external Lua
 
-This is the intended architecture and it works.
-The shell owns zero content knowledge.
+Pattern: `src/compile.cjs` is a readable linear compiler, but several contracts are
+duplicated or partially validated before Pandoc and then enforced again by external
+filters.
 
-**Problem:** `App.tsx` wraps the shell in `BrowserRouter` from `react-router-dom`. The
-site is **not** an SPA. Every URL is a literal `.html` file served by Nginx.
-The router is only needed because `useLocation` is used inside `CompiledPage.tsx` to
-read the current pathname.
-This could be replaced with `window.location.pathname`, eliminating the entire
-`react-router-dom` dependency (and its 25 KB gzipped runtime weight).
+Concrete evidence:
 
-Evidence:
+- `src/compile.cjs:31-48` defines Zod schemas for blog/page metadata.
+- `src/compile.cjs:298-303` defines accepted component types.
+- `src/compile.cjs:309-342` walks the Pandoc JSON AST only to validate component type
+  names.
+- `src/compile.cjs:245-253` then regex-checks generated HTML for unfiltered
+  `.component` divs.
+- The content guide defines component types and attributes separately in
+  `content/CONTENT-GUIDE.md`.
 
-- `src/App.tsx` line 11: `BrowserRouter basename="/website"`
+Why this matters:
 
-- `src/pages/CompiledPage.tsx` line 45: `const { pathname } = useLocation();`
+This is not monkey-patch hell yet, but it is the area most likely to become it. The
+compiler, Lua filter, content guide, and React registry all know pieces of the component
+contract. The maintainable endpoint is one canonical schema for component declarations
+and generated island payloads, with the compiler validating the same contract the
+filter/registry consumes.
 
-- `package.json` line 33: `"react-router-dom": "^6.30.1"` is in dependencies.
+Failure mode: spaghetti data flow / partial contract grounding.
 
-### 1.3 Separation of Concerns — Largely Correct
+### Island hydration accepts unknown payloads and swallows mount failures
 
-| Layer | Owned by |
-| --- | --- |
-| Content (Markdown, TOML databases) | `content/` |
-| Document structure (nav, footer, profile card, TOC) | Pandoc template (`site-template.html`) |
-| AST transformations (wikilinks, math delimiters, TikZ, component divs) | Lua filters (`~/.pandoc/filters/`) |
-| Reproducible Pandoc invocation | Defaults files (`content/defaults/*.yaml`) |
-| Site metadata (nav, profile) | TOML databases compiled to JSON |
-| Runtime interactivity (filtering, pagination, tag navigation) | React islands (`AcademicCollection`, `BlogListing`, `GalleryGrid`) |
-| App shell (manifest lookup, HTML injection, island mount) | `src/pages/CompiledPage.tsx`, `src/components/ComponentMount.tsx` |
+Pattern: the island boundary is explicit but weakly typed and error-laundering.
 
-No hardcoded content, routes, navbar labels, or blog chrome exists under `src/`. Search
-confirms:
+Concrete evidence:
 
-```bash
-rg "Teaching|Activities|Resources|Writing|Gallery|Blog" src/ --only-matching | grep -v node_modules
-# → zero matches in production source files.
-```
+- `src/pages/CompiledPage.tsx:16` types route `islands` as `unknown[]`.
+- `src/components/ComponentMount.tsx:13-18` defines `ComponentData` as an index
+  signature over `any`.
+- `src/components/ComponentMount.tsx:20-41` casts island payload fields into component
+  props.
+- `src/components/ComponentMount.tsx:59-72` catches JSON/render failures and logs them
+  instead of failing the page or exposing a testable error state.
 
-The only content-knowledge leak is in the **island registry** (`ComponentMount.tsx`),
-which must know the names and prop shapes of `AcademicCollection`, `GalleryGrid`, and
-`BlogListing`. This is an acceptable, bounded interlock: the registry is the single
-explicit contract between Pandoc-generated placeholders and React components.
+Why this matters:
 
-### 1.4 The Template Generator Artifact — 48 shadcn/ui Components
+The island registry is the one legitimate runtime interlock between Pandoc output and
+React. It should be the strongest contract in the app, not the loosest. Today a bad
+payload can become a console error and an unhydrated island, which the browser tests may
+catch indirectly, but the app boundary itself does not assert the schema it owns.
 
-`src/components/ui/` contains 48 `.tsx` files (accordion, alert-dialog, calendar,
-command, dialog, form, navigation-menu, pagination, sidebar, skeleton, table, toast,
-etc.). They were generated by a `shadcn/ui` init or Lovable scaffold and are **not
-used** by the application shell.
+Failure mode: typing collapse / error laundering.
 
-Evidence of actual usage:
-```bash
-rg 'from.*@/components/ui/' src/ --only-matching | sort | uniq -c | sort -rn
-# 6  src/components/ui/sidebar.tsx  (internal cross-imports)
-# 5  src/components/FilterControls.tsx  (Button, Badge, Checkbox, Popover, ScrollArea)
-# 3  src/App.tsx  (Toaster, Sonner, TooltipProvider)
-# 1  src/hooks/use-toast.ts
-# 1  src/components/ui/toggle-group.tsx (internal cross-import)
-# ... plus one-off internal imports inside ui/ itself
-```
+### Several tests are useful, but the suite mixes real proof with proxy checks
 
-Only **~6 UI primitives** are actually exercised by the app (`Button`, `Badge`,
-`Checkbox`, `Popover`, `ScrollArea`, `Toaster`, `Sonner`, `TooltipProvider`). The
-remaining ~40 components are dead code.
-They create:
+Pattern: high-value browser tests and GOALS contract tests are mixed with tests that
+prove file names, string presence, sampled routes, or implementation commentary.
 
-- Dependency bloat (Radix UI primitives for every component are in `package.json`)
+Concrete evidence:
 
-- Build-time cost (Vite must tree-shake them, but they still participate in typecheck)
+- Strong tests: `src/test/goals-contract.test.ts:133-381` creates real content files,
+  runs the real compiler, verifies manifest/routes/fail-fast behavior, preview, and
+  sitemap integration.
+- Strong tests: `tests/math-alignment.spec.ts`, `tests/math-macros.spec.ts`, and
+  `tests/tikzcd-center.spec.ts` run against the deployed Nginx output.
+- Weak tests: `src/test/build-pipeline.test.ts:37-61` checks that `compile.cjs` exists
+  and that `vite.config.ts` mentions `compile.cjs`.
+- Weak test: `src/pages/CompiledPage.test.tsx:5-13` mocks `react-router-dom`, renders
+  the real generated home HTML, and asserts a content string. During `just test`, this
+  passing test emitted React warnings about synchronously unmounting a root while React
+  was already rendering.
+- Coverage gaps: `tests/responsive-layout.spec.ts:12-14`,
+  `tests/toc-position.spec.ts:23`, and `tests/toc-responsive.spec.ts:22` sample only
+  the first two blog posts.
+- Redundancy: `tests/integrity.spec.ts:14-51` and `tests/visual.spec.ts:14-100` both
+  iterate manifest routes, collect page/console errors, and check component hydration.
 
-- Maintenance friction ( Renovate / Dependabot noise, version conflicts, unused audit
-  surface)
+Why this matters:
 
-**Recommendation:** Remove the entire `src/components/ui/` directory and replace the few
-used primitives with direct Radix imports, or with lightweight native Tailwind
-implementations. The shell does not need a design-system inventory.
+The suite has real proof surfaces, but the weak tests dilute signal and make it easier
+for future agents to point to green checks without knowing which checks matter. The test
+surface should be reorganized around owned contracts: compile contract, static rendered
+contract, island hydration contract, and visual/layout contract.
 
-* * *
+Failure mode: content-free verification / assertion commentary mismatch.
 
-## 2. Test Audit
+### Test code uses destructive deletion despite repo policy
 
-### 2.1 What the Tests Prove
+Pattern: tests directly remove generated and temporary content with `rmSync`.
 
-The test suite has two layers:
+Concrete evidence:
 
-1. **Unit / JSDOM tests** (`src/test/*.test.ts`, `src/**/*.test.tsx`) — run via Vitest.
+- `src/test/goals-contract.test.ts:76-90` uses `rmSync(..., { force: true })` to clean
+  generated proof artifacts and temporary content files.
+- The project instructions say never use `rm`; use recoverable deletion for manual
+  deletions.
 
-2. **Browser / Playwright tests** (`tests/*.spec.ts`) — run against the Nginx-served
-   static output.
+Why this matters:
 
-The browser tests are the stronger layer.
-They exercise real compiled HTML, real hydration, real MathJax rendering, and real
-layout geometry. This is the correct pattern for a static-site pipeline.
+This is not the same risk as a manual `rm -rf`, because these are test-created fixtures,
+but the mismatch should be made explicit. Either codify that test-owned temporary
+fixtures may be deleted directly, or move proof fixtures into a temp directory outside
+`content/` so cleanup cannot touch real content paths.
 
-Evidence of real-boundary testing:
+Failure mode: policy contradiction / process split.
 
-- `tests/integrity.spec.ts` — loads every manifest route in a browser, asserts zero
-  console/page errors, and checks that every `data-component` placeholder hydrates.
+### Content purity enforcement has a known exception
 
-- `tests/math-alignment.spec.ts` — waits for `MathJax.startup.promise` and asserts zero
-  `mjx-merror` elements across all blog posts.
+Pattern: the Markdown purity rule is automated but currently permits one content file to
+violate the rule.
 
-- `tests/math-macros.spec.ts` — checks for undefined macro errors (`PP`, `ZZ`, `RR`,
-  etc.) in the live MathJax output.
+Concrete evidence:
 
-- `tests/tikzcd-center.spec.ts` — measures bounding boxes of rendered SVGs to assert
-  horizontal centering within the content column.
+- `src/test/goals-contract.test.ts:383-397` checks raw block-level HTML in `content/**/*.md`
+  but excludes `grad-recommendations.md`.
+- `content/blog/grad-recommendations.md:372` contains a raw `<script async
+  src="https://platform.twitter.com/widgets.js" ...>` tag.
+- A direct search with
+  `find content -path 'content/**/*.md' -print | xargs rg -n '<(div|ul|li|section|article|nav|header|footer|table|script|style)(\s|>|/)'`
+  found that script tag.
 
-- `tests/visual.spec.ts` — navigates every route, checks h1 count, nav/footer/profile
-  visibility, and that `data-component` inner HTML is not a placeholder comment.
+Why this matters:
 
-These are **substantive** tests: they would fail if the Pandoc pipeline, the React
-island registry, or the template structure changed in a meaningful way.
+The exception means the rule and content reality disagree. If Twitter embeds are still
+required, they should be represented as a Pandoc component/filter declaration, not raw
+HTML inside Markdown. If not required, the script should be removed and the exception
+deleted.
 
-### 2.2 Weak / Tautological Tests (Slop Patterns)
+Failure mode: fallback laundering / checker weakening.
 
-A minority of unit tests assert structural trivia rather than behavioral contracts.
+## Off-the-Shelf Alternatives
 
-| Test | File | Violation |
-| --- | --- | --- |
-| `compile script exists as .cjs (not .js)` | `src/test/build-pipeline.test.ts` | Asserts file naming convention. The compiler would fail to run if the extension were wrong; this is a type-system / tooling invariant, not a behavioral claim. |
-| `all references to the compile script in .ts/.tsx files use compile.cjs` | `src/test/build-pipeline.test.ts` | String-match grep inside TS source. This is a lint rule masquerading as a test. |
-| `align-math filter invariant` | `src/test/build-pipeline.test.ts` | Checks that every `span.math.display` starts with `\begin{align*}`. This is a structural assertion on Pandoc filter output, but it does not prove the *behavioral* claim ("display math renders correctly"). The Playwright `math-alignment` tests are stronger because they check the live MathJax DOM. The JSDOM version is redundant and lower-fidelity. |
-| `CompiledPage renders real compiled content for the current manifest route` | `src/pages/CompiledPage.test.tsx` | Uses `vitest.mock` for `react-router-dom`, then asserts that text `"2024-2025 academic year"` is present. This is a shallow snapshot test: it proves the mocked router returns `/` and that the home page HTML string contains that literal text. It does not prove hydration, navigation, or island behavior. It is also fragile: if the home page copy changes, the test breaks even though the shell is still correct. |
+Hugo, Jekyll, Zola, VitePress, Docusaurus, Gatsby, and Next static export are worse fits
+for this repository because they would either replace Pandoc or fight the static
+file-per-route deployment model. Astro is the closest conceptual match because it has
+native islands, but adopting it would require porting the Pandoc Lua filter ecosystem to
+Remark/Rehype or shelling out to Pandoc inside Astro, which would preserve much of the
+current owned compiler surface while adding a framework.
 
-These four tests are **content-free or near-content-free** per the test-guidelines
-skill. They assert existence, naming, string presence, or internal consistency rather
-than owned nontrivial behavior at a real boundary.
+The practical reduction path is to keep the bespoke Pandoc compiler and delete the
+nonessential frontend/runtime surface:
 
-**Recommendation:**
+- remove React Router and route from `window.location.pathname`;
+- remove unused scaffold dependencies from `package.json`;
+- replace or directly import the few UI primitives that remain;
+- make the island payload schema explicit and fail-fast;
+- move the component declaration contract into one canonical schema consumed by docs,
+  compiler validation, and runtime tests;
+- make browser waits target repository-owned readiness instead of `networkidle`;
+- merge redundant Playwright route-integrity specs.
 
-- Remove `build-pipeline.test.ts` entirely.
-  The file-extension check is better enforced by `eslint` or a simple shell lint in the
-  justfile. The `align-math` JSDOM check is superseded by the Playwright math tests.
+## Test Audit Summary
 
-- Replace `CompiledPage.test.tsx` with a test that asserts the shell’s *generic*
-  behavior: given a mock manifest with a fake route pointing to a minimal HTML fixture,
-  `CompiledPage` must inject the HTML and mount any `data-component` placeholders found
-  inside it. Do not assert on real content strings.
+Keep and strengthen:
 
-### 2.3 Test Redundancy
+- `src/test/goals-contract.test.ts` for real compile/manifest/fail-fast contracts.
+- Browser tests that load Nginx-served output and inspect visible MathJax, TikZ, chrome,
+  route coverage, and hydration.
+- Visual snapshots when intentionally updated with a milestone.
 
-`tests/integrity.spec.ts` and `tests/visual.spec.ts` overlap significantly.
-Both:
+Repair:
 
-- iterate over all manifest routes
+- Replace `networkidle` waits in MathJax tests with `domcontentloaded` plus explicit
+  MathJax readiness and page-owned selectors.
+- Remove or convert `src/test/build-pipeline.test.ts` checks into a lint/tooling check
+  if the file-name convention remains important.
+- Replace the mocked `CompiledPage` content-string test with a small shell/island
+  contract test using controlled manifest/HTML fixtures, or rely on browser tests.
+- Stop sampling only `slice(0, 2)` for TOC/responsive tests; either check all matching
+  manifest routes or choose fixtures by meaningful structural properties.
+- Merge `tests/integrity.spec.ts` and overlapping parts of `tests/visual.spec.ts`.
 
-- listen for `pageerror` and console `error`
+## Negative Findings
 
-- check `data-component` hydration
+- Searched: `tree -a -I 'node_modules|.git|dist|.generated' -L 3`, repository docs
+  (`AGENTS.md`, `GOALS.md`, `README.md`, `content/CONTENT-GUIDE.md`), source/test files
+  under `src/` and `tests/`, import searches, path searches, and one `just test` run.
+- Found: no evidence that the core Pandoc -> manifest -> generated HTML -> island
+  hydration architecture is fundamentally wrong; found several maintainability defects
+  around dependencies, routing, schema ownership, and tests.
+- Conclusion: based on current evidence, the repo should be refined in place rather than
+  migrated to an off-the-shelf SSG.
+- Confidence: Medium-high.
+- Gaps: I did not run `just test-release`, `knip`, `depcheck`, or a bundle visualizer;
+  unused dependency findings are based on source import search, not a dedicated
+  dependency analyzer.
 
-The difference is that `visual.spec.ts` adds layout assertions (h1 count, nav/footer
-visibility, profile card text length, nav-click navigation).
-This is the richer test.
-`integrity.spec.ts` is almost entirely subsumed.
+## Decision
 
-**Recommendation:** Merge `integrity.spec.ts` into `visual.spec.ts` (or vice versa) to
-remove the duplication.
-A single “page integrity + layout + hydration” spec per route is sufficient.
-
-### 2.4 Playwright Route Sampling
-
-`toc-position.spec.ts`, `toc-responsive.spec.ts`, and `responsive-layout.spec.ts` all
-`slice(0, 2)` the blog post list.
-This means only 2 out of 14 posts are checked for TOC position and responsive layout.
-If a post with unusual heading structure breaks the TOC, the test suite will not catch
-it.
-
-**Recommendation:** Either test all posts (the suite is fast enough: each test takes
-<2s) or sample deterministically (e.g., shortest post, longest post, post with most
-headings). Random `slice(0, 2)` is a coverage gap.
-
-* * *
-
-## 3. Off-the-Shelf Alternatives vs. Bespoke
-
-### 3.1 What Problem Does This Repo Solve?
-
-The repo is a **Pandoc-first static site generator** for an academic portfolio.
-Its unique requirements are:
-
-- Heavy math rendering (MathJax macros, TikZ-CD diagrams)
-
-- Markdown source with Obsidian wikilink syntax
-
-- Content-driven structured data (TOML databases for papers, talks, notes, galleries)
-
-- Runtime islands for filtering/pagination (React components hydrated into static HTML)
-
-- Flat-file deployment to Nginx (no server runtime)
-
-### 3.2 Candidate Alternatives
-
-| Tool | Fit | Verdict |
-| --- | --- | --- |
-| **Hugo** | Fast, mature, content-driven. Has math support via KaTeX/MathJax plugins. No native Pandoc AST pipeline; would lose the existing Lua filter ecosystem (obsidian.lua, tikzcd.lua, components.lua). Would need to port filters to Hugo shortcodes or partials — non-trivial. | Poor fit. The value of this repo is the Pandoc filter layer. |
-| **Jekyll** | Ruby-based, similar to the legacy `~/website` setup. Math support is patchy; no Pandoc integration out of the box. | Poor fit. The migration away from Jekyll is the reason this repo exists. |
-| **Eleventy (11ty)** | Flexible, supports custom transforms. Could wrap Pandoc as a transform. But 11ty’s template language (Nunjucks / Liquid / JS) is another layer; the repo would still own the Pandoc invocation logic. | Moderate fit. Would not reduce owned surface meaningfully; adds a framework layer. |
-| **Astro** | Islands architecture is conceptually identical to what this repo does (static HTML + hydrated islands). Astro’s “component islands” are native; no need for a custom `mountComponents` registry. However, Astro’s Markdown pipeline is not Pandoc. Porting the Lua filters to Remark/Rehype plugins would be a rewrite. | Moderate fit. The island model is better, but losing Pandoc is a hard tradeoff for math-heavy content. |
-| **Zola** | Rust-based, fast, simple. No plugin system for custom AST transforms. | Poor fit. Cannot host the existing Pandoc filter logic. |
-| **VitePress / Docusaurus** | Documentation-oriented, assumes sidebar nav and structured docs. Not a general portfolio/blog site. | Poor fit. |
-| **Gatsby** | Over-engineered for this use case. GraphQL data layer is heavy. | Poor fit. |
-| **Next.js (static export)** | Could do static export with React Server Components. But the site explicitly rejects client-side routing; Next.js wants to own routing. The `dist/` output is a SPA fallback (`index.html`) by default, which conflicts with Nginx `try_files $uri $uri.html`. | Poor fit. Fighting the framework. |
-
-### 3.3 Conclusion on Alternatives
-
-**There is no off-the-shelf tool that natively combines Pandoc’s AST pipeline (Lua
-filters, templates, math) with a modern island-hydration frontend.** The bespoke
-pipeline is justified.
-The correct path is not to replace the compiler, but to **shrink the frontend shell** so
-that it is nothing more than a generic island hydrator plus the few interactive
-components actually needed.
-
-* * *
-
-## 4. Specific Recommendations to Reduce Owned Surface
-
-### 4.1 Immediate Cleanup (no functional change)
-
-| Action | Estimated LOC removed | File(s) affected |
-| --- | --- | --- |
-| Delete unused `src/components/ui/` primitives (40 files) | ~3,500 | `src/components/ui/*` except used ones |
-| Remove `react-router-dom` dependency; use `window.location.pathname` | -1 dep | `src/App.tsx`, `src/pages/CompiledPage.tsx`, `package.json` |
-| Remove unused Radix UI primitives from `package.json` | -10 deps | `package.json` |
-| Merge `integrity.spec.ts` into `visual.spec.ts` | ~60 | `tests/integrity.spec.ts` |
-| Delete `build-pipeline.test.ts` | ~40 | `src/test/build-pipeline.test.ts` |
-| Rewrite `CompiledPage.test.tsx` as a generic shell test | ~20 | `src/pages/CompiledPage.test.tsx` |
-| Remove unused `src/components/CardScroller.tsx`, `PaginatedScroller.tsx`, etc. if dead | variable | audit with `knip` / `vulture` equivalent |
-
-### 4.2 Medium-Term Refinement
-
-| Action | Rationale |
-| --- | --- |
-| Move island component registry to a **dynamic import** map | `ComponentMount.tsx` hardcodes `import AcademicCollection from '...'`. A dynamic `import()` registry would allow adding new island types without editing the shell, provided the component name matches the `data-component` attribute. This shrinks the bounded interlock even further. |
-| Extract compile script into a **separate package** or vendored CLI | If the Pandoc + manifest + island model is stable, the compiler could become a standalone `pandoc-ssg` CLI tool. The site repo would then only contain `content/`, templates, and the thin React shell. This is the ultimate reduction of owned surface. |
-| Replace shadcn/ui remnants with **Tailwind-only primitives** | The used primitives (Button, Badge, Popover, etc.) are simple enough to implement in ~20 LOC each with Tailwind. This removes the entire Radix UI dependency tree for the shell. |
-| Add `knip` / `vulture` / `depcheck` to the justfile quality gate | Automated dead-code detection prevents the UI component inventory from regrowing. |
-
-### 4.3 Architecture Rules to Enforce
-
-1. **No new dependencies under `src/` without justifying why the behavior cannot be
-   composed from Pandoc, a filter, or a template.**
-
-2. **No new files under `src/components/ui/` ever.** If a UI primitive is needed, it is
-   a local Tailwind implementation, not a shadcn scaffold.
-
-3. **No routing library.** `window.location.pathname` is sufficient.
-
-4. **Tests must prove a real boundary or live rendering contract.** No file-existence
-   tests, no string-matching grep tests, no mocked shallow renders of real content.
-
-* * *
-
-## 5. Honest Assessment of Maintainability
-
-### What is maintainable
-
-- The **compile pipeline** (`compile.cjs`) is a single, linear script with clear phases:
-  discover → validate → compile → write manifest.
-  It is easy to read and modify.
-
-- The **manifest contract** is the right abstraction.
-  Every consumer (app, sitemap, tests) is decoupled from content internals.
-
-- The **Pandoc layer** (templates, filters, defaults) is externally standardized.
-  The skills learned here transfer to any Pandoc project.
-
-- The **content boundary** is real: a user can add `content/blog/new.md` and get a route
-  with zero code changes.
-  The `goals-contract.test.ts` suite enforces this with red-green tests.
-
-### What is not maintainable (without the above cleanup)
-
-- The **shadcn/ui component inventory** is a time bomb.
-  It will rot: dependencies will drift, TypeScript will error on unused props, and the
-  next agent will be tempted to “use” the existing components for new features,
-  increasing lock-in.
-
-- The **React Router inclusion** is a conceptual lie.
-  It tells every reader that this is an SPA, which it is not.
-  This creates confusion and maintenance risk.
-
-- The **test suite bloat** (redundant integrity + visual specs, weak unit tests)
-  increases CI time and dilutes signal.
-  When a test fails, a maintainer must first decide whether the test is meaningful.
-
-### Verdict
-
-With the cleanup in §4.1 applied, the repository becomes a **minimal, elegant
-Pandoc-driven static site with a thin React island shell**. The owned surface would be
-approximately:
-
-- ~500 LOC compile script
-
-- ~200 LOC React shell (CompiledPage + ComponentMount)
-
-- ~300 LOC island components (AcademicCollection, BlogListing, GalleryGrid, filters)
-
-- ~100 LOC lightweight UI primitives (if any)
-
-- Content, templates, filters, and tests as before
-
-This is **small enough to own** and **coherent enough to refine** without migrating to
-an external framework.
-The architecture is not a bunch of ugly hacks; it is a deliberate, thin layer over
-Pandoc. The ugliness is only in the **template-generator residue** (shadcn/ui, React
-Router) that was dragged in during initial scaffolding and never cleaned up.
-
-* * *
-
-## 6. Evidence Checklist
-
-| Claim | Evidence Command / File |
-| --- | --- |
-| 48 UI components exist | `ls src/components/ui/*.tsx \| wc -l` → 48 |
-| Only ~6 are used | `rg 'from.*@/components/ui/' src/ --only-matching \| sort \| uniq -c` |
-| React Router is present | `package.json` line 33; `src/App.tsx` line 11 |
-| No content hardcoded in src | `rg "Teaching\|Activities\|Resources\|Writing\|Gallery\|Blog" src/ --only-matching` → 0 |
-| Tests derive routes from manifest | `tests/integrity.spec.ts` lines 14–21 |
-| Playwright tests check live MathJax | `tests/math-alignment.spec.ts` lines 24–34 |
-| Weak unit tests exist | `src/test/build-pipeline.test.ts`, `src/pages/CompiledPage.test.tsx` |
-| Compile script is single file | `src/compile.cjs`, 524 LOC |
-| GOALS contract tests pass | `npx vitest run src/test/goals-contract.test.ts` → 21 passed |
-
-* * *
-
-## 7. Next Actions
-
-1. **Execute §4.1 cleanup** in a dedicated branch (remove dead UI components, drop React
-   Router, merge test specs, delete weak unit tests).
-
-2. **Run `just test`** after each cleanup step to verify no regression.
-
-3. **Add `knip` or `depcheck`** to the justfile `test` gate to prevent dead-code
-   regression.
-
-4. **Tag `v1.0.0`** after the cleanup lands and `just test` passes.
-
-* * *
-
-*Analysis performed by agent inspection of live source, test execution, and skill-guided
-review (`test-guidelines`, `anti-slop`). No off-the-shelf replacement was found that
-preserves the Pandoc AST pipeline without a full rewrite.*
+Maintain the opinionated Pandoc-based architecture. Do not replace it with a generic
+SSG. The next architecture work should delete nonessential frontend surface and tighten
+the compiler/runtime/test contracts around the manifest and island payloads.

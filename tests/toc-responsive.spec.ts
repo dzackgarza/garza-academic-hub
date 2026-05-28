@@ -27,7 +27,7 @@ test.describe('TOC responsive visibility', () => {
       page,
     }) => {
       await page.setViewportSize({ width: 800, height: 900 });
-      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(500);
 
       const toc = page.locator('nav.toc-card');
@@ -51,7 +51,7 @@ test.describe('TOC responsive visibility', () => {
       page,
     }) => {
       await page.setViewportSize({ width: 1200, height: 900 });
-      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(500);
 
       const toc = page.locator('nav.toc-card');

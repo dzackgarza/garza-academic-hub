@@ -15,7 +15,7 @@ test.describe('tikzcd SVG centering', () => {
   for (const route of blogRoutes) {
     test(`tikzcd SVGs are horizontally centered on ${route.path}`, async ({ page }) => {
       await page.goto(`${BASE_URL}${route.path}`, {
-        waitUntil: 'networkidle',
+        waitUntil: 'domcontentloaded',
       });
       await page.waitForTimeout(2000);
 

@@ -21,9 +21,10 @@ test.describe('MathJax macro definitions', () => {
   for (const route of blogRoutes) {
     test(`no undefined macros on ${route.path}`, async ({ page }) => {
       await page.goto(`${BASE_URL}${route.path}`, {
-        waitUntil: 'networkidle',
+        waitUntil: 'domcontentloaded',
       });
-      await page.waitForFunction(() => (window as any).MathJax !== undefined);
+      await expect(page.locator('article.post-content')).toBeVisible();
+      await page.waitForFunction(() => Boolean((window as any).MathJax?.startup?.promise));
       await page.evaluate(() => (window as any).MathJax.startup.promise);
 
       const errors: string[] = await page.evaluate(() => {

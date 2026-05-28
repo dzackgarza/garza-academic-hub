@@ -33,7 +33,7 @@ const ROUTES = getRoutes();
 test.describe('Visual Regression Tests', () => {
   ROUTES.forEach((route) => {
     test(`Screenshot: ${route.name}`, async ({ page }) => {
-      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(1500);
       await expect(page).toHaveScreenshot(`${route.name}.png`, {
         maxDiffPixelRatio: 0.02,

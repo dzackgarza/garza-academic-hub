@@ -33,7 +33,7 @@ test.describe('Site Integrity and Hydration Tests', () => {
       });
 
       // Go to page
-      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(1000);
 
       // 1. Assert that no runtime browser errors occurred
@@ -108,7 +108,7 @@ test.describe('Nav link navigation', () => {
     test(`clicking "${title}" nav navigates to ${path} and renders page content`, async ({
       page,
     }) => {
-      await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(500);
 
       // Click the nav link by its text (matches title)

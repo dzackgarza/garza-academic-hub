@@ -7,7 +7,7 @@ import { chromium } from 'playwright';
   
   const url = 'http://localhost:8080/blog/undergrad-resources';
   console.log(`Navigating to ${url}...`);
-  await page.goto(url, { waitUntil: 'networkidle' });
+  await page.goto(url, { waitUntil: 'domcontentloaded' });
   
   // Wait for MathJax and layout to settle
   await new Promise(resolve => setTimeout(resolve, 1000));

@@ -22,7 +22,7 @@ preview-open file:
 # Single canonical gate: generates macros, typechecks, compiles, builds, syncs
 # to the Nginx static root, runs unit tests, and verifies MathJax rendering
 # against freshly deployed output. Always run this before pushing.
-test: generate-macros
+test: check-hygiene generate-macros
     @npx tsc --noEmit
     @BASE_URL="/website" node src/compile.cjs
     @npx vite build
@@ -39,7 +39,7 @@ test: generate-macros
 
 # Full pre-release validation: `test` + all remaining Playwright tests
 # (visual regression, hydration, layout, TOC, etc.).
-test-release: generate-macros
+test-release: check-hygiene generate-macros
     @npx tsc --noEmit
     @BASE_URL="/website" node src/compile.cjs
     @npx vite build
@@ -80,6 +80,10 @@ update-snapshots milestone:
     @test -n "{{milestone}}" || { echo 'ERROR: milestone/version required.'; echo 'Usage: just update-snapshots MILESTONE=<version-or-description>'; exit 1; }
     @echo 'Updating golden snapshots for: {{milestone}}'
     @npx playwright test --update-snapshots
+
+# Run repository static quality control and hygiene checks
+check-hygiene:
+    @node scripts/check-hygiene.js
 
 # ─── Utilities ─────────────────────────────────────────────────────────────────
 # Show available content files

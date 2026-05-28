@@ -17,7 +17,7 @@ test.describe('Responsive layout: sidebar sticky', () => {
   blogPosts.forEach((route) => {
     test(`"${route.path}" sidebar is sticky at >=1024px viewport`, async ({ page }) => {
       await page.setViewportSize({ width: 1200, height: 600 });
-      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(500);
 
       const card = page.locator('.academic-profile-card');
@@ -37,7 +37,7 @@ test.describe('Responsive layout: sidebar floats alongside content', () => {
       page,
     }) => {
       await page.setViewportSize({ width: 1200, height: 900 });
-      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(500);
 
       const sidebar = page.locator('.academic-profile-card');

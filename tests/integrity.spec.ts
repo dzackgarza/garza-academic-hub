@@ -30,7 +30,7 @@ test.describe('page integrity — all routes', () => {
         }
       });
 
-      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE_URL}${route.path}`, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(1000);
 
       expect(consoleErrors, `${route.path}: console/page errors`).toEqual([]);
