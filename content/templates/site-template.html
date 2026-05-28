@@ -73,7 +73,7 @@
                 <span class="meta-label">Tags:</span>
                 <span class="meta-values">
                   $for(tags)$
-                  <span class="meta-badge tag-badge">$tags$</span>
+                  <a href="$site.base$/blog?tag=$tags$" class="meta-badge tag-badge">#$tags$</a>
                   $endfor$
                 </span>
               </div>
@@ -84,7 +84,7 @@
                 <span class="meta-label">Categories:</span>
                 <span class="meta-values">
                   $for(categories)$
-                  <span class="meta-badge category-badge">$categories$</span>
+                  <a href="$site.base$/blog?category=$categories$" class="meta-badge category-badge">$categories$</a>
                   $endfor$
                 </span>
               </div>

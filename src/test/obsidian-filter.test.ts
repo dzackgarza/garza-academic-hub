@@ -13,8 +13,6 @@ function compileSnippet(markdownBody: string): string {
   const frontmatter = `---
 title: Test Post
 date: 2024-01-01
-tags: [test]
-categories: [test]
 ---\n`;
   const fullContent = frontmatter + markdownBody;
   fs.writeFileSync(tempFile, fullContent, 'utf8');
