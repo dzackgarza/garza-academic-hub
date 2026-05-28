@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FileText, Clock } from 'lucide-react';
+import { FileText, Clock, Tag, Folder } from 'lucide-react';
 import SectionHeading from '@/components/SectionHeading';
 
 interface Post {
@@ -7,6 +7,7 @@ interface Post {
   slug: string;
   date: string;
   tags?: string[];
+  categories?: string[];
   excerpt?: string;
   readMinutes?: number;
 }
@@ -20,10 +21,15 @@ const BlogListing = ({ posts, basePath }: BlogListingProps) => {
   const [activeTag, setActiveTag] = useState<string | null>(() =>
     new URLSearchParams(window.location.search).get('tag'),
   );
+  const [activeCategory, setActiveCategory] = useState<string | null>(() =>
+    new URLSearchParams(window.location.search).get('category'),
+  );
 
   useEffect(() => {
     const onPopState = () => {
-      setActiveTag(new URLSearchParams(window.location.search).get('tag'));
+      const params = new URLSearchParams(window.location.search);
+      setActiveTag(params.get('tag'));
+      setActiveCategory(params.get('category'));
     };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
@@ -36,16 +42,42 @@ const BlogListing = ({ posts, basePath }: BlogListingProps) => {
     } else {
       params.delete('tag');
     }
+    params.delete('category'); // Clear category filter if tag is selected
     const qs = params.toString();
     window.history.pushState(null, '', qs ? `${basePath}?${qs}` : basePath);
     setActiveTag(tag);
+    setActiveCategory(null);
   };
 
-  const filtered = activeTag
-    ? posts.filter((p) =>
-        p.tags?.some((t) => t.toLowerCase() === activeTag.toLowerCase()),
-      )
-    : posts;
+  const setCategory = (category: string | null) => {
+    const params = new URLSearchParams(window.location.search);
+    if (category) {
+      params.set('category', category);
+    } else {
+      params.delete('category');
+    }
+    params.delete('tag'); // Clear tag filter if category is selected
+    const qs = params.toString();
+    window.history.pushState(null, '', qs ? `${basePath}?${qs}` : basePath);
+    setActiveCategory(category);
+    setActiveTag(null);
+  };
+
+  const clearFilters = () => {
+    window.history.pushState(null, '', basePath);
+    setActiveTag(null);
+    setActiveCategory(null);
+  };
+
+  const filtered = posts.filter((p) => {
+    if (activeTag) {
+      return p.tags?.some((t) => t.toLowerCase() === activeTag.toLowerCase());
+    }
+    if (activeCategory) {
+      return p.categories?.some((c) => c.toLowerCase() === activeCategory.toLowerCase());
+    }
+    return true;
+  });
 
   const byYear = filtered.reduce<Record<number, Post[]>>((acc, p) => {
     const year = new Date(p.date).getFullYear();
@@ -59,14 +91,29 @@ const BlogListing = ({ posts, basePath }: BlogListingProps) => {
 
   return (
     <div>
-      {activeTag && (
+      {(activeTag || activeCategory) && (
         <div className="mb-6 p-3 bg-primary/5 rounded-lg border border-primary/20 flex items-center justify-between text-sm animate-fade-in">
-          <span className="text-foreground">
-            Showing posts tagged with{' '}
-            <span className="font-semibold text-primary">#{activeTag}</span>
+          <span className="text-foreground flex items-center gap-1.5">
+            {activeTag ? (
+              <>
+                <Tag className="w-4 h-4 text-primary shrink-0" />
+                <span>
+                  Showing posts tagged with{' '}
+                  <span className="font-semibold text-primary">#{activeTag}</span>
+                </span>
+              </>
+            ) : (
+              <>
+                <Folder className="w-4 h-4 text-primary shrink-0" />
+                <span>
+                  Showing posts in category{' '}
+                  <span className="font-semibold text-primary">{activeCategory}</span>
+                </span>
+              </>
+            )}
           </span>
           <button
-            onClick={() => setTag(null)}
+            onClick={clearFilters}
             className="text-xs font-semibold text-primary hover:text-link-hover hover:underline"
           >
             Clear Filter
@@ -75,14 +122,14 @@ const BlogListing = ({ posts, basePath }: BlogListingProps) => {
       )}
 
       {filtered.length === 0 ? (
-        <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
-          No posts found matching the selected tag.
+        <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground animate-fade-in">
+          No posts found matching the selected filter.
         </div>
       ) : (
         years.map((year) => (
           <div key={year} className="mb-8">
             <SectionHeading id={`y-${year}`}>{year}</SectionHeading>
-            <ul className="space-y-3">
+            <ul className="space-y-3 animate-fade-in">
               {byYear[year].map((p) => (
                 <li key={p.slug} className="rounded-lg border bg-card p-4 flex gap-3">
                   <div className="mt-0.5 rounded-md bg-accent p-2 shrink-0">
@@ -95,13 +142,35 @@ const BlogListing = ({ posts, basePath }: BlogListingProps) => {
                     >
                       {p.title}
                     </a>
-                    <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                      <Clock className="w-3 h-3" />
-                      <span>{p.readMinutes} min read</span>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        <span>{p.readMinutes} min read</span>
+                      </div>
+                      
+                      {p.categories && p.categories.length > 0 && (
+                        <>
+                          <span>&bull;</span>
+                          <div className="flex gap-1.5 items-center">
+                            <Folder className="w-3 h-3 text-muted-foreground/60" />
+                            {p.categories.map((c) => (
+                              <button
+                                key={c}
+                                onClick={() => setCategory(c)}
+                                className="hover:text-primary hover:underline transition-colors font-medium"
+                              >
+                                {c}
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+
                       {p.tags && p.tags.length > 0 && (
                         <>
                           <span>&bull;</span>
                           <div className="flex gap-1.5 items-center">
+                            <Tag className="w-3 h-3 text-muted-foreground/60" />
                             {p.tags.map((t) => (
                               <button
                                 key={t}

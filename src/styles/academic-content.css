@@ -217,6 +217,8 @@
   font-size: 0.9em;
   font-weight: 500;
   border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 
