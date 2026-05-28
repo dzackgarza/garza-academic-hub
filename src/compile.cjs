@@ -35,7 +35,7 @@ const blogMetadataSchema = z.object({
   categories: z.array(z.string()),
   updatedDate: z.string().optional(),
   readMinutes: z.coerce.number().optional(),
-  excerpt: z.string().optional(),
+  excerpt: z.string().min(1),
   legacyUrl: z.string().optional(),
   image: z.string().optional(),
   template: z.enum(['post']).optional(),
@@ -414,26 +414,6 @@ function prepareBlogEntry(file) {
     baseMetadata.readMinutes = Math.max(1, Math.round(wordCount / 200));
   }
 
-  // Dynamic clean excerpt from body
-  if (!baseMetadata.excerpt || baseMetadata.excerpt.trim() === '') {
-    let cleanText = rawContent;
-    if (rawContent.startsWith('---')) {
-      const parts = rawContent.split('---');
-      if (parts.length >= 3) {
-        cleanText = parts.slice(2).join('---');
-      }
-    }
-    const bodyText = cleanText
-      .replace(/```[\s\S]*?```/g, '')
-      .replace(/`[^`]+`/g, '')
-      .replace(/#+\s+.+/g, '')
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      .replace(/<[^>]+>/g, '')
-      .replace(/[>*_-]/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-    baseMetadata.excerpt = bodyText.slice(0, 160).trim() + (bodyText.length > 160 ? '...' : '');
-  }
 
   const metadata = validateMetadata(
     blogMetadataSchema,

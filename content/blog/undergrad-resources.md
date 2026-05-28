@@ -1,6 +1,7 @@
 ---
 title: 'Recommendations: Undergraduate Resources'
 date: 2021-04-11 14:18 -0700
+excerpt: "A comprehensive guide to undergraduate mathematics resources, including websites, software, study guides, and books for lower and upper-division courses."
 tags:
   - Math
   - Reference

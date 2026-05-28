@@ -2,6 +2,7 @@
 title: "Some notes on Benson Farb's talk on surface bundles, mapping class groups,
   moduli spaces, and cohomology"
 date: 2020-10-24
+excerpt: "Partial transcript and geometric topology notes from Benson Farb's OSU talk on surface bundles, mapping class groups, moduli spaces, and cohomology."
 tags:
   - Mathematics
   - Topology

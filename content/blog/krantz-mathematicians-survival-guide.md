@@ -1,7 +1,7 @@
 ---
 title: Some notes on Krantz's "A Mathematician's survival guide"
 date: 2022-12-31 19:05 -0800
-excerpt: ''
+excerpt: "Snippets and reading notes from Steven Krantz's book 'A Mathematician's Survival Guide' focusing on graduate school and early career advice in mathematics."
 tags:
 - mathematics
 - todo

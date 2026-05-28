@@ -1,6 +1,7 @@
 ---
 title: "How to do well in (my) Precalculus class"
 date: 2020-11-03 15:50 -0800
+excerpt: "A collection of practical advice, study strategies, and common pitfalls to avoid for students seeking to succeed in college precalculus."
 tags:
   - Advice
   - Mathematics

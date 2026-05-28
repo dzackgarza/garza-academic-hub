@@ -1,6 +1,7 @@
 ---
 title: 'Recommendations: Graduate Level Texts and Notes'
 date: 2020-10-11 12:27 -0700
+excerpt: "A curated list of recommended textbooks, notes, and references for new graduate students and advanced undergraduates across diverse mathematical fields."
 tags:
   - Mathematics
   - Reference

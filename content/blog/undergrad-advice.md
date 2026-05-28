@@ -1,6 +1,7 @@
 ---
 title: "Advice for Undergraduates in Mathematics"
 date: 2020-10-16 12:27 -0700
+excerpt: "Practical guidance and resource links for undergraduate mathematics students on organization, study habits, research, and career preparation."
 tags:
   - Advice
   - Reference
