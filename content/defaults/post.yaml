@@ -4,12 +4,12 @@ template: content/templates/site-template.html
 metadata-files:
   - .generated/pandoc-data/site.yaml
 filters:
-  - content/filters/include.lua
-  - content/filters/convert_math_delimiters.lua
-  - content/filters/obsidian.lua
-  - content/filters/youtube.lua
-  - content/filters/post-navigation.lua
-  - content/filters/tikzcd.lua
+  - /home/dzack/.pandoc/filters/include.lua
+  - /home/dzack/.pandoc/filters/convert_math_delimiters.lua
+  - /home/dzack/.pandoc/filters/obsidian.lua
+  - /home/dzack/.pandoc/filters/youtube.lua
+  - /home/dzack/.pandoc/filters/post-navigation.lua
+  - /home/dzack/.pandoc/filters/tikzcd.lua
 table-of-contents: true
 toc-depth: 3
 html-math-method:

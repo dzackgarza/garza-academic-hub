@@ -97,7 +97,7 @@ console.log('Running Check 2: Absolute Path Portability...');
 const scopedFiles = [
   ...walkFiles(path.join(repoRoot, 'src'), isTextFile),
   ...walkFiles(path.join(repoRoot, 'tests'), isTextFile),
-  ...walkFiles(path.join(repoRoot, 'content'), isTextFile),
+  ...walkFiles(path.join(repoRoot, 'scripts'), isTextFile),
   path.join(repoRoot, 'justfile'),
   path.join(repoRoot, 'vite.config.ts'),
   path.join(repoRoot, 'playwright.config.ts')

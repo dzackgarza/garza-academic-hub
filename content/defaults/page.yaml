@@ -4,6 +4,6 @@ template: content/templates/site-template.html
 metadata-files:
   - .generated/pandoc-data/site.yaml
 filters:
-  - content/filters/components.lua
+  - /home/dzack/.pandoc/filters/components.lua
 html-math-method:
   method: mathjax
